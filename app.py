@@ -1,10 +1,19 @@
 import sys
-from PyQt5.QtWidgets import QApplication, QMainWindow, QLabel, QPushButton, QVBoxLayout, QWidget,QGridLayout
+from PyQt5.QtWidgets import QApplication, QMainWindow, QLabel, QPushButton, QVBoxLayout, QWidget,QGridLayout,QDesktopWidget
 from PyQt5.QtCore import Qt
 from datetime import date
 from windows import MenuVentas, MenuInventarios, MenuBDH, MenuAnalitica
 
 
+def adj_middle(menu_w):
+    screen = QDesktopWidget().screenGeometry()
+    screen_width = screen.width()
+    screen_height = screen.height()
+        
+    # Calcular la posición para centrar la ventana
+    x = (screen_width - menu_w.width()) // 2
+    y = (screen_height - menu_w.height()) // 2
+    return x,y
 
 class WelcomeWindow(QMainWindow):
     def __init__(self):
@@ -45,6 +54,8 @@ class WelcomeWindow(QMainWindow):
         
         # Abrir la ventana del menú principal
         self.menu_window = MenuWindow()
+        x,y = adj_middle(self.menu_window)
+        self.menu_window.move(x,y)
         self.menu_window.show()
 
 class MenuWindow(QMainWindow):
@@ -88,6 +99,8 @@ class MenuWindow(QMainWindow):
     def openVentas(self):
         # Crear una instancia de la ventana del menú 1 y mostrarla
         self.menu1_window = MenuVentas(self)
+        x,y = adj_middle(self.menu1_window)
+        self.menu1_window.move(x,y)
         self.menu1_window.show()
         
         # Cerrar la ventana actual
@@ -96,6 +109,8 @@ class MenuWindow(QMainWindow):
     def openInventarios(self):
         # Crear una instancia de la ventana del menú  y mostrarla
         self.menu2_window = MenuInventarios(self)
+        x,y = adj_middle(self.menu2_window)
+        self.menu2_window.move(x,y)
         self.menu2_window.show()
         
         # Cerrar la ventana actual
@@ -104,6 +119,8 @@ class MenuWindow(QMainWindow):
     def openBDH(self):
         # Crear una instancia de la ventana del menú  y mostrarla
         self.menu3_window = MenuBDH(self)
+        x,y = adj_middle(self.menu3_window)
+        self.menu3_window.move(x,y)
         self.menu3_window.show()
         
         # Cerrar la ventana actual
@@ -111,6 +128,8 @@ class MenuWindow(QMainWindow):
     def openAnalitica(self):
         # Crear una instancia de la ventana del menú 1 y mostrarla
         self.menu4_window = MenuAnalitica(self)
+        x,y = adj_middle(self.menu4_window)
+        self.menu4_window.move(x,y)
         self.menu4_window.show()
         
         # Cerrar la ventana actual
