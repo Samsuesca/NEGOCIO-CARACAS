@@ -30,7 +30,7 @@ class ShowData(QMainWindow):
         self.setCentralWidget(table)
 
     def get_table_data(self,table_name):
-        conn, cursor = connect('negocio', 'root', 'negocio2023')
+        conn, cursor = connect('negocio2023')
         results = execute_query(cursor, f'SELECT * FROM {table_name}')
         column_names = [column[0] for column in cursor.description]
         return results, column_names
