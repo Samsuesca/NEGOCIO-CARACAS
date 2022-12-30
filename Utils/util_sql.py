@@ -5,7 +5,8 @@ def connect(dbname, user, password):
     cursor = conn.cursor()
     return conn, cursor
 
-def execute_query(conn, cursor, query):
+def execute_query(cursor, query):
     cursor.execute(query)
     results = cursor.fetchall()
     return results
+

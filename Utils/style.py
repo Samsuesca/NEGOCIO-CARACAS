@@ -28,3 +28,22 @@ def adj_middle(menu_w):
     y = (screen_height - menu_w.height()) // 2
     return x,y
  
+def adj_left(menu_w):
+    screen = QDesktopWidget().screenGeometry()
+    screen_height = screen.height()
+    
+    # Colocar la ventana en la esquina superior izquierda
+    x = 0
+    y = (screen_height - menu_w.height()) // 2
+    return x,y
+
+def adj_right(menu_w):
+    screen = QDesktopWidget().screenGeometry()
+    screen_width = screen.width()
+    screen_height = screen.height()
+    
+    # Colocar la ventana en la esquina superior derecha
+    x = screen_width - menu_w.width()
+    y = (screen_height - menu_w.height()) // 2
+    return x,y
+

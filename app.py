@@ -6,11 +6,11 @@ from  Inventarios.inventarios import MenuInventarios
 from Ventas.ventas import MenuVentas
 from BDH.bdh import MenuBDH
 from Analitica.analitica import MenuAnalitica
-import Utils.style 
+from Utils.style import adj_middle, Palette
 
 app = QApplication(sys.argv)
 app.setStyle("Fusion")
-palette = Utils.style.Palette()
+palette = Palette()
 app.setPalette(palette)
 
 
@@ -21,7 +21,7 @@ class WelcomeWindow(QMainWindow):
         # Establecer título y tamaño de la ventana
         self.setWindowTitle("INICIO")
         self.setGeometry(250, 250, 500, 250)
-        x,y = Utils.style.adj_middle(self)
+        x,y = adj_middle(self)
         self.move(x,y)
         #self.setWindowIcon(QIcon('icon.png'))
         
@@ -55,7 +55,7 @@ class WelcomeWindow(QMainWindow):
         
         # Abrir la ventana del menú principal
         self.menu_window = MenuWindow()
-        x,y = Utils.style.adj_middle(self.menu_window)
+        x,y = adj_middle(self.menu_window)
         self.menu_window.move(x,y)
         self.menu_window.show()
 
@@ -99,7 +99,7 @@ class MenuWindow(QMainWindow):
     def openVentas(self):
         # Crear una instancia de la ventana del menú 1 y mostrarla
         self.menu1_window = MenuVentas(self)
-        x,y = Utils.style.adj_middle(self.menu1_window)
+        x,y = adj_middle(self.menu1_window)
         self.menu1_window.move(x,y)
         self.menu1_window.show()
         
@@ -109,7 +109,7 @@ class MenuWindow(QMainWindow):
     def openInventarios(self):
         # Crear una instancia de la ventana del menú  y mostrarla
         self.menu2_window = MenuInventarios(self)
-        x,y = Utils.style.adj_middle(self.menu2_window)
+        x,y = adj_middle(self.menu2_window)
         self.menu2_window.move(x,y)
         self.menu2_window.show()
         
@@ -119,7 +119,7 @@ class MenuWindow(QMainWindow):
     def openBDH(self):
         # Crear una instancia de la ventana del menú  y mostrarla
         self.menu3_window = MenuBDH(self)
-        x,y = Utils.style.adj_middle(self.menu3_window)
+        x,y = adj_middle(self.menu3_window)
         self.menu3_window.move(x,y)
         self.menu3_window.show()
         
@@ -129,7 +129,7 @@ class MenuWindow(QMainWindow):
     def openAnalitica(self):
         # Crear una instancia de la ventana del menú 1 y mostrarla
         self.menu4_window = MenuAnalitica(self)
-        x,y = Utils.style.adj_middle(self.menu4_window)
+        x,y = adj_middle(self.menu4_window)
         self.menu4_window.move(x,y)
         self.menu4_window.show()
         

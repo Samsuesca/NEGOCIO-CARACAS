@@ -10,9 +10,10 @@ from Inventarios.inventa import Inventario
 
     
 class   ShowInventarios(QMainWindow):
-        def __init__(self,menu_window):
+        def __init__(self,return_window,to_close):
             super().__init__()
-            self.menu_window = menu_window
+            self.return_window = return_window
+            self.to_close = to_close
             label = QLabel("Bienvenido a tu Menú de Inventarios", self)
             label.setAlignment(Qt.AlignCenter)
             btn_back = QPushButton("Volver al menú principal", self)
@@ -28,12 +29,13 @@ class   ShowInventarios(QMainWindow):
         
         def returnToMenu(self):
             # Mostrar la ventana del menú principal y cerrar la ventana actual
-            self.menu_window.show()
-            self.close()
+            self.return_window.show()
+            self.to_close.close()
+
 class MenuInventarios(QMainWindow):
-    def __init__(self, menu_window):
+    def __init__(self, return_window):
         super().__init__()
-        self.menu_window = menu_window
+        self.return_window = return_window
         self.initUI()
 
     # Establecer título y tamaño de la ventana
@@ -42,8 +44,8 @@ class MenuInventarios(QMainWindow):
         
     def initUI(self):
         self.pestanas = QTabWidget(self)
-        self.pestanas.addTab(ShowInventarios(self.menu_window), 'Página Principal')
-        self.pestanas.addTab(Telas(), 'Telas')
+        self.pestanas.addTab(ShowInventarios(self.return_window,self), 'Página Principal')
+        self.pestanas.addTab(Telas(self), 'Telas')
         self.pestanas.addTab(Corte(), 'Corte')
         self.pestanas.addTab(Bordados(), 'Bordados')
         self.pestanas.addTab(Confeccion(), 'Confección')
