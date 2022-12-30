@@ -58,11 +58,11 @@ class MenuWindow(QMainWindow):
         button1 = QPushButton("VENTAS")
         button1.clicked.connect(self.openVentas)
         button2 = QPushButton("INVENTARIOS")
-        button1.clicked.connect(self.openInventarios)
+        button2.clicked.connect(self.openInventarios)
         button3 = QPushButton("BASES DE DATOS \n   HISTÓRICAS")
-        button1.clicked.connect(self.openBDH)
+        button3.clicked.connect(self.openBDH)
         button4 = QPushButton("ANALÍTICA")
-        button1.clicked.connect(self.openAnalitica)
+        button4.clicked.connect(self.openAnalitica)
         button1.setFixedSize(200, 100)
         button2.setFixedSize(200, 100)
         button3.setFixedSize(200, 100)
@@ -87,31 +87,31 @@ class MenuWindow(QMainWindow):
 
     def openVentas(self):
         # Crear una instancia de la ventana del menú 1 y mostrarla
-        self.menu1_window = MenuVentas()
+        self.menu1_window = MenuVentas(self)
         self.menu1_window.show()
         
         # Cerrar la ventana actual
         self.close()
 
     def openInventarios(self):
-        # Crear una instancia de la ventana del menú 1 y mostrarla
-        self.menu1_window = MenuInventarios()
-        self.menu1_window.show()
+        # Crear una instancia de la ventana del menú  y mostrarla
+        self.menu2_window = MenuInventarios(self)
+        self.menu2_window.show()
         
         # Cerrar la ventana actual
         self.close()
 
     def openBDH(self):
-        # Crear una instancia de la ventana del menú 1 y mostrarla
-        self.menu1_window = MenuBDH()
-        self.menu1_window.show()
+        # Crear una instancia de la ventana del menú  y mostrarla
+        self.menu3_window = MenuBDH(self)
+        self.menu3_window.show()
         
         # Cerrar la ventana actual
         self.close()
     def openAnalitica(self):
         # Crear una instancia de la ventana del menú 1 y mostrarla
-        self.menu1_window = MenuAnalitica()
-        self.menu1_window.show()
+        self.menu4_window = MenuAnalitica(self)
+        self.menu4_window.show()
         
         # Cerrar la ventana actual
         self.close()
