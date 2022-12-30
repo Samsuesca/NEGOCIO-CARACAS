@@ -2,11 +2,12 @@ import sys
 from PyQt5.QtWidgets import QApplication, QMainWindow, QLabel, QPushButton, QVBoxLayout, QWidget,QGridLayout,QDesktopWidget
 from PyQt5.QtCore import Qt
 from datetime import date
-from windows import MenuVentas, MenuInventarios, MenuBDH, MenuAnalitica
+from inventarios import MenuInventarios
+from windows import MenuVentas, MenuBDH, MenuAnalitica
 import Utils.style 
 
 app = QApplication(sys.argv)
-app.setStyle("Plastique")
+app.setStyle("Fusion")
 palette = Utils.style.Palette()
 app.setPalette(palette)
 def adj_middle(menu_w):
