@@ -6,7 +6,7 @@ from windows import MenuVentas, MenuInventarios, MenuBDH, MenuAnalitica
 import Utils.style 
 
 app = QApplication(sys.argv)
-app.setStyle("Fusion")
+app.setStyle("Plastique")
 palette = Utils.style.Palette()
 app.setPalette(palette)
 def adj_middle(menu_w):
