@@ -1,29 +1,29 @@
 import sys
-from PyQt5.QtWidgets import QApplication, QMainWindow, QLabel, QPushButton, QVBoxLayout, QWidget,QGridLayout,QDesktopWidget
+from PyQt5.QtWidgets import QApplication, QMainWindow, QLabel, QPushButton, QVBoxLayout, QWidget,QGridLayout
 from PyQt5.QtCore import Qt
 from datetime import date
-from inventarios import MenuInventarios
-from windows import MenuVentas, MenuBDH, MenuAnalitica
+from  Inventarios.inventarios import MenuInventarios
+from Ventas.ventas import MenuVentas
+from BDH.bdh import MenuBDH
+from Analitica.analitica import MenuAnalitica
 import Utils.style 
 
 app = QApplication(sys.argv)
 app.setStyle("Fusion")
 palette = Utils.style.Palette()
 app.setPalette(palette)
-def adj_middle(menu_w):
-    screen = QDesktopWidget().screenGeometry()
-    screen_width = screen.width()
-    screen_height = screen.height()
-        
-    # Calcular la posición para centrar la ventana
-    x = (screen_width - menu_w.width()) // 2
-    y = (screen_height - menu_w.height()) // 2
-    return x,y
+
 
 class WelcomeWindow(QMainWindow):
     def __init__(self):
         super().__init__()
         self.initUI()
+        # Establecer título y tamaño de la ventana
+        self.setWindowTitle("INICIO")
+        self.setGeometry(250, 250, 500, 250)
+        x,y = Utils.style.adj_middle(self)
+        self.move(x,y)
+        #self.setWindowIcon(QIcon('icon.png'))
         
     def initUI(self):
         # Agregar un mensaje de bienvenida
@@ -49,17 +49,13 @@ class WelcomeWindow(QMainWindow):
         widget.setLayout(layout)
         self.setCentralWidget(widget)
         
-        # Establecer título y tamaño de la ventana
-        self.setWindowTitle("INICIO")
-        self.setGeometry(100, 100, 300, 150)
-        
     def openMenu(self):
         # Cerrar la ventana de bienvenida
         self.close()
         
         # Abrir la ventana del menú principal
         self.menu_window = MenuWindow()
-        x,y = adj_middle(self.menu_window)
+        x,y = Utils.style.adj_middle(self.menu_window)
         self.menu_window.move(x,y)
         self.menu_window.show()
 
@@ -67,6 +63,10 @@ class MenuWindow(QMainWindow):
     def __init__(self):
         super().__init__()
         self.initUI()
+
+        # Establecer título y tamaño de la ventana
+        self.setWindowTitle("Menú Principal")
+        self.setGeometry(400, 500, 600, 250)
         
     def initUI(self):
 
@@ -92,19 +92,14 @@ class MenuWindow(QMainWindow):
         grid_layout.addWidget(button4, 1, 1)
         
         # Agregar el widget al layout principal de la ventana
-
         widget = QWidget(self)
         widget.setLayout(grid_layout)
         self.setCentralWidget(widget)
-        
-        # Establecer título y tamaño de la ventana
-        self.setWindowTitle("Menú principal")
-        self.setGeometry(400, 500, 600, 250)
 
     def openVentas(self):
         # Crear una instancia de la ventana del menú 1 y mostrarla
         self.menu1_window = MenuVentas(self)
-        x,y = adj_middle(self.menu1_window)
+        x,y = Utils.style.adj_middle(self.menu1_window)
         self.menu1_window.move(x,y)
         self.menu1_window.show()
         
@@ -114,7 +109,7 @@ class MenuWindow(QMainWindow):
     def openInventarios(self):
         # Crear una instancia de la ventana del menú  y mostrarla
         self.menu2_window = MenuInventarios(self)
-        x,y = adj_middle(self.menu2_window)
+        x,y = Utils.style.adj_middle(self.menu2_window)
         self.menu2_window.move(x,y)
         self.menu2_window.show()
         
@@ -124,16 +119,17 @@ class MenuWindow(QMainWindow):
     def openBDH(self):
         # Crear una instancia de la ventana del menú  y mostrarla
         self.menu3_window = MenuBDH(self)
-        x,y = adj_middle(self.menu3_window)
+        x,y = Utils.style.adj_middle(self.menu3_window)
         self.menu3_window.move(x,y)
         self.menu3_window.show()
         
         # Cerrar la ventana actual
         self.close()
+
     def openAnalitica(self):
         # Crear una instancia de la ventana del menú 1 y mostrarla
         self.menu4_window = MenuAnalitica(self)
-        x,y = adj_middle(self.menu4_window)
+        x,y = Utils.style.adj_middle(self.menu4_window)
         self.menu4_window.move(x,y)
         self.menu4_window.show()
         

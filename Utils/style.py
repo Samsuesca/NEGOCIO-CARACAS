@@ -1,4 +1,5 @@
 from PyQt5.QtGui import QPalette, QColor
+from PyQt5.QtWidgets import QDesktopWidget
 
 def Palette():
     palette = QPalette()
@@ -16,4 +17,14 @@ def Palette():
     palette.setColor(QPalette.Highlight, QColor(42, 130, 218))
     palette.setColor(QPalette.HighlightedText, QColor(0, 0, 0))
     return palette
+
+def adj_middle(menu_w):
+    screen = QDesktopWidget().screenGeometry()
+    screen_width = screen.width()
+    screen_height = screen.height()
+        
+    # Calcular la posición para centrar la ventana
+    x = (screen_width - menu_w.width()) // 2
+    y = (screen_height - menu_w.height()) // 2
+    return x,y
  
