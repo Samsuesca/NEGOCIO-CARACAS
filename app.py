@@ -3,8 +3,12 @@ from PyQt5.QtWidgets import QApplication, QMainWindow, QLabel, QPushButton, QVBo
 from PyQt5.QtCore import Qt
 from datetime import date
 from windows import MenuVentas, MenuInventarios, MenuBDH, MenuAnalitica
+import Utils.style 
 
-
+app = QApplication(sys.argv)
+app.setStyle("Fusion")
+palette = Utils.style.Palette()
+app.setPalette(palette)
 def adj_middle(menu_w):
     screen = QDesktopWidget().screenGeometry()
     screen_width = screen.width()
@@ -137,7 +141,6 @@ class MenuWindow(QMainWindow):
 
 # Crear una aplicación y mostrar la ventana de bienvenida
 if __name__ == "__main__":
-    app = QApplication(sys.argv)
     welcome_window = WelcomeWindow()
     welcome_window.show()
     sys.exit(app.exec_())
