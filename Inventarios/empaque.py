@@ -1,9 +1,11 @@
-from PyQt5.QtWidgets import QMainWindow, QLabel, QPushButton, QVBoxLayout, QWidget, QTableWidget,QTableWidgetItem
+from PyQt5.QtWidgets import QMainWindow, QLabel, QPushButton, QVBoxLayout, QWidget
 from PyQt5.QtCore import Qt
-from Utils.util_sql  import connect, execute_query
+from Utils.data_treat import ShowData
+from Utils.style import adj_right, adj_left
 
 class Empaq(QMainWindow):
-    def __init__(self):
+    def __init__(self, main_window):
+        self.main_window = main_window
         super().__init__()
         self.initUI()
         
@@ -12,7 +14,7 @@ class Empaq(QMainWindow):
         label = QLabel("Este es el inventario Telas!", self)
         label.setAlignment(Qt.AlignCenter)
         show = QPushButton("Mostrar Datos", self)
-        show.clicked.connect(self.show_data)
+        show.clicked.connect(self.openData)
         
         # Agregar los widgets al layout principal de la ventana
         layout = QVBoxLayout()
@@ -23,27 +25,17 @@ class Empaq(QMainWindow):
         widget = QWidget(self)
         widget.setLayout(layout)
         self.setCentralWidget(widget)
-
-    def get_table_data(self,table_name):
-        conn, cursor = connect('negocio', 'root', 'negocio2023')
-        results = execute_query(conn, cursor, f'SELECT * FROM {table_name}')
-        column_names = [column[0] for column in cursor.description]
-        return results, column_names
     
-    def show_data(self):
-        # Obtener los datos de la tabla "telas"
-        results, column_names = self.get_table_data('telas')
-        # Crear la tabla y establecer los encabezados de las columnas
-        table = QTableWidget(self)
-        table.setRowCount(len(results))
-        table.setColumnCount(len(results[0]))
-        table.setHorizontalHeaderLabels(column_names)
+    def openData(self):
+        self.show_data = ShowData('telas')
+        x,y = adj_right(self.show_data)
+        self.show_data.move(x,y)
+        self.show_data.show()
+        x,y = adj_left(self.main_window)
+        self.main_window.move(x,y)
 
-        # Agregar los datos a la tabla
-        for i, row in enumerate(results):
-            table.setRowCount(i+1)
-            for j, col in enumerate(row):
-                table.setItem(i, j, QTableWidgetItem(str(col)))
 
-        # Mostrar la tabla en la ventana
-        self.setCentralWidget(table)
+    
+
+        
+ 

@@ -1,5 +1,5 @@
 from Utils.util_sql import connect, execute_query
-from PyQt5.QtWidgets import QTableWidget,QTableWidgetItem, QMainWindow
+from PyQt5.QtWidgets import QTableWidget,QTableWidgetItem, QMainWindow,QInputDialog
 
 
 class ShowData(QMainWindow):
@@ -34,3 +34,31 @@ class ShowData(QMainWindow):
         results = execute_query(cursor, f'SELECT * FROM {table_name}')
         column_names = [column[0] for column in cursor.description]
         return results, column_names
+
+    def insertData(self):
+     
+        name, ok1 = QInputDialog.getText(self, 'Insertar Tela', 'Ingresa el nombre de la tela:')
+        price, ok2 = QInputDialog.getDouble(self, 'Insertar Tela', 'Ingresa el precio por metro:')
+        quantity, ok = QInputDialog.getDouble(self, 'Insertar Tela', 'Ingresa la cantidad:')
+
+
+        # Si el usuario hizo clic en el botón "OK" y proporcionó un nombre válido, continuar con la inserción
+        if ok1 and name and ok2 and price and ok and quantity:
+            
+            # Conectarse a la base de datos y obtener un cursor
+            conn, cursor = connect('negocio2023')
+            
+            
+            # Construir la consulta para insertar una nueva fila
+            query = f"INSERT INTO public.{self.table_name} (name, precio_mt, cant_metros) VALUES ('{name}', {price}, {quantity})"
+            
+            # Ejecutar la consulta
+            cursor.execute(query)
+            
+            # Realizar el commit para guardar los cambios
+            conn.commit()
+            
+            # Cerrar la conexión a la base de datos
+            cursor.close()
+            conn.close()
+    

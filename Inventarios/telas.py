@@ -1,6 +1,6 @@
 from PyQt5.QtWidgets import QMainWindow, QLabel, QPushButton, QVBoxLayout, QWidget
 from PyQt5.QtCore import Qt
-from Utils.show_data import ShowData
+from Utils.data_treat import ShowData
 from Utils.style import adj_right, adj_left
 
 class Telas(QMainWindow):
@@ -10,17 +10,34 @@ class Telas(QMainWindow):
         self.initUI()
         
     def initUI(self):
-        # Agregar un mensaje de bienvenida y un botón para volver al menú principal
-        label = QLabel("Este es el inventario Telas!", self)
+        # Agregar un mensaje de bienvenida 
+        label = QLabel("Este es el Inventario de Telas!", self)
         label.setAlignment(Qt.AlignCenter)
+
+        # Agregar un botón para mostrar datos
         show = QPushButton("Mostrar Datos", self)
         show.clicked.connect(self.openData)
-        
-        # Agregar los widgets al layout principal de la ventana
+
+        # Agregar un botón para insertar datos
+        insert = QPushButton("Insertar", self)
+        insert.clicked.connect(self.insertData)
+
+        # # Agregar un botón para eliminar datos
+        # delete = QPushButton("Eliminar", self)
+        # delete.clicked.connect(self.deleteData)
+
+        # # Agregar un botón para editar datos
+        # edit = QPushButton("Editar", self)
+        # edit.clicked.connect(self.editData)
+
+        # Agregar los botones al layout principal de la ventana
         layout = QVBoxLayout()
         layout.setAlignment(Qt.AlignCenter)
         layout.addWidget(label, alignment=Qt.AlignCenter)
         layout.addWidget(show, alignment=Qt.AlignCenter)
+        layout.addWidget(insert, alignment=Qt.AlignCenter)
+        # layout.addWidget(delete, alignment=Qt.AlignCenter)
+        # layout.addWidget(edit, alignment=Qt.AlignCenter)
         
         widget = QWidget(self)
         widget.setLayout(layout)
@@ -34,6 +51,8 @@ class Telas(QMainWindow):
         x,y = adj_left(self.main_window)
         self.main_window.move(x,y)
 
+    def insertData(self):
+        ShowData('telas').insertData()
 
     
 

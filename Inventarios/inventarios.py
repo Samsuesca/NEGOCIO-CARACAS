@@ -6,8 +6,6 @@ from Inventarios.bordados import Bordados
 from Inventarios.corte import Corte
 from Inventarios.empaque import Empaq
 from Inventarios.inventa import Inventario
-
-
     
 class   ShowInventarios(QMainWindow):
         def __init__(self,return_window,to_close):
@@ -49,84 +47,10 @@ class MenuInventarios(QMainWindow):
         self.pestanas.addTab(Corte(), 'Corte')
         self.pestanas.addTab(Bordados(), 'Bordados')
         self.pestanas.addTab(Confeccion(), 'Confección')
-        self.pestanas.addTab(Empaq(), 'Empaque')
+        self.pestanas.addTab(Empaq(self), 'Empaque')
         self.pestanas.addTab(Inventario(), 'Para Venta')
         self.pestanas.resize(600, 200)
         self.pestanas.move(0, 0)
         self.pestanas.show()   
-    
-
-
-    # def optionSelected(self, index):
-    #     if index == 0:
-            
-    #     elif index == 1:
-    #         self.openTelas()
-    #     elif index == 2:
-    #         self.openCorte()
-    #     elif index == 3:
-    #         self.openBordados()
-    #     elif index == 4:
-    #         self.openConfeccion()
-    #     elif index == 5:
-    #         self.openEmpaq()
-    #     elif index == 6:
-    #         self.openInvVenta()
-
-    # def openTelas(self):
-    #     # Cerrar la ventana de bienvenida
-    #     self.close()
-    #     # Abrir la ventana del menú principal
-    #     self.menu_window = Telas(self)
-    #     x,y = Utils.style.adj_middle(self.menu_window)
-    #     self.menu_window.move(x,y)
-    #     self.menu_window.show()
-
-    # def openCorte(self):
-    #     # Cerrar la ventana de bienvenida
-    #     self.close()
-    #     # Abrir la ventana del menú principal
-    #     self.menu_window = Corte(self)
-    #     x,y = Utils.style.adj_middle(self.menu_window)
-    #     self.menu_window.move(x,y)
-    #     self.menu_window.show()
-    
-    # def openBordados(self):
-    #     # Cerrar la ventana de bienvenida
-    #     self.close()
-    #     # Abrir la ventana del menú principal
-    #     self.menu_window = Bordados(self)
-    #     x,y = Utils.style.adj_middle(self.menu_window)
-    #     self.menu_window.move(x,y)
-    #     self.menu_window.show()
-
-    # def openConfeccion(self):
-    #     # Cerrar la ventana de bienvenida
-    #     self.close()
-    #     # Abrir la ventana del menú principal
-    #     self.menu_window = Confeccion(self)
-    #     x,y = Utils.style.adj_middle(self.menu_window)
-    #     self.menu_window.move(x,y)
-    #     self.menu_window.show()
-
-    # def openEmpaq(self):
-    #     # Cerrar la ventana de bienvenida
-    #     self.close()
-    #     # Abrir la ventana del menú principal
-    #     self.menu_window = Empaq(self)
-    #     x,y = Utils.style.adj_middle(self.menu_window)
-    #     self.menu_window.move(x,y)
-    #     self.menu_window.show()
-
-    # def openInvVenta(self):
-    #     # Cerrar la ventana de bienvenida
-    #     self.close()
-    #     # Abrir la ventana del menú principal
-    #     self.menu_window = Inventario(self)
-    #     x,y = Utils.style.adj_middle(self.menu_window)
-    #     self.menu_window.move(x,y)
-    #     self.menu_window.show()
-
-
-
+  
     
