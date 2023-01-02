@@ -1,17 +1,17 @@
 from PyQt5.QtGui import QPalette, QColor
-from PyQt5.QtWidgets import QDesktopWidget
+from PyQt5.QtWidgets import QDesktopWidget, QPushButton
 
 def Palette():
     palette = QPalette()
-    palette.setColor(QPalette.Window, QColor(53, 53, 53))
-    palette.setColor(QPalette.WindowText, QColor(255, 255, 255))
-    palette.setColor(QPalette.Base, QColor(25, 25, 25))
-    palette.setColor(QPalette.AlternateBase, QColor(53, 53, 53))
-    palette.setColor(QPalette.ToolTipBase, QColor(255, 255, 255))
-    palette.setColor(QPalette.ToolTipText, QColor(255, 255, 255))
-    palette.setColor(QPalette.Text, QColor(255, 255, 255))
-    palette.setColor(QPalette.Button, QColor(53, 53, 53))
-    palette.setColor(QPalette.ButtonText, QColor(255, 255, 255))
+    palette.setColor(QPalette.Window, QColor(0, 0, 100))
+    palette.setColor(QPalette.WindowText, QColor(135, 206, 235))
+    palette.setColor(QPalette.Base, QColor(176, 224, 230))
+    palette.setColor(QPalette.AlternateBase, QColor(0, 0, 100))
+    palette.setColor(QPalette.ToolTipBase, QColor(135, 206, 235))
+    palette.setColor(QPalette.ToolTipText, QColor(135, 206, 235))
+    palette.setColor(QPalette.Text, QColor(0, 0, 139))
+    palette.setColor(QPalette.Button, QColor(0, 0, 128))
+    palette.setColor(QPalette.ButtonText, QColor(135, 206, 235))
     palette.setColor(QPalette.BrightText, QColor(255, 0, 0))
     palette.setColor(QPalette.Link, QColor(42, 130, 218))
     palette.setColor(QPalette.Highlight, QColor(42, 130, 218))
@@ -46,4 +46,9 @@ def adj_right(menu_w):
     x = screen_width - menu_w.width()
     y = (screen_height - menu_w.height()) // 2
     return x,y
+
+class PushButton(QPushButton):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.setStyleSheet("PushButton { min-width: 100px; min-height: 50px; }")
 

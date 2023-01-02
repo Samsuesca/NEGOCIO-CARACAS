@@ -1,4 +1,4 @@
-from PyQt5.QtWidgets import QMainWindow, QVBoxLayout, QWidget, QPushButton, QTabWidget, QLabel
+from PyQt5.QtWidgets import QMainWindow, QVBoxLayout, QWidget, QTabWidget, QLabel
 from PyQt5.QtCore import Qt
 from Inventarios.telas import Telas
 from Inventarios.confeccion import Confeccion
@@ -6,6 +6,7 @@ from Inventarios.bordados import Bordados
 from Inventarios.corte import Corte
 from Inventarios.empaque import Empaq
 from Inventarios.inventa import Inventario
+from Utils.style import PushButton
     
 class   ShowInventarios(QMainWindow):
         def __init__(self,return_window,to_close):
@@ -14,7 +15,7 @@ class   ShowInventarios(QMainWindow):
             self.to_close = to_close
             label = QLabel("Bienvenido a tu Menú de Inventarios", self)
             label.setAlignment(Qt.AlignCenter)
-            btn_back = QPushButton("Volver al menú principal", self)
+            btn_back = PushButton("Volver al menú principal", self)
             btn_back.clicked.connect(self.returnToMenu)
              # Agregar los widgets al layout principal de la ventana
             layout = QVBoxLayout()
@@ -38,7 +39,7 @@ class MenuInventarios(QMainWindow):
 
     # Establecer título y tamaño de la ventana
         self.setWindowTitle("Inventarios")
-        self.setGeometry(100, 100, 600, 200)   
+        self.setGeometry(100, 100, 600, 500)   
         
     def initUI(self):
         self.pestanas = QTabWidget(self)
@@ -49,7 +50,7 @@ class MenuInventarios(QMainWindow):
         self.pestanas.addTab(Confeccion(), 'Confección')
         self.pestanas.addTab(Empaq(self), 'Empaque')
         self.pestanas.addTab(Inventario(), 'Para Venta')
-        self.pestanas.resize(600, 200)
+        self.pestanas.resize(600, 500)
         self.pestanas.move(0, 0)
         self.pestanas.show()   
   

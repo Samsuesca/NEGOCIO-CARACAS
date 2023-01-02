@@ -1,5 +1,6 @@
-from PyQt5.QtWidgets import QMainWindow, QLabel, QPushButton, QVBoxLayout, QWidget, QTableWidget,QTableWidgetItem
+from PyQt5.QtWidgets import QMainWindow, QLabel, QVBoxLayout, QWidget, QTableWidget,QTableWidgetItem
 from PyQt5.QtCore import Qt
+from Utils.style import PushButton
 from Utils.util_sql  import connect, execute_query
 
 class Corte(QMainWindow):
@@ -11,7 +12,7 @@ class Corte(QMainWindow):
         # Agregar un mensaje de bienvenida y un botón para volver al menú principal
         label = QLabel("Este es el inventario Telas!", self)
         label.setAlignment(Qt.AlignCenter)
-        show = QPushButton("Mostrar Datos", self)
+        show = PushButton("Mostrar Datos", self)
         show.clicked.connect(self.show_data)
         
         # Agregar los widgets al layout principal de la ventana

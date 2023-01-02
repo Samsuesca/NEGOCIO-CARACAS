@@ -46,3 +46,15 @@ def delete_date(self,ok,id):
         # Ejecutar la consulta
         make_query(conn,cursor, query)
         self.openData()
+
+def edit_id(table_name,row):
+        # Conectarse a la base de datos y obtener un cursor
+        conn, cursor = connect('negocio2023')
+        cursor.execute(f"SELECT * FROM {table_name} WHERE id = %s", (row,))
+        row = cursor.fetchone()
+             # Realizar el commit para guardar los cambios
+        conn.commit()
+        # Cerrar la conexión a la base de datos
+        cursor.close()
+        conn.close()
+        return row

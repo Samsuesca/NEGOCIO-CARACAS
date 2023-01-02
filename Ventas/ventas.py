@@ -1,5 +1,6 @@
-from PyQt5.QtWidgets import QMainWindow, QLabel, QPushButton, QVBoxLayout, QWidget, QComboBox
+from PyQt5.QtWidgets import QMainWindow, QLabel, QVBoxLayout, QWidget, QComboBox
 from PyQt5.QtCore import Qt
+from Utils.style import PushButton
 
 class MenuVentas(QMainWindow):
     def __init__(self, menu_window):
@@ -11,7 +12,7 @@ class MenuVentas(QMainWindow):
         # Agregar un mensaje de bienvenida y un botón para volver al menú principal
         label = QLabel("¡Bienvenido al menú 1!", self)
         label.setAlignment(Qt.AlignCenter)
-        btn_back = QPushButton("Volver al menú principal", self)
+        btn_back = PushButton("Volver al menú principal", self)
         btn_back.clicked.connect(self.returnToMenu)
         
         # Agregar los widgets al layout principal de la ventana

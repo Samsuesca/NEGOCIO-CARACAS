@@ -1,8 +1,8 @@
-from PyQt5.QtWidgets import QMainWindow, QLabel, QPushButton, QVBoxLayout, QWidget,QInputDialog
+from PyQt5.QtWidgets import QMainWindow, QLabel, QVBoxLayout, QWidget,QInputDialog, QMessageBox
 from PyQt5.QtCore import Qt
 from Utils.data_treat import ShowData
-from Utils.style import adj_right, adj_left
-from Utils.util_sql import connect, make_query, uptade_date, delete_date
+from Utils.style import adj_right, adj_left, PushButton
+from Utils.util_sql import connect, make_query, uptade_date, delete_date, edit_id
 
 class Telas(QMainWindow):
     def __init__(self, main_window):
@@ -17,19 +17,19 @@ class Telas(QMainWindow):
         label.setAlignment(Qt.AlignCenter)
 
         # Agregar un botón para mostrar datos
-        show = QPushButton("Mostrar Datos", self)
+        show = PushButton("Mostrar Datos", self)
         show.clicked.connect(self.openData)
 
         # # Agregar un botón para editar datos
-        edit = QPushButton("Actualizar", self)
+        edit = PushButton("Actualizar", self)
         edit.clicked.connect(self.editData)
 
         # Agregar un botón para insertar datos
-        insert = QPushButton("Insertar", self)
+        insert = PushButton("Insertar", self)
         insert.clicked.connect(self.insertData)
 
         # # Agregar un botón para eliminar datos
-        delete = QPushButton("Eliminar", self)
+        delete = PushButton("Eliminar", self)
         delete.clicked.connect(self.deleteData)
 
         # Agregar los botones al layout principal de la ventana
@@ -75,20 +75,28 @@ class Telas(QMainWindow):
 
         # Si el usuario hizo clic en el botón "OK" y proporcionó un ID válido, continuar con la edición
         if ok and row_id:
-            
-            # Solicitar al usuario que ingrese los nuevos valores para cada columna
-            name, ok1 = QInputDialog.getText(self, 'Editar Tela', 'Ingresa el nuevo nombre de la tela:')
-            price, ok2 = QInputDialog.getDouble(self, 'Editar Tela', 'Ingresa el nuevo precio de la tela:')
-            quantity, ok3 = QInputDialog.getDouble(self, 'Editar Tela', 'Ingresa la nueva cantidad de la tela:')
-             
-            uptade_date(self,ok1,name,row_id,'name')
-            uptade_date(self,ok2,price,row_id,'precio_mt')
-            uptade_date(self,ok3,quantity,row_id,'cant_metros')            
+            row = edit_id(self.table_name,row_id)
+            if row is None:
+                QMessageBox.warning(self, 'Error', 'No se encontró ninguna fila con ese ID.')
+            else:
+                # Solicitar al usuario que ingrese los nuevos valores para cada columna
+                name, ok1 = QInputDialog.getText(self, 'Editar Tela', 'Ingresa el nuevo nombre de la tela:')
+                price, ok2 = QInputDialog.getDouble(self, 'Editar Tela', 'Ingresa el nuevo precio de la tela:')
+                quantity, ok3 = QInputDialog.getDouble(self, 'Editar Tela', 'Ingresa la nueva cantidad de la tela:')
+                
+                uptade_date(self,ok1,name,row_id,'name')
+                uptade_date(self,ok2,price,row_id,'precio_mt')
+                uptade_date(self,ok3,quantity,row_id,'cant_metros')            
 
     def deleteData(self):
         # Obtener el ID de la fila que se desea eliminar
-        id, ok = QInputDialog.getInt(self, 'Eliminar Tela', 'Ingresa el ID de la tela que deseas eliminar:')
-        delete_date(self,ok,id)
+        row_id, ok = QInputDialog.getInt(self, 'Eliminar Tela', 'Ingresa el ID de la tela que deseas eliminar:')
+        if ok and row_id:
+            row = edit_id(self.table_name,row_id)
+            if row is None:
+                QMessageBox.warning(self, 'Error', 'No se encontró ninguna fila con ese ID.')
+            else:
+                delete_date(self,ok,row_id)
         
 
     

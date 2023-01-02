@@ -1,17 +1,17 @@
 import sys
-from PyQt5.QtWidgets import QApplication, QMainWindow, QLabel, QPushButton, QVBoxLayout, QWidget,QGridLayout
+from PyQt5.QtWidgets import QApplication, QMainWindow, QLabel, QVBoxLayout, QWidget,QGridLayout
 from PyQt5.QtCore import Qt
 from datetime import date
 from  Inventarios.inventarios import MenuInventarios
 from Ventas.ventas import MenuVentas
 from BDH.bdh import MenuBDH
 from Analitica.analitica import MenuAnalitica
-from Utils.style import adj_middle, Palette
+from Utils.style import adj_middle, Palette, PushButton
 
 app = QApplication(sys.argv)
 app.setStyle("Fusion")
-palette = Palette()
-app.setPalette(palette)
+app.setPalette(Palette())
+
 
 
 class WelcomeWindow(QMainWindow):
@@ -36,7 +36,7 @@ class WelcomeWindow(QMainWindow):
         label_date.setAlignment(Qt.AlignCenter)
 
         # Agregar un botón para ir al menú principal
-        btn_menu = QPushButton("Ir al menú principal", self)
+        btn_menu = PushButton("Ir al menú principal", self)
         btn_menu.clicked.connect(self.openMenu)
         
         # Agregar los widgets a un layout y establecerlo como el layout principal de la ventana
@@ -71,13 +71,13 @@ class MenuWindow(QMainWindow):
     def initUI(self):
 
         # Crear los botones
-        button1 = QPushButton("VENTAS")
+        button1 = PushButton("VENTAS")
         button1.clicked.connect(self.openVentas)
-        button2 = QPushButton("INVENTARIOS")
+        button2 = PushButton("INVENTARIOS")
         button2.clicked.connect(self.openInventarios)
-        button3 = QPushButton("BASES DE DATOS \n   HISTÓRICAS")
+        button3 = PushButton("BASES DE DATOS \n   HISTÓRICAS")
         button3.clicked.connect(self.openBDH)
-        button4 = QPushButton("ANALÍTICA")
+        button4 = PushButton("ANALÍTICA")
         button4.clicked.connect(self.openAnalitica)
         button1.setFixedSize(200, 100)
         button2.setFixedSize(200, 100)

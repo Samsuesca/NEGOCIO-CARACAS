@@ -1,7 +1,7 @@
-from PyQt5.QtWidgets import QMainWindow, QLabel, QPushButton, QVBoxLayout, QWidget
+from PyQt5.QtWidgets import QMainWindow, QLabel,QVBoxLayout, QWidget
 from PyQt5.QtCore import Qt
 from Utils.data_treat import ShowData
-from Utils.style import adj_right, adj_left
+from Utils.style import adj_right, adj_left, PushButton
 
 class Empaq(QMainWindow):
     def __init__(self, main_window):
@@ -13,7 +13,7 @@ class Empaq(QMainWindow):
         # Agregar un mensaje de bienvenida y un botón para volver al menú principal
         label = QLabel("Este es el inventario Telas!", self)
         label.setAlignment(Qt.AlignCenter)
-        show = QPushButton("Mostrar Datos", self)
+        show = PushButton("Mostrar Datos", self)
         show.clicked.connect(self.openData)
         
         # Agregar los widgets al layout principal de la ventana
