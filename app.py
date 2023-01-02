@@ -1,6 +1,7 @@
 import sys
 from PyQt5.QtWidgets import QApplication, QMainWindow, QLabel, QVBoxLayout, QWidget,QGridLayout
 from PyQt5.QtCore import Qt
+from PyQt5.QtGui import QFont
 from datetime import date
 from  Inventarios.inventarios import MenuInventarios
 from Ventas.ventas import MenuVentas
@@ -11,7 +12,11 @@ from Utils.style import adj_middle, Palette, PushButton
 app = QApplication(sys.argv)
 app.setStyle("Fusion")
 app.setPalette(Palette())
-
+font = QFont()
+font.setPointSize(20)
+font.setBold(True)
+font.setFamily("Arial")
+app.setFont(font)
 
 
 class WelcomeWindow(QMainWindow):

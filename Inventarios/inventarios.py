@@ -13,10 +13,13 @@ class   ShowInventarios(QMainWindow):
             super().__init__()
             self.return_window = return_window
             self.to_close = to_close
+
             label = QLabel("Bienvenido a tu Menú de Inventarios", self)
             label.setAlignment(Qt.AlignCenter)
+
             btn_back = PushButton("Volver al menú principal", self)
             btn_back.clicked.connect(self.returnToMenu)
+
              # Agregar los widgets al layout principal de la ventana
             layout = QVBoxLayout()
             layout.addWidget(label)
@@ -39,13 +42,17 @@ class MenuInventarios(QMainWindow):
 
     # Establecer título y tamaño de la ventana
         self.setWindowTitle("Inventarios")
-        self.setGeometry(100, 100, 600, 500)   
+        self.setGeometry(100, 100, 600, 500)  
+
+    
+        # Crea una lista para almacenar las ventanas secundarias
+        self.secondary_windows = [] 
         
     def initUI(self):
         self.pestanas = QTabWidget(self)
         self.pestanas.addTab(ShowInventarios(self.return_window,self), 'Página Principal')
         self.pestanas.addTab(Telas(self), 'Telas')
-        self.pestanas.addTab(Corte(), 'Corte')
+        self.pestanas.addTab(Corte(self), 'Corte')
         self.pestanas.addTab(Bordados(), 'Bordados')
         self.pestanas.addTab(Confeccion(), 'Confección')
         self.pestanas.addTab(Empaq(self), 'Empaque')
@@ -53,5 +60,14 @@ class MenuInventarios(QMainWindow):
         self.pestanas.resize(600, 500)
         self.pestanas.move(0, 0)
         self.pestanas.show()   
+
+
+    def closeEvent(self, event):
+        # Itera sobre la lista de ventanas secundarias y ciérralas
+        for window in self.secondary_windows:
+            window.close()
+
+        # Luego cierra la ventana principal
+        super().closeEvent(event)
   
     

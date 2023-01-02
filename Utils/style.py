@@ -50,5 +50,5 @@ def adj_right(menu_w):
 class PushButton(QPushButton):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.setStyleSheet("PushButton { min-width: 100px; min-height: 50px; }")
+        self.setStyleSheet("PushButton { min-width: 140px; min-height: 80px; }")
 

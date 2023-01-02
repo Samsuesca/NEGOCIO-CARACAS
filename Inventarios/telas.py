@@ -13,7 +13,7 @@ class Telas(QMainWindow):
         
     def initUI(self):
         # Agregar un mensaje de bienvenida 
-        label = QLabel("Este es el Inventario de Telas!", self)
+        label = QLabel("Este es el Inventario de Telas", self)
         label.setAlignment(Qt.AlignCenter)
 
         # Agregar un botón para mostrar datos
@@ -21,15 +21,15 @@ class Telas(QMainWindow):
         show.clicked.connect(self.openData)
 
         # # Agregar un botón para editar datos
-        edit = PushButton("Actualizar", self)
+        edit = PushButton("Editar Datos", self)
         edit.clicked.connect(self.editData)
 
         # Agregar un botón para insertar datos
-        insert = PushButton("Insertar", self)
+        insert = PushButton("Insertar Datos", self)
         insert.clicked.connect(self.insertData)
 
         # # Agregar un botón para eliminar datos
-        delete = PushButton("Eliminar", self)
+        delete = PushButton("Eliminar Datos", self)
         delete.clicked.connect(self.deleteData)
 
         # Agregar los botones al layout principal de la ventana
@@ -46,7 +46,7 @@ class Telas(QMainWindow):
         self.setCentralWidget(widget)
     
     def openData(self):
-        self.show_data = ShowData('telas')
+        self.show_data = ShowData(self.main_window,'telas')
         x,y = adj_right(self.show_data)
         self.show_data.move(x,y)
         self.show_data.show()

@@ -1,12 +1,13 @@
 from Utils.util_sql import connect, execute_query
 from PyQt5.QtWidgets import QTableWidget,QTableWidgetItem, QMainWindow, QMessageBox
-from Utils.style import adj_right
+
 
 class ShowData(QMainWindow):
 
-    def __init__(self, table_name) -> None:
+    def __init__(self,main_window, table_name) -> None:
         super().__init__()
         self.table_name = table_name
+        self.main_window = main_window
         self.initUI()
         self.setWindowTitle(f"Visualización de {self.table_name}")
         self.setGeometry(250, 250, 500, 250)
@@ -31,11 +32,7 @@ class ShowData(QMainWindow):
             self.setCentralWidget(table)
             
         except IndexError:
-
-            self.error_msg = QMessageBox.information(self, 'Error', 'Parece que la tabla que tratas de ver esta vacia, y no podrá ser mostrada')
-            x,y = adj_right(self.error_msg)
-            self.error_msg.move(x,y)
-            self.error_msg.show()
+            QMessageBox.warning(self.main_window, 'Error', 'Parece que la tabla que tratas de ver esta vacia')
 
 
     def get_table_data(self,table_name):
