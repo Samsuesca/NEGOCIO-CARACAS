@@ -15,7 +15,7 @@ app.setPalette(Palette())
 font = QFont()
 font.setPointSize(20)
 font.setBold(True)
-font.setFamily("Arial")
+font.setFamily("Verdana")
 app.setFont(font)
 
 
@@ -65,6 +65,7 @@ class WelcomeWindow(QMainWindow):
         self.menu_window.show()
 
 class MenuWindow(QMainWindow):
+
     def __init__(self):
         super().__init__()
         self.initUI()
@@ -74,7 +75,6 @@ class MenuWindow(QMainWindow):
         self.setGeometry(400, 500, 600, 250)
         
     def initUI(self):
-
         # Crear los botones
         button1 = PushButton("VENTAS")
         button1.clicked.connect(self.openVentas)
@@ -84,10 +84,6 @@ class MenuWindow(QMainWindow):
         button3.clicked.connect(self.openBDH)
         button4 = PushButton("ANALÍTICA")
         button4.clicked.connect(self.openAnalitica)
-        button1.setFixedSize(200, 100)
-        button2.setFixedSize(200, 100)
-        button3.setFixedSize(200, 100)
-        button4.setFixedSize(200, 100)
 
         # Crear el layout de la cuadrícula y agregar los botones
         grid_layout = QGridLayout()
@@ -107,7 +103,7 @@ class MenuWindow(QMainWindow):
         x,y = adj_middle(self.menu1_window)
         self.menu1_window.move(x,y)
         self.menu1_window.show()
-        
+
         # Cerrar la ventana actual
         self.close()
 
@@ -141,7 +137,6 @@ class MenuWindow(QMainWindow):
         # Cerrar la ventana actual
         self.close()
 
-# Crear una aplicación y mostrar la ventana de bienvenida
 if __name__ == "__main__":
     welcome_window = WelcomeWindow()
     welcome_window.show()
