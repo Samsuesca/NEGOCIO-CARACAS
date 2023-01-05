@@ -1,3 +1,13 @@
+----REINICIO BASE DE DATOS
+---CONFIGURAR PERMISOS CARPETA DATA:
+--sudo chmod 0700 /Library/PostgreSQL/15/data
+---PASAR A USUARIO POSTGRES:
+--sudo su - postgres   
+---Añadir comando: pg_ctl
+--export PATH=$PATH:/Library/PostgreSQL/15/bin
+---Ejecutar reinicio:
+--pg_ctl -D /Library/PostgreSQL/15/data restart
+
 #llaves foraneas tabla tipo_prendas:
 ALTER TABLE IF EXISTS public.tipo_prendas
     ADD COLUMN id_bordados integer;
@@ -205,6 +215,8 @@ JOIN tipo_prendas ON prendas.id_tipo_prenda = tipo_prendas.id
 JOIN inventario ON prendas.id = inventario.id_prenda;
 
 --VER INVENTARIO CAMISETAS:
+SELECT * FROM camisetas;
+CREATE VIEW camisetas AS
 SELECT prendas.id, tipo_prendas.name, prendas.talla, prendas.precio, inventario.cantidad
 FROM prendas
 JOIN tipo_prendas ON prendas.id_tipo_prenda = tipo_prendas.id
@@ -212,6 +224,8 @@ JOIN inventario ON prendas.id = inventario.id_prenda
 WHERE prendas.id BETWEEN 1 AND 11;
 
 --VER INVENTARIO SUDADERAS:
+SELECT * FROM sudaderas;
+CREATE VIEW sudaderas AS
 SELECT prendas.id, tipo_prendas.name, prendas.talla, prendas.precio, inventario.cantidad
 FROM prendas
 JOIN tipo_prendas ON prendas.id_tipo_prenda = tipo_prendas.id
@@ -219,6 +233,8 @@ JOIN inventario ON prendas.id = inventario.id_prenda
 WHERE prendas.id BETWEEN 12 AND 22;
 
 --VER INVENTARIO CHAZUL:
+SELECT * FROM chazul;
+CREATE VIEW chazul AS
 SELECT prendas.id, tipo_prendas.name, prendas.talla, prendas.precio, inventario.cantidad
 FROM prendas
 JOIN tipo_prendas ON prendas.id_tipo_prenda = tipo_prendas.id
@@ -226,6 +242,8 @@ JOIN inventario ON prendas.id = inventario.id_prenda
 WHERE prendas.id BETWEEN 23 AND 33;
 
 --VER INVENTARIO CHGRIS:
+SELECT * FROM chgris;
+CREATE VIEW chgris AS
 SELECT prendas.id, tipo_prendas.name, prendas.talla, prendas.precio, inventario.cantidad
 FROM prendas
 JOIN tipo_prendas ON prendas.id_tipo_prenda = tipo_prendas.id
@@ -233,6 +251,8 @@ JOIN inventario ON prendas.id = inventario.id_prenda
 WHERE prendas.id BETWEEN 34 AND 44;
 
 --VER INVENTARIO BLUSAS:
+SELECT * FROM blusas;
+CREATE VIEW blusas AS
 SELECT prendas.id, tipo_prendas.name, prendas.talla, prendas.precio, inventario.cantidad
 FROM prendas
 JOIN tipo_prendas ON prendas.id_tipo_prenda = tipo_prendas.id
@@ -240,6 +260,8 @@ JOIN inventario ON prendas.id = inventario.id_prenda
 WHERE prendas.id BETWEEN 55 AND 64;
 
 --VER INVENTARIO JEANS:
+SELECT * FROM jeans;
+CREATE VIEW jeans AS
 SELECT prendas.id, tipo_prendas.name, prendas.talla, prendas.precio, inventario.cantidad
 FROM prendas
 JOIN tipo_prendas ON prendas.id_tipo_prenda = tipo_prendas.id

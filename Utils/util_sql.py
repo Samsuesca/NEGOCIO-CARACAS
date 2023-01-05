@@ -1,7 +1,7 @@
 import psycopg2
 
 def connect(password,dbname='negocio', user='root'):
-    conn = psycopg2.connect(dbname=dbname, user=user, password=password, host='192.168.0.18')
+    conn = psycopg2.connect(dbname=dbname, user=user, password=password, host='10.161.49.171')
     cursor = conn.cursor()
     return conn, cursor
 

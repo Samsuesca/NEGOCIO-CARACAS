@@ -1,5 +1,6 @@
 from PyQt5.QtGui import QPalette, QColor
 from PyQt5.QtWidgets import QDesktopWidget, QPushButton
+from PyQt5.QtGui import QFont
 
 def Palette():
     palette = QPalette()
@@ -52,3 +53,7 @@ class PushButton(QPushButton):
         super().__init__(*args, **kwargs)
         self.setStyleSheet("PushButton { min-width: 140px; min-height: 80px; }")
 
+def font(self,scale):
+    font = QFont()
+    font.setPointSize(scale)
+    self.setFont(font)

@@ -1,5 +1,5 @@
 from PyQt5.QtWidgets import QMainWindow, QTabWidget
-from Inventarios.Inventario.show_inventario import ShowInventarios
+from Inventarios.Pestañas.show_inventario import ShowInventarios
 from Inventarios.Pestañas.telas import Telas
 from Inventarios.Pestañas.confeccion import Confeccion
 from Inventarios.Pestañas.bordados import Bordados
@@ -15,7 +15,7 @@ class MenuInventarios(QMainWindow):
 
         # Establecer título y tamaño de la ventana
         self.setWindowTitle("Inventarios")
-        self.setGeometry(100, 100, 600, 500)  
+        self.setGeometry(100, 100, 700, 500)  
 
     
         # Crea una lista para almacenar las ventanas secundarias
@@ -29,7 +29,7 @@ class MenuInventarios(QMainWindow):
         self.pestanas.addTab(Bordados(self,'bordados'), 'Bordados')
         self.pestanas.addTab(Confeccion(self,'confeccion'), 'Confección')
         self.pestanas.addTab(Empaq(self,'empaque'), 'Empaque')
-        self.pestanas.resize(600, 500)
+        self.pestanas.resize(700, 500)
         self.pestanas.move(0, 0)
         self.pestanas.show()   
 

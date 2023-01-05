@@ -10,8 +10,8 @@ class ShowData(QMainWindow):
         self.table_name = table_name
         self.main_window = main_window
         self.initUI()
-        self.setWindowTitle(f"Visualización de {self.table_name}")
-        self.setGeometry(250, 250, 500, 250)
+        self.setWindowTitle(f"Visualización de {self.table_name.title()}")
+        self.setMinimumSize(400, 250)
 
     def initUI(self):
         try:    
@@ -22,7 +22,7 @@ class ShowData(QMainWindow):
             table.setRowCount(len(results))
             table.setColumnCount(len(results[0]))
             table.setHorizontalHeaderLabels(column_names)
-            table.horizontalHeader().setSectionResizeMode(QHeaderView.Stretch)
+            table.horizontalHeader().setSectionResizeMode(QHeaderView.ResizeToContents)
 
 
             # Agregar los datos a la tabla
@@ -30,9 +30,16 @@ class ShowData(QMainWindow):
                 table.setRowCount(i+1)
                 for j, col in enumerate(row):
                     table.setItem(i, j, QTableWidgetItem(str(col)))
-
+            
+           
+            # Ajustar el tamaño de la ventana al tamaño mínimo necesario para mostrar todos sus widgets
+            table_width = table.sizeHint().width()
+            table_height = table.sizeHint().height()
+            
             # Mostrar la tabla en la ventana
             self.setCentralWidget(table)
+            self.setGeometry(0,0,table_width, table_height)
+
             
         except IndexError:
             QMessageBox.warning(self.main_window, 'Error', 'Parece que la tabla que tratas de ver esta vacia')
