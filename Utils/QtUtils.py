@@ -219,6 +219,7 @@ def informe_venta(id_venta):
     conn.close()
     informe = QDialog()
     informe.setWindowTitle(f'Informe de venta {id_venta}')
+    informe.setGeometry(0,0,550,400)
     names = [row[2] for row in result]
     sizes = [row[3] for row in result]
     prices = [row[4] for row in result]
@@ -233,24 +234,29 @@ def informe_venta(id_venta):
     ti_price = QLabel("Precio")
     ti_quant = QLabel("Cantidad")
     ti_parcial = QLabel("Subtotal")
-    grid.addWidget(ti_name,0,0)
-    grid.addWidget(ti_size,0,1)
-    grid.addWidget(ti_price,0,2)
-    grid.addWidget(ti_quant,0,3)
-    grid.addWidget(ti_parcial,0,4)
+    grid.addWidget(ti_name,0,0,alignment=Qt.AlignCenter)
+    grid.addWidget(ti_size,0,1,alignment=Qt.AlignCenter)
+    grid.addWidget(ti_price,0,2,alignment=Qt.AlignCenter)
+    grid.addWidget(ti_quant,0,3,alignment=Qt.AlignCenter)
+    grid.addWidget(ti_parcial,0,4,alignment=Qt.AlignCenter)
     for i in range(len(names)):
         label_name= QLabel(f'{names[i]}')
         label_size= QLabel(f'{sizes[i]}')
         label_prices= QLabel(f'{prices[i]}')
         label_quant= QLabel(f'{quant[i]}')
         label_parcial= QLabel(f'{parcial[i]}')
-        grid.addWidget(label_name,i+1,0)
-        grid.addWidget(label_size,i+1,1)
-        grid.addWidget(label_prices,i+1,2)
-        grid.addWidget(label_quant,i+1,3)
-        grid.addWidget(label_parcial,i+1,4)
-        # grid_layout.addWidget(button2, 0, 1)
+        grid.addWidget(label_name,i+1,0,alignment=Qt.AlignCenter)
+        grid.addWidget(label_size,i+1,1,alignment=Qt.AlignCenter)
+        grid.addWidget(label_prices,i+1,2,alignment=Qt.AlignCenter)
+        grid.addWidget(label_quant,i+1,3,alignment=Qt.AlignCenter)
+        grid.addWidget(label_parcial,i+1,4,alignment=Qt.AlignCenter)
     label_total_venta = QLabel(f'Total de la venta: {result[0][7]}')
+    # Define el ancho de las columnas
+    grid.setColumnStretch(0, 2)
+    grid.setColumnStretch(1, 1)
+    grid.setColumnStretch(2, 2)
+    grid.setColumnStretch(3, 1)
+    grid.setColumnStretch(4, 2)
 
     # Crear un layout para organizar los labels
     layout = QVBoxLayout()

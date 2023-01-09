@@ -1,35 +1,57 @@
+'''
+Curso de creación de GUIs con Qt5 y Python
+ 
+Author: Kiko Correoso
+Website: pybonacci.org 
+Licencia: MIT
+'''
+ 
+# import os
+# os.environ['QT_API'] = 'pyside2'
 import sys
-from PyQt5.QtWidgets import QApplication,QMainWindow,QPushButton, QGraphicsAnchorLayout, QGraphicsWidget,QGraphicsView,QGraphicsScene, QGraphicsLayout
-from PyQt5.QtCore import Qt
-# Crear dos widgets
-
-app = QApplication(sys.argv)
-
-class WelcomeWindow(QMainWindow):
+from pathlib import Path
+ 
+from PyQt5.QtWidgets import QAction,QApplication, QMainWindow
+from PyQt5.QtGui import QIcon
+import qtawesome  as qta
+ 
+ 
+class MiVentana(QMainWindow):
     def __init__(self):
         super().__init__()
-        self.initUI()
-        # Establecer título y tamaño de la ventana
-        self.setWindowTitle("INICIO")
-        self.setGeometry(250, 250, 500, 250)
-    def initUI(self):
-        # Crear dos widgets
-        widget1 = QPushButton("Widget 1")
-        widget2 = QPushButton("Widget 2")
-
-        graphicsWidget1 = QGraphicsWidget()
-        graphicsWidget1.layout().addWidget(widget1)
-        graphicsWidget1.layout().addWidget(widget2)
-
-        # Crear un QGraphicsAnchorLayout y agregar el QGraphicsWidget
-        layout = QGraphicsAnchorLayout()
-        layout.addAnchor(graphicsWidget1, Qt.AnchorTop, layout, Qt.AnchorTop)
-
-        # Mostrar el QGraphicsWidget en una ventana
-        view = QGraphicsView()
-        view.setScene(QGraphicsScene(layout))
-        view.show()
-if __name__ == "__main__":
-    welcome_window = WelcomeWindow()
-    welcome_window.show()
+        self._create_ui()
+ 
+    def _create_ui(self):
+        self.resize(500, 300)
+        self.move(0, 0)
+        self.setWindowTitle('Hola, QMainWindow')
+        ruta_icono = Path('.', 'imgs', 'pybofractal.png')
+        self.setWindowIcon(QIcon(str(ruta_icono)))
+        self.statusBar().showMessage('Ready')
+        self._create_menu()
+        self.show()
+ 
+    def _create_menu(self):        
+        menubar = self.menuBar()
+        # File menu and its QAction's
+        file_menu = menubar.addMenu('&File')
+        exit_action = QAction(qta.icon('fa5.times-circle'),  ## NUEVA LÍNEA
+                              '&Exit',  ## NUEVA LÍNEA
+                              self) ## NUEVA LÍNEA
+        exit_action.setShortcut('Ctrl+Q') ## NUEVA LÍNEA
+        exit_action.setStatusTip('Exit application') ## NUEVA LÍNEA
+        file_menu.addAction(exit_action) ## NUEVA LÍNEA
+        # Help menu and its QAction's
+        help_menu = menubar.addMenu('&Help')
+        about_action = QAction(qta.icon('fa5s.info-circle'), ## NUEVA LÍNEA 
+                               '&Exit',  ## NUEVA LÍNEA
+                               self) ## NUEVA LÍNEA
+        about_action.setShortcut('Ctrl+I') ## NUEVA LÍNEA
+        about_action.setStatusTip('About...') ## NUEVA LÍNEA
+        help_menu.addAction(about_action) ## NUEVA LÍNEA
+ 
+if __name__ == '__main__':
+ 
+    app = QApplication(sys.argv)
+    w = MiVentana()
     sys.exit(app.exec_())

@@ -1,7 +1,8 @@
 import sys
-from PyQt5.QtWidgets import QApplication, QMainWindow, QLabel, QVBoxLayout, QWidget,QGridLayout
+import time
+from PyQt5.QtWidgets import QApplication, QMainWindow, QLabel, QVBoxLayout, QWidget,QGridLayout,QSplashScreen
 from PyQt5.QtCore import Qt
-from PyQt5.QtGui import QFont
+from PyQt5.QtGui import QFont,  QPixmap, QIcon
 from datetime import date
 from  Inventarios.inventarios import MenuInventarios
 from Ventas.ventas import MenuVentas
@@ -17,7 +18,7 @@ font.setPointSize(20)
 font.setBold(True)
 font.setFamily("Verdana")
 app.setFont(font)
-
+app.setWindowIcon(QIcon('icon.png'))
 
 class WelcomeWindow(QMainWindow):
     def __init__(self):
@@ -63,6 +64,7 @@ class WelcomeWindow(QMainWindow):
         x,y = adj_middle(self.menu_window)
         self.menu_window.move(x,y)
         self.menu_window.show()
+
 
 class MenuWindow(QMainWindow):
 
@@ -138,6 +140,35 @@ class MenuWindow(QMainWindow):
         self.close()
 
 if __name__ == "__main__":
+
+    # # Crea y muestra el splash screen
+    # splash_pix = QPixmap('icon.png')
+    # splash = QSplashScreen(
+    #     splash_pix,
+    #     Qt.WindowStaysOnTopHint
+    # )
+    # splash.setEnabled(False)
+    # splash.show()
+    # # splash.setGeometry(100,100,200,200)
+    # adj_middle(splash)
+ 
+    # # Esto es un simple contador/temporizador para mostrar en pantalla
+    # # el splash screen. En el futuro haremos que esto sea más útil.
+    # for i in range(0, 3): 
+    #     msg = ( 
+    #         '<h1><font color="black">' 
+    #          f'Iniciando en {3-i}s' 
+    #          '</font></h1>' 
+    #     ) 
+    #     splash.showMessage( 
+    #         msg, 
+    #         int(Qt.AlignBottom) | int(Qt.AlignHCenter),  
+    #         Qt.black  
+    #     ) 
+    #     time.sleep(1) 
+    #     app.processEvents() 
+
     welcome_window = WelcomeWindow()
+    # splash.finish(welcome_window)
     welcome_window.show()
     sys.exit(app.exec_())

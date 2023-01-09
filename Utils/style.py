@@ -4,19 +4,19 @@ from PyQt5.QtGui import QFont
 
 def Palette():
     palette = QPalette()
-    palette.setColor(QPalette.Window, QColor(0, 0, 100))
-    palette.setColor(QPalette.WindowText, QColor(135, 206, 235))
-    palette.setColor(QPalette.Base, QColor(176, 224, 230))
-    palette.setColor(QPalette.AlternateBase, QColor(0, 0, 100))
-    palette.setColor(QPalette.ToolTipBase, QColor(135, 206, 235))
-    palette.setColor(QPalette.ToolTipText, QColor(135, 206, 235))
-    palette.setColor(QPalette.Text, QColor(0, 0, 139))
-    palette.setColor(QPalette.Button, QColor(0, 0, 128))
-    palette.setColor(QPalette.ButtonText, QColor(135, 206, 235))
+    palette.setColor(QPalette.Window, QColor(255,255,255))
+    palette.setColor(QPalette.WindowText, QColor(1,100,30))
+    palette.setColor(QPalette.Base, QColor(255,230,82))
+    palette.setColor(QPalette.AlternateBase, QColor(255,230,82))
+    palette.setColor(QPalette.ToolTipBase, QColor(0,100,30))
+    palette.setColor(QPalette.ToolTipText, QColor(0,100,30))
+    palette.setColor(QPalette.Text, QColor(0,100,30))
+    palette.setColor(QPalette.Button, QColor(255,230,82))
+    palette.setColor(QPalette.ButtonText, QColor(0,100,30))
     palette.setColor(QPalette.BrightText, QColor(255, 0, 0))
-    palette.setColor(QPalette.Link, QColor(42, 130, 218))
-    palette.setColor(QPalette.Highlight, QColor(42, 130, 218))
-    palette.setColor(QPalette.HighlightedText, QColor(0, 0, 0))
+    palette.setColor(QPalette.Link, QColor(233,33,38))
+    palette.setColor(QPalette.Highlight, QColor(233,33,38))
+    palette.setColor(QPalette.HighlightedText, QColor(255,255,255))
     return palette
 
 def adj_middle(menu_w):
@@ -27,6 +27,7 @@ def adj_middle(menu_w):
     # Calcular la posición para centrar la ventana
     x = (screen_width - menu_w.width()) // 2
     y = (screen_height - menu_w.height()) // 2
+    menu_w.move(x,y)
     return x,y
  
 def adj_left(menu_w):
