@@ -19,7 +19,7 @@ font.setPointSize(20)
 font.setBold(True)
 font.setFamily("Verdana")
 app.setFont(font)
-ruta_icono = Path('.', 'icon.png')
+ruta_icono = Path('icon.png')
 app.setWindowIcon(QIcon(str(ruta_icono)))
 
 class WelcomeWindow(QMainWindow):
@@ -144,7 +144,7 @@ class MenuWindow(QMainWindow):
 if __name__ == "__main__":
 
     # Crea y muestra el splash screen
-    path = Path('.','icon.png')
+    path = Path(icon.png')
     splash_pix = QPixmap(str(path))
     splash = QSplashScreen(
         splash_pix,
@@ -152,7 +152,7 @@ if __name__ == "__main__":
     )
     splash.setEnabled(False)
     splash.show()
-    splash.setGeometry(100,100,200,200)
+    splash.setGeometry(100,100,500,500)
     adj_middle(splash)
  
     # Esto es un simple contador/temporizador para mostrar en pantalla
