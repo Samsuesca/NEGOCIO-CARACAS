@@ -149,7 +149,7 @@ if __name__ == "__main__":
     )
     splash.setEnabled(False)
     splash.show()
-    # splash.setGeometry(100,100,200,200)
+    splash.setGeometry(100,100,200,200)
     adj_middle(splash)
  
     # Esto es un simple contador/temporizador para mostrar en pantalla
@@ -169,6 +169,6 @@ if __name__ == "__main__":
         app.processEvents() 
 
     welcome_window = WelcomeWindow()
-    # splash.finish(welcome_window)
+    splash.finish(welcome_window)
     welcome_window.show()
     sys.exit(app.exec_())
