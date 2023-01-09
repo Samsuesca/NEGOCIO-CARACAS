@@ -89,8 +89,8 @@ class MenuWindow(QMainWindow):
         grid_layout = QGridLayout()
         grid_layout.addWidget(button1, 0, 0)
         grid_layout.addWidget(button2, 0, 1)
-        grid_layout.addWidget(button3, 1, 0)
-        grid_layout.addWidget(button4, 1, 1)
+        # grid_layout.addWidget(button3, 1, 0)
+        # grid_layout.addWidget(button4, 1, 1)
         
         # Agregar el widget al layout principal de la ventana
         widget = QWidget(self)

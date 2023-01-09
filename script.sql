@@ -158,6 +158,7 @@ INSERT INTO public.prendas(
 	VALUES (30000, 1, '6'),(31000, 1, '8'),(32000, 1, '10'),
     (33000, 1, '12'),(34000, 1, '14'),(35000,1,'16'),(36000, 1, 'S'),
     (37000, 1, 'M'),(38000, 1, 'L'),(39000, 1, 'XL'),(40000,1,'XXL');
+
 INSERT INTO public.prendas(
 	precio, id_tipo_prenda, talla)
 	VALUES (30000,2,'4'),(31000, 2, '6'),(32000, 2, '8'),(33000, 2, '10'),
@@ -169,21 +170,25 @@ INSERT INTO public.prendas(
 	VALUES (41000,3,'4'),(42000, 3, '6'),(43000, 3, '8'),(44000, 3, '10'),
     (45000, 3, '12'),(46000, 3, '14'),(47000,3,'16'),(48000, 3, 'S'),
     (49000, 3, 'M'),(50000, 3, 'L'),(51000, 3, 'XL');
+
 INSERT INTO public.prendas(
 	precio, id_tipo_prenda, talla)
 	VALUES (41000,4,'4'),(42000, 4, '6'),(43000, 4, '8'),(44000, 4, '10'),
     (45000, 4, '12'),(46000, 4, '14'),(47000,4,'16'),(48000, 4, 'S'),
     (49000, 4, 'M'),(50000, 4, 'L'),(51000, 4, 'XL');
+
 INSERT INTO public.prendas(
 	precio, id_tipo_prenda, talla)
 	VALUES (80000, 5, '6'),(85000, 5, '8'),(90000, 5, '10'),
     (95000, 5, '12'),(100000, 5, '14'),(105000,5,'16'),(110000, 5, 'S'),
     (115000, 5, 'M'),(120000, 5, 'L'),(120000, 5, 'XL');
+
 INSERT INTO public.prendas(
 	precio, id_tipo_prenda, talla)
 	VALUES (13000, 7, '6'),(13000, 7, '8'),(13000, 7, '113000'),
     (13000, 7, '12'),(13000, 7, '14'),(13000,7,'16'),(15000, 7, 'S'),
     (15000, 7, 'M'),(15000, 7, 'L'),(15000, 7, 'XL');
+
 INSERT INTO public.prendas(
 	precio, id_tipo_prenda, talla)
 	VALUES (9000, 8, '6-8'),(9000, 8, '8-10'),(9000, 8, '9-11');
@@ -193,6 +198,7 @@ INSERT INTO public.prendas(
 	VALUES (0, 6, 'B27-32'),(0, 6, 'B33-38'),(0, 6, 'B39-44'),
     (0, 6, 'G27-32'),(0, 6, 'G33-38'),(0, 6, 'G39-44'),
     (0, 6, 'N27-32'),(0, 6, 'N33-38'),(0, 6, 'N39-44');
+
 INSERT INTO public.prendas(
 	precio, id_tipo_prenda, talla)
 	VALUES (33000, 9, '6'),(33000, 9, '8'),(33000, 9, '10'),
@@ -205,10 +211,14 @@ INSERT INTO inventario(id_prenda,cantidad)
     (12,2),(13,9),(14,4),(15,1),(16,3),(17,6),(18,19),(19,6),(20,1),(21,0),(22,1),
     (23,2),(24,1),(25,3),(26,1),(27,0),(28,0),(29,0),(30,0),(31,0),(32,0),(33,0),
     (34,1),(35,0),(36,3),(37,1),(38,0),(39,0),(40,0),(41,0),(42,0),(43,0),(44,0),
-    (55,6),(56,9),(57,11),(58,11),(59,11),(60,6),(61,2),(62,1),(63,1),(64,0),
-    (77,8),(78,6),(79,9),(80,5),(81,7),(82,10),(83,2),(84,0),(85,0),(86,2);
+    (55,6),(56,9),(57,11),(58,11),(59,11),(60,6),(61,2),(62,1),(63,1),(64,0),(65,12),
+    (66,12),(66,12),(77,8),(78,6),(79,9),(80,5),(81,7),(82,10),(83,2),(84,0),(85,0),(86,2);
+
+
+
 
 --VER INVENTARIO:
+CREATE VIEW total AS
 SELECT prendas.id, tipo_prendas.name, prendas.talla, prendas.precio, inventario.cantidad
 FROM prendas
 JOIN tipo_prendas ON prendas.id_tipo_prenda = tipo_prendas.id
@@ -241,6 +251,15 @@ JOIN tipo_prendas ON prendas.id_tipo_prenda = tipo_prendas.id
 JOIN inventario ON prendas.id = inventario.id_prenda
 WHERE prendas.id BETWEEN 23 AND 33;
 
+--VER INVENTARIO medias:
+SELECT * FROM medias;
+CREATE VIEW medias AS
+SELECT prendas.id, tipo_prendas.name, prendas.talla, prendas.precio, inventario.cantidad
+FROM prendas
+JOIN tipo_prendas ON prendas.id_tipo_prenda = tipo_prendas.id
+JOIN inventario ON prendas.id = inventario.id_prenda
+WHERE prendas.id BETWEEN 65 AND 67;
+
 --VER INVENTARIO CHGRIS:
 SELECT * FROM chgris;
 CREATE VIEW chgris AS
@@ -267,3 +286,33 @@ FROM prendas
 JOIN tipo_prendas ON prendas.id_tipo_prenda = tipo_prendas.id
 JOIN inventario ON prendas.id = inventario.id_prenda
 WHERE prendas.id BETWEEN 77 AND 86;
+
+--CREAR TABLA DE DETALLES DE VENTA:
+
+
+
+--CREAR TABLA DE VENTAS:
+CREATE TABLE ventas (
+    id serial PRIMARY KEY,
+    id_cliente integer NOT NULL,
+    fecha TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    total numeric NOT NULL,
+    FOREIGN KEY (id_cliente) REFERENCES clientes(id)
+    ON UPDATE CASCADE
+    ON DELETE CASCADE  
+);
+
+CREATE TABLE detalle_venta (
+    id serial PRIMARY KEY,
+    id_venta integer NOT NULL,
+    id_prenda integer NOT NULL,
+    cantidad integer NOT NULL,
+    FOREIGN KEY (id_venta) REFERENCES ventas (id)
+    ON UPDATE CASCADE ON DELETE CASCADE,
+    FOREIGN KEY (id_prenda) REFERENCES prendas (id)
+    ON UPDATE CASCADE ON DELETE CASCADE
+);
+
+INSERT INTO public.detalle_venta (id_venta,id_prenda,cantidad)
+VALUES ((SELECT id FROM ventas WHERE id_cliente = (SELECT id FROM clientes WHERE nombre = 'Manolo')),22,1);
+

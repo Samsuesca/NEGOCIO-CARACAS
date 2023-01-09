@@ -1,27 +1,15 @@
 from PyQt5.QtWidgets import QInputDialog, QMessageBox
-from Utils.QtUtils import Pestana
+from Utils.QtUtils import Ventana
 from Utils.util_sql import connect, make_query, uptade_date, delete_date, get_id
 
-class Corte(Pestana):
+class Encargo(Ventana):
     def __init__(self, main_window, table_name):
         super().__init__(main_window, table_name)
 
-    def insertData(self): 
-        id_prenda, ok = QInputDialog.getInt(self,'Insertar lote en Corte','Insertar el ID de la prenda:')
-        quantity, ok1 = QInputDialog.getDouble(self, 'Insertar lote en Corte', 'Ingresa la cantidad:')
-        
 
-        # Si el usuario hizo clic en el botón "OK" y proporcionó un nombre válido, continuar con la inserción
-        if ok and id_prenda and ok1 and quantity:
-            
-            # Conectarse a la base de datos y obtener un cursor
-            conn, cursor = connect()
-            # Construir la consulta para insertar una nueva fila
-            query = f"INSERT INTO public.{self.table_name}(id_prenda, cantidad) VALUES ('{id_prenda}', {quantity})"
-            # Ejecutar la consulta
-            make_query(conn,cursor, query)
-            self.openData()
-
+    def insertData(self):
+        pass
+   
     def editData(self):
         # Obtener el ID de la fila seleccionada
         row_id, ok = QInputDialog.getInt(self, 'Editar Lote en Corte', 'Ingresa el ID de la fila que deseas editar:')
@@ -48,10 +36,4 @@ class Corte(Pestana):
                 QMessageBox.warning(self, 'Error', 'No se encontró ninguna fila con ese ID.')
             else:
                 delete_date(self,ok,row_id)
-        
-
-    
-
-        
-
         

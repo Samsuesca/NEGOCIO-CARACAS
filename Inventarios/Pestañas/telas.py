@@ -1,6 +1,6 @@
 from PyQt5.QtWidgets import QInputDialog, QMessageBox
 from Utils.QtUtils import Pestana
-from Utils.util_sql import connect, make_query, uptade_date, delete_date, edit_id
+from Utils.util_sql import connect, make_query, uptade_date, delete_date, get_id
 
 class Telas(Pestana):
     def __init__(self, main_window, table_name):
@@ -15,7 +15,7 @@ class Telas(Pestana):
         if ok1 and name and ok2 and price and ok and quantity:
             
             # Conectarse a la base de datos y obtener un cursor
-            conn, cursor = connect('negocio2023')
+            conn, cursor = connect()
             # Construir la consulta para insertar una nueva fila
             query = f"INSERT INTO public.{self.table_name} (name, precio_mt, cant_metros) VALUES ('{name}', {price}, {quantity})"
             # Ejecutar la consulta
@@ -28,7 +28,7 @@ class Telas(Pestana):
 
         # Si el usuario hizo clic en el botón "OK" y proporcionó un ID válido, continuar con la edición
         if ok and row_id:
-            row = edit_id(self.table_name,row_id)
+            row = get_id(self.table_name,row_id)
             if row is None:
                 QMessageBox.warning(self, 'Error', 'No se encontró ninguna fila con ese ID.')
             else:
@@ -43,9 +43,9 @@ class Telas(Pestana):
 
     def deleteData(self):
         # Obtener el ID de la fila que se desea eliminar
-        row_id, ok = QInputDialog.getInt(self, 'Eliminar Tela', 'Ingresa el ID de la tela que deseas eliminar:')
+        row_id, ok = QInputDialog.getInt(self, 'Eliminar Tela', 'Ingresa el ID que deseas eliminar:')
         if ok and row_id:
-            row = edit_id(self.table_name,row_id)
+            row = get_id(self.table_name,row_id)
             if row is None:
                 QMessageBox.warning(self, 'Error', 'No se encontró ninguna fila con ese ID.')
             else:

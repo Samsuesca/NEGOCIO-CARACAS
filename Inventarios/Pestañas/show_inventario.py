@@ -1,6 +1,6 @@
 from PyQt5.QtWidgets import QMainWindow,QLabel, QWidget,QVBoxLayout, QHBoxLayout,QTextEdit
 from PyQt5.QtCore import Qt,QRect
-from Utils.style import PushButton, adj_middle, font
+from Utils.style import PushButton, adj_left, font
 from Inventarios.Inventario.inventario import Inventario
 
 
@@ -27,7 +27,7 @@ class   ShowInventarios(QMainWindow):
 
             inv_btn = PushButton("INVENTARIO PRINCIPAL", self)
             inv_btn.clicked.connect(self.openInventario)
-            btn_back = PushButton("Volver al menú principal", self)
+            btn_back = PushButton("VOLVER", self)
             btn_back.clicked.connect(self.returnToMenu)
 
             
@@ -59,10 +59,10 @@ class   ShowInventarios(QMainWindow):
             self.to_close.close()
 
         def openInventario(self):
-            # Cerrar la ventana de bienvenida
+            # Cerrar la ventana 
             self.to_close.close()
             # Abrir la ventana del menú principal
             self.menu_window = Inventario(self.to_close)
-            x,y = adj_middle(self.menu_window)
+            x,y = adj_left(self.menu_window)
             self.menu_window.move(x,y)
             self.menu_window.show()

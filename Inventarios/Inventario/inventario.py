@@ -1,5 +1,5 @@
 from PyQt5.QtWidgets import QMainWindow,QWidget,QGridLayout, QStackedLayout
-from Utils.style import PushButton, adj_left, adj_right
+from Utils.style import PushButton, adj_right
 from Utils.QtUtils import ShowData
 
 class Inventario(QMainWindow):
@@ -10,7 +10,8 @@ class Inventario(QMainWindow):
 
         # Establecer título y tamaño de la ventana
         self.setWindowTitle("Inventario Principal")
-        self.setGeometry(400, 500, 600, 250)
+        self.setGeometry(400, 500, 550, 300)
+
     def initUI(self):
 
         # Crear los botones
@@ -50,78 +51,55 @@ class Inventario(QMainWindow):
     class Inv(QMainWindow):
         def __init__(self,up) -> QStackedLayout():
             self.stacked_layout = QStackedLayout()
-            self.up = up
             super().__init__()
             self.stacked_layout.addWidget(self.openCamisetas())
             self.stacked_layout.addWidget(self.openSudaderas())
             self.stacked_layout.addWidget(self.openChompaAzul())
             self.stacked_layout.addWidget(self.openChompaGris())
-            self.stacked_layout.addWidget(self.openBlusas())
             self.stacked_layout.addWidget(self.openJeans())
+            self.stacked_layout.addWidget(self.openBlusas())
             self.stacked_layout.addWidget(self.openTotal())
             widget = QWidget(self)
             widget.setLayout(self.stacked_layout)
+            x,y = adj_right(self)
+            self.move(x,y)
             self.setMinimumSize(500, 350)
             self.setCentralWidget(widget)
             self.show()
 
         def openTotal(self):
             show_data = ShowData(self,'total')
-            x,y = adj_right(show_data)
-            show_data.move(x,y)
             show_data.show()
-            x,y = adj_left(self)
-            self.up.move(x,y)
             return show_data
 
         def openCamisetas(self):
             show_data = ShowData(self,'camisetas')
-            x,y = adj_right(show_data)
-            show_data.move(x,y)
             show_data.show()
-            x,y = adj_left(self)
-            self.move(x,y)
             return show_data
 
         def openChompaAzul(self):
             show_data = ShowData(self,'chazul')
-            x,y = adj_right(show_data)
-            show_data.move(x,y)
             show_data.show()
-            x,y = adj_left(self)
-            self.up.move(x,y)
             return show_data
+
         def openChompaGris(self):
             show_data = ShowData(self,'chgris')
-            x,y = adj_right(show_data)
-            show_data.move(x,y)
             show_data.show()
-            x,y = adj_left(self)
-            self.up.move(x,y)
             return show_data
+
         def openSudaderas(self):
             show_data = ShowData(self,'sudaderas')
-            x,y = adj_right(show_data)
-            show_data.move(x,y)
             show_data.show()
-            x,y = adj_left(self)
-            self.up.move(x,y)
             return show_data
+
         def openJeans(self):
             show_data = ShowData(self,'jeans')
-            x,y = adj_right(show_data)
-            show_data.move(x,y)
             show_data.show()
-            x,y = adj_left(self)
-            self.up.move(x,y)
             return show_data
+
         def openBlusas(self):
             show_data = ShowData(self,'blusas')
-            x,y = adj_right(show_data)
-            show_data.move(x,y)
             show_data.show()
-            x,y = adj_left(self)
-            self.up.move(x,y)
             return show_data
     
     
