@@ -1,5 +1,6 @@
 import sys
 import time
+from pathlib import Path
 from PyQt5.QtWidgets import QApplication, QMainWindow, QLabel, QVBoxLayout, QWidget,QGridLayout,QSplashScreen
 from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QFont,  QPixmap, QIcon
@@ -18,7 +19,8 @@ font.setPointSize(20)
 font.setBold(True)
 font.setFamily("Verdana")
 app.setFont(font)
-app.setWindowIcon(QIcon('icon.png'))
+ruta_icono = Path('.', 'icon.png')
+app.setWindowIcon(QIcon(str(ruta_icono)))
 
 class WelcomeWindow(QMainWindow):
     def __init__(self):
@@ -142,7 +144,8 @@ class MenuWindow(QMainWindow):
 if __name__ == "__main__":
 
     # Crea y muestra el splash screen
-    splash_pix = QPixmap('icon.png')
+    path = Path('.','icon.png')
+    splash_pix = QPixmap(str(path))
     splash = QSplashScreen(
         splash_pix,
         Qt.WindowStaysOnTopHint
