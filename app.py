@@ -1,9 +1,11 @@
 import sys
 import time
+import io
+from PIL import Image
 from pathlib import Path
 from PyQt5.QtWidgets import QApplication, QMainWindow, QLabel, QVBoxLayout, QWidget,QGridLayout,QSplashScreen
 from PyQt5.QtCore import Qt
-from PyQt5.QtGui import QFont,  QPixmap, QIcon
+from PyQt5.QtGui import QFont,  QPixmap, QIcon,QImage 
 from datetime import date
 from  Inventarios.inventarios import MenuInventarios
 from Ventas.ventas import MenuVentas
@@ -144,8 +146,22 @@ class MenuWindow(QMainWindow):
 if __name__ == "__main__":
 
     # Crea y muestra el splash screen
-    path = Path("icon.png")
-    splash_pix = QPixmap(str(path))
+    # path = Path("icon.png")
+    # Abre la imagen con "pillow"
+    pil_image = Image.open("icon.png").convert("RGB")
+
+    # Convierte la imagen a formato JPEG y a una cadena de bytes
+    bytes_io = io.BytesIO()
+    pil_image.save(bytes_io, "JPEG")
+    bytes_io.seek(0)
+    img_data = bytes_io.read()
+
+
+    # Convierte la imagen a formato Qt
+    qt_image = QImage.fromData(img_data)
+    # Crea un pixmap a partir de la imagen
+    splash_pix = QPixmap.fromImage(qt_image)
+    # splash_pix = QPixmap(str(path))
     splash = QSplashScreen(
         splash_pix,
         Qt.WindowStaysOnTopHint
