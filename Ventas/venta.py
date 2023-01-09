@@ -52,7 +52,7 @@ class Venta(Ventana):
 
     def detalles(self,id_venta):
         self.show_detalles = Detalles(self,id_venta)
-        x,y = adj_right(self.show_detalles,2)
+        x,y = adj_right(self.show_detalles,1.3)
         self.show_detalles.move(x,y)
         self.show_detalles.show()
         x1,y1 = adj_left(self)

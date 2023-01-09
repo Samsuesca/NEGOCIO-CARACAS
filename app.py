@@ -141,32 +141,32 @@ class MenuWindow(QMainWindow):
 
 if __name__ == "__main__":
 
-    # # Crea y muestra el splash screen
-    # splash_pix = QPixmap('icon.png')
-    # splash = QSplashScreen(
-    #     splash_pix,
-    #     Qt.WindowStaysOnTopHint
-    # )
-    # splash.setEnabled(False)
-    # splash.show()
-    # # splash.setGeometry(100,100,200,200)
-    # adj_middle(splash)
+    # Crea y muestra el splash screen
+    splash_pix = QPixmap('icon.png')
+    splash = QSplashScreen(
+        splash_pix,
+        Qt.WindowStaysOnTopHint
+    )
+    splash.setEnabled(False)
+    splash.show()
+    # splash.setGeometry(100,100,200,200)
+    adj_middle(splash)
  
-    # # Esto es un simple contador/temporizador para mostrar en pantalla
-    # # el splash screen. En el futuro haremos que esto sea más útil.
-    # for i in range(0, 3): 
-    #     msg = ( 
-    #         '<h1><font color="black">' 
-    #          f'Iniciando en {3-i}s' 
-    #          '</font></h1>' 
-    #     ) 
-    #     splash.showMessage( 
-    #         msg, 
-    #         int(Qt.AlignBottom) | int(Qt.AlignHCenter),  
-    #         Qt.black  
-    #     ) 
-    #     time.sleep(1) 
-    #     app.processEvents() 
+    # Esto es un simple contador/temporizador para mostrar en pantalla
+    # el splash screen. En el futuro haremos que esto sea más útil.
+    for i in range(0, 3): 
+        msg = ( 
+            '<h1><font color="black">' 
+             f'Iniciando en {3-i}s' 
+             '</font></h1>' 
+        ) 
+        splash.showMessage( 
+            msg, 
+            int(Qt.AlignBottom) | int(Qt.AlignHCenter),  
+            Qt.black  
+        ) 
+        time.sleep(1) 
+        app.processEvents() 
 
     welcome_window = WelcomeWindow()
     # splash.finish(welcome_window)
