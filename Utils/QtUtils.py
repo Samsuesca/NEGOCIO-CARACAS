@@ -1,4 +1,4 @@
-from Utils.util_sql import connect, execute_query
+from Utils.util_sql import execute_query, connectsql
 from Utils.style import PushButton, adj_left, adj_right,adj_sup_center,adj_middle
 from datetime import datetime
 from PyQt5.QtWidgets import QDialog,QSplashScreen,QTableWidget,QTableWidgetItem,QGridLayout, QMainWindow, QMessageBox, QHeaderView,QLabel, QVBoxLayout, QWidget, QInputDialog,QHBoxLayout
@@ -58,9 +58,10 @@ def show_beg(app,welcome_window):
 
 class ShowData(QMainWindow):
 
-    def __init__(self,main_window, table_name) -> None:
+    def __init__(self,main_window, table_name,ip) -> None:
         super().__init__()
         self.table_name = table_name
+        self.ip = ip
         self.main_window = main_window
         self.initUI()
         self.setWindowTitle(f"Visualización de {self.table_name.title()}")
@@ -92,22 +93,22 @@ class ShowData(QMainWindow):
             # Mostrar la tabla en la ventana
             self.setCentralWidget(table)
             self.setGeometry(0,0,table_width, table_height)
-
             
         except IndexError:
             QMessageBox.warning(self.main_window, 'Error', 'Parece que la tabla que tratas de ver esta vacia')
 
 
     def get_table_data(self,table_name):
-        conn, cursor = connect()
+        conn, cursor = connectsql(host=self.ip)
         results = execute_query(conn,cursor, f'SELECT * FROM {table_name}')
         column_names = [column[0] for column in cursor.description]
         return results, column_names
 
 class Pestana(QMainWindow):
-    def __init__(self, main_window, table_name):
+    def __init__(self, main_window, table_name,ip):
         self.main_window = main_window
         self.table_name = table_name
+        self.ip = ip
         super().__init__()
         self.initUI()
         
@@ -146,7 +147,7 @@ class Pestana(QMainWindow):
         self.setCentralWidget(widget)
     
     def openData(self):
-        self.show_data = ShowData(self.main_window,self.table_name)
+        self.show_data = ShowData(self.main_window,self.table_name,self.ip)
         x,y = adj_right(self.show_data)
         self.show_data.move(x,y)
         self.show_data.show()
@@ -155,9 +156,10 @@ class Pestana(QMainWindow):
 
 
 class Ventana(QMainWindow):
-    def __init__(self, main_window, table_name):
+    def __init__(self, main_window, table_name,ip):
         self.main_window = main_window
         self.table_name = table_name
+        self.ip = ip
         
         super().__init__()
         self.initUI()
@@ -202,7 +204,7 @@ class Ventana(QMainWindow):
         self.setCentralWidget(widget)
     
     def openData(self):
-        self.show_data = ShowData(self.main_window,self.table_name)
+        self.show_data = ShowData(self.main_window,self.table_name,self.ip)
         x,y = adj_right(self.show_data)
         self.show_data.move(x,y)
         self.show_data.show()
@@ -224,7 +226,7 @@ class INFO():
         talla, ok = QInputDialog.getText(self.up,'¿Qué talla se Necesita?','Ingrese la talla')
         if talla and ok:
             # Conectarse a la base de datos y obtener un cursor
-            conn, cursor = connect()
+            conn, cursor = connectsql()
             query = f"SELECT id FROM {table_name} WHERE talla = '{talla.upper()}'"
             cursor.execute(query)
             id_prenda = cursor.fetchone()
@@ -235,7 +237,7 @@ class INFO():
             quantity, ok1 = QInputDialog.getInt(self.up,'¿Qué cantidad va a llevar?','Ingrese la cantidad')
             if quantity and ok1:
                 #Obtener la cantidad del inventario
-                conn, cursor = connect()
+                conn, cursor = connectsql()
                 query = f"SELECT cantidad FROM inventario WHERE id_prenda = {id_prenda[0]}"
                 cursor.execute(query)
                 cantidad_inventario = cursor.fetchone()
@@ -244,7 +246,7 @@ class INFO():
                 conn.close()
 
                 if cantidad_inventario[0] >= quantity:
-                    conn, cursor = connect()
+                    conn, cursor = connectsql()
                     query = f'''INSERT INTO public.detalle_venta (id_venta,id_prenda,cantidad)
                     VALUES ({self.up.id_venta},{id_prenda[0]},{quantity});'''
                     cursor.execute(query)
@@ -380,7 +382,7 @@ class INFO():
     def edit_venta():
         pass   
     def query_venta_detalle(self,id_venta):  
-        conn, cursor = connect()
+        conn, cursor = connectsql()
         query = f''' SELECT clientes.nombre AS "Nombre del cliente",
                         ventas.id AS "ID",
                         ventas.fecha AS "Fecha",

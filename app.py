@@ -1,13 +1,10 @@
 import sys
 from pathlib import Path
-from PyQt5.QtWidgets import QApplication, QComboBox, QMainWindow, QLabel, QVBoxLayout, QWidget,QGridLayout,QSplashScreen
+from PyQt5.QtWidgets import QApplication,QMessageBox, QComboBox, QMainWindow, QLabel, QVBoxLayout, QWidget
 from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QFont,  QIcon
 from datetime import date
-from  Inventarios.inventarios import MenuInventarios
-from Ventas.ventas import MenuVentas
-from BDH.bdh import MenuBDH
-from Analitica.analitica import MenuAnalitica
+from menu import MenuWindow
 from Utils.style import adj_middle, Palette, PushButton
 from Utils.QtUtils import show_beg
 
@@ -82,96 +79,25 @@ class WelcomeWindow(QMainWindow):
         elif self.label1.text()=="UNIVERSIDAD":
             self.ip = '10.161.49.171'
         else: 
-            pass
+            self.ip = ''
+            QMessageBox.warning(self,'No puedes continuar','Debes seleccionar una IP')
         
         # Abrir la ventana del menú principal
-        self.menu_window = MenuWindow()
+        self.menu_window = MenuWindow(self.ip)
         x,y = adj_middle(self.menu_window)
         self.menu_window.move(x,y)
         self.menu_window.show()
 
 
-class MenuWindow(QMainWindow):
-
-    def __init__(self):
-        super().__init__()
-        self.initUI()
-
-        # Establecer título y tamaño de la ventana
-        self.setWindowTitle("Menú Principal")
-        self.setGeometry(400, 500, 600, 250)
-        
-    def initUI(self):
-        # Crear los botones
-        button1 = PushButton("VENTAS")
-        button1.clicked.connect(self.openVentas)
-        button2 = PushButton("INVENTARIOS")
-        button2.clicked.connect(self.openInventarios)
-        # button3 = PushButton("BASES DE DATOS \n   HISTÓRICAS")
-        # button3.clicked.connect(self.openBDH)
-        # button4 = PushButton("ANALÍTICA")
-        # button4.clicked.connect(self.openAnalitica)
-
-        # Crear el layout de la cuadrícula y agregar los botones
-        grid_layout = QGridLayout()
-        grid_layout.addWidget(button1, 0, 0)
-        grid_layout.addWidget(button2, 0, 1)
-        # grid_layout.addWidget(button3, 1, 0)
-        # grid_layout.addWidget(button4, 1, 1)
-        
-        # Agregar el widget al layout principal de la ventana
-        widget = QWidget(self)
-        widget.setLayout(grid_layout)
-        self.setCentralWidget(widget)
-
-    def openVentas(self):
-        # Crear una instancia de la ventana del menú 1 y mostrarla
-        self.menu1_window = MenuVentas(self)
-        x,y = adj_middle(self.menu1_window)
-        self.menu1_window.move(x,y)
-        self.menu1_window.show()
-
-        # Cerrar la ventana actual
-        self.close()
-
-    def openInventarios(self):
-        # Crear una instancia de la ventana del menú  y mostrarla
-        self.menu2_window = MenuInventarios(self)
-        x,y = adj_middle(self.menu2_window)
-        self.menu2_window.move(x,y)
-        self.menu2_window.show()
-        
-        # Cerrar la ventana actual
-        self.close()
-
-    def openBDH(self):
-        # Crear una instancia de la ventana del menú  y mostrarla
-        self.menu3_window = MenuBDH(self)
-        x,y = adj_middle(self.menu3_window)
-        self.menu3_window.move(x,y)
-        self.menu3_window.show()
-        
-        # Cerrar la ventana actual
-        self.close()
-
-    def openAnalitica(self):
-        # Crear una instancia de la ventana del menú 1 y mostrarla
-        self.menu4_window = MenuAnalitica(self)
-        x,y = adj_middle(self.menu4_window)
-        self.menu4_window.move(x,y)
-        self.menu4_window.show()
-        
-        # Cerrar la ventana actual
-        self.close()
-
 if __name__ == "__main__":
 
     # Crea y muestra el splash screen
 
-    welcome_window = WelcomeWindow()
-    
+    welcome_window = WelcomeWindow()   
+
     #Ejecutar pantalla de Espera.
     # show_beg(app,welcome_window)
     
     welcome_window.show()
     sys.exit(app.exec_())
+    

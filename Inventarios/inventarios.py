@@ -8,8 +8,9 @@ from Inventarios.Pestañas.empaque import Empaq
 
     
 class MenuInventarios(QMainWindow):
-    def __init__(self, return_window):
+    def __init__(self, return_window,ip):
         super().__init__()
+        self.ip = ip
         self.return_window = return_window
         self.initUI()
 
@@ -23,12 +24,12 @@ class MenuInventarios(QMainWindow):
     def initUI(self):
         #Crear Menu de pestañas
         self.pestanas = QTabWidget(self)
-        self.pestanas.addTab(ShowInventarios(self.return_window,self), 'Inicio')
-        self.pestanas.addTab(Telas(self,'telas'), 'Telas')
-        self.pestanas.addTab(Corte(self,'cortes'), 'Corte')
-        self.pestanas.addTab(Bordados(self,'bordados'), 'Bordados')
-        self.pestanas.addTab(Confeccion(self,'confeccion'), 'Confección')
-        self.pestanas.addTab(Empaq(self,'empaque'), 'Empaque')
+        self.pestanas.addTab(ShowInventarios(self.return_window,self,self.ip), 'Inicio')
+        self.pestanas.addTab(Telas(self,'telas',self.ip), 'Telas')
+        self.pestanas.addTab(Corte(self,'cortes',self.ip), 'Corte')
+        self.pestanas.addTab(Bordados(self,'bordados',self.ip), 'Bordados')
+        self.pestanas.addTab(Confeccion(self,'confeccion',self.ip), 'Confección')
+        self.pestanas.addTab(Empaq(self,'empaque',self.ip), 'Empaque')
         self.pestanas.resize(700, 500)
         self.pestanas.move(0, 0)
         self.pestanas.show()   

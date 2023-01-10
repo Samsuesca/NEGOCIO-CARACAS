@@ -2,12 +2,13 @@ from PyQt5.QtWidgets import QInputDialog, QMessageBox, QLineEdit
 from Utils.QtUtils import Ventana
 from Ventas.detalles import Detalles
 from Utils.style import adj_right,adj_left
-from Utils.util_sql import connect, make_query, uptade_date, delete_date, get_id
+from Utils.util_sql import connectsql, make_query, uptade_date, delete_date, get_id
 
 class Venta(Ventana):
-    def __init__(self, main_window, table_name):
-        super().__init__(main_window, table_name)
+    def __init__(self, main_window, table_name,ip):
+        super().__init__(main_window, table_name,ip)
         
+        self.ip = ip
     def insertData(self): 
         client, ok = QInputDialog.getText(self,'Realizar Venta','Inserta el nombre del cliente', QLineEdit.Normal, "")
         phone, ok1 = QInputDialog.getText(self, 'Realizar Venta', 'Inserta el teléfono del cliente', QLineEdit.Normal, "3000000000")
@@ -18,7 +19,7 @@ class Venta(Ventana):
 
             if ok  and ok1  and ok2:
                 # CREAR CLIENTE
-                conn, cursor = connect()
+                conn, cursor = connectsql(host=self.ip)
                 # Construir la consulta para insertar una nueva fila
                 query = f"INSERT INTO public.clientes (nombre, telefono, correo) VALUES ('{client}',{int(phone)},'{email}')"
                 # Ejecutar la consulta
@@ -26,7 +27,7 @@ class Venta(Ventana):
 
 
                 #OBTENER ID_CLIENTE:
-                conn1, cursor1 = connect()
+                conn1, cursor1 = connectsql(host=self.ip)
                 query1 = f'''SELECT Max(id) FROM clientes WHERE nombre = '{client}' '''
                 cursor1.execute(query1)
                 id_cliente= cursor1.fetchone()
@@ -35,13 +36,13 @@ class Venta(Ventana):
                 conn1.close()
 
                 #CREAR VENTA
-                conn2, cursor2 = connect()
+                conn2, cursor2 = connectsql(host=self.ip)
                 query2 = f'''INSERT INTO public.ventas (id_cliente)
                 VALUES ({id_cliente[0]});'''
                 make_query(conn2,cursor2, query2)
 
                 #OBTENER ID_VENTA:
-                conn3, cursor3 = connect()
+                conn3, cursor3 = connectsql(host=self.ip)
                 query3 = f'''SELECT id FROM ventas WHERE id_cliente = {id_cliente[0]}'''
                 cursor3.execute(query3)
                 id_venta= cursor3.fetchone()

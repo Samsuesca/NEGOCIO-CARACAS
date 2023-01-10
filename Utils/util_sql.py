@@ -1,12 +1,9 @@
 import psycopg2
-
-
-#conectarse a una base de datos
-def connect(password='miakhalifA07',dbname='negocio', user='postgres',host=''):
+          #conectarse a una base de datos
+def connectsql(password='miakhalifA07',dbname='negocio', user='postgres',host=''):
     conn = psycopg2.connect(dbname=dbname, user=user, password=password, host=host) # U = '10.161.49.171', # MICEL = '192.168.214.173', # HOUSE = '192.168.0.18'
     cursor = conn.cursor()
     return conn, cursor
-
 
 #Realiza una consulta en la cual se necesitan datos como un resultado
 def execute_query(conn,cursor, query):
@@ -29,10 +26,10 @@ def make_query(conn,cursor, query):
     conn.close()
 
 #Actualizar una tabla
-def uptade_date(self,ok,date,row_id,col_name):
+def uptade_date(self,ok,date,row_id,col_name,ip):
     if ok and date:
         # Conectarse a la base de datos y obtener un cursor
-        conn, cursor = connect()
+        conn, cursor = connectsql(host=ip)
         # Construir la consulta para insertar una nueva fila 
         query = f"UPDATE public.{self.table_name} SET {col_name}='{date}' WHERE id={row_id}"
         # Ejecutar la consulta
@@ -40,11 +37,11 @@ def uptade_date(self,ok,date,row_id,col_name):
         self.openData()
 
 #Eliminar de una tabla
-def delete_date(self,ok,id):
+def delete_date(self,ok,id,ip):
     # Si el usuario hizo clic en el botón "OK" y proporcionó un ID válido, continuar con la eliminación
     if ok and id:
         # Conectarse a la base de datos y obtener un cursor
-        conn, cursor = connect()
+        conn, cursor = connectsql(host=ip)
         # Construir la consulta para eliminar la fila con el ID especificado
         query = f"DELETE FROM public.{self.table_name} WHERE ID = {id}"
         # Ejecutar la consulta
@@ -52,9 +49,9 @@ def delete_date(self,ok,id):
         self.openData()
 
 #Obtener una fila:
-def get_id(table_name,row):
+def get_id(table_name,row,ip):
         # Conectarse a la base de datos y obtener un cursor
-        conn, cursor = connect()
+        conn, cursor = connectsql(host=ip)
         cursor.execute(f"SELECT * FROM {table_name} WHERE id = {row}")
         # Realizar el commit para guardar los cambios
         conn.commit()

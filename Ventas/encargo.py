@@ -1,6 +1,6 @@
 from PyQt5.QtWidgets import QInputDialog, QMessageBox
-from Utils.QtUtils import Ventana
-from Utils.util_sql import connect, make_query, uptade_date, delete_date, get_id
+from Utils.QtUtils import Ventana 
+from Utils.util_sql import connectsql, uptade_date, delete_date, get_id
 
 class Encargo(Ventana):
     def __init__(self, main_window, table_name):

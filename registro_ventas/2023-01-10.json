@@ -1,0 +1,19 @@
+{
+    "Ventas": [
+        {
+            "name": "",
+            "id_cliente": 70,
+            "fecha": "2023-01-10 11:21:11",
+            "detalles": [
+                {
+                    "prenda": "Jean",
+                    "talla": "16",
+                    "precio": "35000",
+                    "cantidad": 1,
+                    "subtotal": "35000"
+                }
+            ],
+            "total": "35000"
+        }
+    ]
+}

@@ -5,10 +5,11 @@ from Inventarios.Inventario.inventario import Inventario
 
 
 class   ShowInventarios(QMainWindow):
-        def __init__(self,return_window,to_close):
+        def __init__(self,return_window,to_close,ip):
             super().__init__()
             self.return_window = return_window
             self.to_close = to_close
+            self.ip = ip
 
             label = QLabel('Bienvenido a tu Menú de Inventarios')
             # Creamos un objeto QTextEdit y establecemos su contenido
@@ -62,7 +63,7 @@ class   ShowInventarios(QMainWindow):
             # Cerrar la ventana 
             self.to_close.close()
             # Abrir la ventana del menú principal
-            self.menu_window = Inventario(self.to_close)
+            self.menu_window = Inventario(self.to_close,self.ip)
             x,y = adj_left(self.menu_window)
             self.menu_window.move(x,y)
             self.menu_window.show()

@@ -7,8 +7,9 @@ from Inventarios.Inventario.inventario import Inventario
 
 
 class   MenuVentas(QMainWindow):
-        def __init__(self,return_window):
+        def __init__(self,return_window,ip):
             super().__init__()
+            self.ip = ip
             self.initUI()
             self.return_window = return_window
             self.setGeometry(100,100,700,500)
@@ -74,14 +75,14 @@ class   MenuVentas(QMainWindow):
             x1,y1 = adj_left(self)
             self.move(x1,y1)
             # Abrir la ventana del menú principal
-            self.inventario = Inventario(self)
+            self.inventario = Inventario(self,self.ip)
             x,y = adj_right(self.inventario)
             self.inventario.move(x,y)
             self.inventario.show()
 
         def openVenta(self):
             self.close()
-            self.venta = Venta(self,'ventas')
+            self.venta = Venta(self,'ventas',self.ip)
             x,y = adj_middle(self.venta)
             self.venta.move(x,y)
             self.venta.show()

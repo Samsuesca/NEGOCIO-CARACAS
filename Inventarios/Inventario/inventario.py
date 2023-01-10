@@ -3,10 +3,11 @@ from Utils.style import PushButton, adj_right
 from Utils.QtUtils import ShowData
 
 class Inventario(QMainWindow):
-    def __init__(self, return_window):
+    def __init__(self, return_window,ip):
         super().__init__()
         self.initUI()
         self.return_window = return_window
+        self.ip = ip
 
         # Establecer título y tamaño de la ventana
         self.setWindowTitle("Inventario Principal")
@@ -51,6 +52,7 @@ class Inventario(QMainWindow):
     class Inv(QMainWindow):
         def __init__(self,up) -> QStackedLayout():
             self.stacked_layout = QStackedLayout()
+            self.up = up
             super().__init__()
             self.stacked_layout.addWidget(self.openCamisetas())
             self.stacked_layout.addWidget(self.openSudaderas())
@@ -68,37 +70,37 @@ class Inventario(QMainWindow):
             self.show()
 
         def openTotal(self):
-            show_data = ShowData(self,'total')
+            show_data = ShowData(self,'total',self.up.ip)
             show_data.show()
             return show_data
 
         def openCamisetas(self):
-            show_data = ShowData(self,'camisetas')
+            show_data = ShowData(self,'camisetas',self.up.ip)
             show_data.show()
             return show_data
 
         def openChompaAzul(self):
-            show_data = ShowData(self,'chazul')
+            show_data = ShowData(self,'chazul',self.up.ip)
             show_data.show()
             return show_data
 
         def openChompaGris(self):
-            show_data = ShowData(self,'chgris')
+            show_data = ShowData(self,'chgris',self.up.ip)
             show_data.show()
             return show_data
 
         def openSudaderas(self):
-            show_data = ShowData(self,'sudaderas')
+            show_data = ShowData(self,'sudaderas',self.up.ip)
             show_data.show()
             return show_data
 
         def openJeans(self):
-            show_data = ShowData(self,'jeans')
+            show_data = ShowData(self,'jeans',self.up.ip)
             show_data.show()
             return show_data
 
         def openBlusas(self):
-            show_data = ShowData(self,'blusas')
+            show_data = ShowData(self,'blusas',self.up.ip)
             show_data.show()
             return show_data
     
