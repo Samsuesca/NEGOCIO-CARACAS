@@ -16,12 +16,12 @@ class MenuInventarios(QMainWindow):
         # Establecer título y tamaño de la ventana
         self.setWindowTitle("Inventarios")
         self.setGeometry(100, 100, 700, 500)  
-
     
         # Crea una lista para almacenar las ventanas secundarias
         self.secondary_windows = [] 
         
     def initUI(self):
+        #Crear Menu de pestañas
         self.pestanas = QTabWidget(self)
         self.pestanas.addTab(ShowInventarios(self.return_window,self), 'Inicio')
         self.pestanas.addTab(Telas(self,'telas'), 'Telas')

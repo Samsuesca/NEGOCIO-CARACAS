@@ -8,6 +8,17 @@
 ---Ejecutar reinicio:
 --pg_ctl -D /Library/PostgreSQL/15/data restart
 
+-- {
+--     "Ventas":[{"name": "",
+--     "id_cliente": 54,
+--     "fecha": "2023-01-09 22:37:37",
+--     "detalles": [
+--         {"prenda": "Camiseta", "tallas": "6", "precio": "30000", "cantidad": 1, "subtotal": "30000"},
+--         {"prenda": "Sudadera", "tallas": "14", "precio": "35000", "cantidad": 1, "subtotal": "35000"},
+--         {"prenda": "Jean", "tallas": "14", "precio": "35000", "cantidad": 1, "subtotal": "35000"}], "total": 54}
+--     ]
+-- }
+
 #llaves foraneas tabla tipo_prendas:
 ALTER TABLE IF EXISTS public.tipo_prendas
     ADD COLUMN id_bordados integer;

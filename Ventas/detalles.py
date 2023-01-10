@@ -1,13 +1,14 @@
-from PyQt5.QtWidgets import QMainWindow,QWidget,QGridLayout
+from PyQt5.QtWidgets import QMainWindow,QWidget,QGridLayout,QMessageBox
 from Utils.style import PushButton
-from Utils.QtUtils import detalles_venta, informe_venta
+from Utils.QtUtils import INFO
 
 
 class Detalles(QMainWindow):
-    def __init__(self, main_window, id_venta) -> None:
+    def __init__(self, main_window, id_venta,title) -> None:
         super().__init__() 
         self.main_window = main_window
         self.id_venta = id_venta
+        self.setWindowTitle(title)
         self.initUI()
         
     def initUI(self):
@@ -29,7 +30,7 @@ class Detalles(QMainWindow):
         button7.clicked.connect(self.openMedias)
         button8 = PushButton("YOMBER")
         button8.clicked.connect(self.openYomber)
-        button9 = PushButton("FINALIZAR",self)
+        button9 = PushButton("VER VENTA",self)
         button9.clicked.connect(self.openFinalizar)
         button10 = PushButton("CANCELAR")
         button10.clicked.connect(self.openYomber)
@@ -53,31 +54,32 @@ class Detalles(QMainWindow):
         self.setCentralWidget(widget)
 
     def openCamisetas(self):
-        detalles_venta(self,'camisetas')
+        INFO(self).detalles_venta('camisetas')
 
     def openChompaAzul(self):
-        detalles_venta(self,'chazul')
+        INFO(self).detalles_venta('chazul')
         
 
     def openChompaGris(self):
-        detalles_venta(self,'chgris')
+        INFO(self).detalles_venta('chgris')
         
     def openSudaderas(self):
-        detalles_venta(self,'sudaderas')
+        INFO(self).detalles_venta('sudaderas')
         
     def openJeans(self):
-        detalles_venta(self,'jeans')
+        INFO(self).detalles_venta('jeans')
     
     def openBlusas(self): 
-        detalles_venta(self,'blusas')
+        INFO(self).detalles_venta('blusas')
 
     def openMedias(self):
-        detalles_venta(self,'Medias')
+        INFO(self).detalles_venta('Medias')
     
     def openYomber(self): ### CONECTAR A ENCARGO
         pass
     def openFinalizar(self):
-        informe_venta(self.id_venta)
+        INFO(self).informe_venta(self.id_venta)
+        
     
     
         
