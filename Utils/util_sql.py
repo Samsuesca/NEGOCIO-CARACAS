@@ -1,7 +1,8 @@
 import psycopg2
 
+
 #conectarse a una base de datos
-def connect(password='miakhalifA07',dbname='negocio', user='postgres',host='192.168.0.18'):
+def connect(password='miakhalifA07',dbname='negocio', user='postgres',host=''):
     conn = psycopg2.connect(dbname=dbname, user=user, password=password, host=host) # U = '10.161.49.171', # MICEL = '192.168.214.173', # HOUSE = '192.168.0.18'
     cursor = conn.cursor()
     return conn, cursor

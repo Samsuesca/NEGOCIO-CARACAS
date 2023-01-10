@@ -1,6 +1,6 @@
 import sys
 from pathlib import Path
-from PyQt5.QtWidgets import QApplication, QMainWindow, QLabel, QVBoxLayout, QWidget,QGridLayout,QSplashScreen
+from PyQt5.QtWidgets import QApplication, QComboBox, QMainWindow, QLabel, QVBoxLayout, QWidget,QGridLayout,QSplashScreen
 from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QFont,  QIcon
 from datetime import date
@@ -38,6 +38,19 @@ class WelcomeWindow(QMainWindow):
         label = QLabel("BIENVENIDO A NEGOCIO CARACAS", self)
         label.setAlignment(Qt.AlignCenter)
 
+        # Crear una lista desplegable
+        combo = QComboBox()
+
+        # Añadir elementos a la lista
+        combo.addItems(["LISTA DE IPS","HOGAR", "UNIVERSIDAD", "DATOS"])
+
+        # Crear una etiqueta para mostrar el elemento seleccionado
+        self.label1 = QLabel()
+        self.label1.setText("Seleccione una IP")
+
+        # Conectar la señal currentTextChanged con la función update_label
+        combo.currentTextChanged.connect(self.label1.setText)
+       
 
         today = date.today()
         label_date = QLabel(today.strftime("%B %d, %Y"))
@@ -51,6 +64,8 @@ class WelcomeWindow(QMainWindow):
         layout = QVBoxLayout()
         layout.addWidget(label)
         layout.addWidget(label_date)
+        layout.addWidget(combo)
+        layout.addWidget(self.label1,alignment=Qt.AlignCenter)
         layout.addWidget(btn_menu)
         
         widget = QWidget(self)
@@ -60,6 +75,14 @@ class WelcomeWindow(QMainWindow):
     def openMenu(self):
         # Cerrar la ventana de bienvenida
         self.close()
+        if self.label1.text()=="HOGAR":
+            self.ip = '192.168.0.18'
+        elif self.label1.text()=="DATOS":
+            self.ip = '192.168.214.173'
+        elif self.label1.text()=="UNIVERSIDAD":
+            self.ip = '10.161.49.171'
+        else: 
+            pass
         
         # Abrir la ventana del menú principal
         self.menu_window = MenuWindow()
