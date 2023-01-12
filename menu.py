@@ -1,8 +1,8 @@
 from PyQt5.QtWidgets import  QMainWindow, QWidget,QGridLayout
 from  Inventarios.inventarios import MenuInventarios
 from Ventas.ventas import MenuVentas
-from BDH.bdh import MenuBDH
 from Analitica.analitica import MenuAnalitica
+from Gas
 from Utils.style import adj_middle, PushButton
 
 
@@ -22,8 +22,8 @@ class MenuWindow(QMainWindow):
         button1.clicked.connect(self.openVentas)
         button2 = PushButton("INVENTARIOS")
         button2.clicked.connect(self.openInventarios)
-        # button3 = PushButton("BASES DE DATOS \n   HISTÓRICAS")
-        # button3.clicked.connect(self.openBDH)
+        button3 = PushButton("GASTOS")
+        button3.clicked.connect(self.openGastos)
         # button4 = PushButton("ANALÍTICA")
         # button4.clicked.connect(self.openAnalitica)
 
@@ -59,7 +59,7 @@ class MenuWindow(QMainWindow):
         # Cerrar la ventana actual
         self.close()
 
-    def openBDH(self):
+    def openGastos(self):
         # Crear una instancia de la ventana del menú  y mostrarla
         self.menu3_window = MenuBDH(self)
         x,y = adj_middle(self.menu3_window)

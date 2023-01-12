@@ -1,15 +1,18 @@
-from PyQt5.QtWidgets import QMainWindow,QWidget,QGridLayout,QMessageBox
+from PyQt5.QtWidgets import QMainWindow,QWidget,QGridLayout
 from Utils.style import PushButton
 from Utils.QtUtils import INFO
+from Utils.util_sql import get_id, delete_date
 
 
 class Detalles(QMainWindow):
-    def __init__(self, main_window, id_venta,title) -> None:
+    def __init__(self, main_window, id_venta,title,ip) -> None:
         super().__init__() 
         self.main_window = main_window
         self.id_venta = id_venta
+        self.table_name = 'ventas'
         self.setWindowTitle(title)
         self.initUI()
+        self.ip = ip
         
     def initUI(self):
        
@@ -33,7 +36,7 @@ class Detalles(QMainWindow):
         button9 = PushButton("VER VENTA",self)
         button9.clicked.connect(self.openFinalizar)
         button10 = PushButton("CANCELAR")
-        button10.clicked.connect(self.openYomber)
+        button10.clicked.connect(self.cancelar)
     
         # # Crear el layout de la cuadrícula y agregar los botones
         grid_layout = QGridLayout()
@@ -77,9 +80,13 @@ class Detalles(QMainWindow):
     
     def openYomber(self): ### CONECTAR A ENCARGO
         pass
+
     def openFinalizar(self):
-        INFO(self).informe_venta(self.id_venta)
-        
+        INFO(self).informe_venta()
+
+    def cancelar(self):
+        delete_date(self,ok=True,id=self.id_venta,ip=self.ip)
+        self.close()
     
     
         

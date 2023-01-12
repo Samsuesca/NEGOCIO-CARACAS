@@ -15,7 +15,7 @@ class Confeccion(Pestana):
         if ok and id_prenda and ok1 and quantity and ok2 and negocio:
             
             # Conectarse a la base de datos y obtener un cursor
-            conn, cursor = connectsql(self.ip)
+            conn, cursor = connectsql(host=self.ip)
             # Construir la consulta para insertar una nueva fila
             query = f"INSERT INTO public.{self.table_name} (id_prenda, cantidad, negocio) VALUES ('{id_prenda}', {quantity}, {negocio})"
             # Ejecutar la consulta

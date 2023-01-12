@@ -1,7 +1,7 @@
-from Utils.util_sql import execute_query, connectsql
+from Utils.util_sql import execute_query, connectsql, make_query
 from Utils.style import PushButton, adj_left, adj_right,adj_sup_center,adj_middle
 from datetime import datetime
-from PyQt5.QtWidgets import QDialog,QSplashScreen,QTableWidget,QTableWidgetItem,QGridLayout, QMainWindow, QMessageBox, QHeaderView,QLabel, QVBoxLayout, QWidget, QInputDialog,QHBoxLayout
+from PyQt5.QtWidgets import QDialog,QSplashScreen,QSpinBox,QTableWidget,QTableWidgetItem,QGridLayout, QMainWindow, QMessageBox, QHeaderView,QLabel, QVBoxLayout, QWidget, QInputDialog,QHBoxLayout
 from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QPixmap,QImage 
 import time
@@ -9,8 +9,6 @@ import io
 import os
 import json
 from PIL import Image
-
-
 
 def show_beg(app,welcome_window):
         # Abre la imagen con "pillow"
@@ -173,13 +171,13 @@ class Ventana(QMainWindow):
         show = PushButton(f"Mostrar {self.table_name}", self)
         show.clicked.connect(self.openData)
 
-        # # Agregar un botón para editar 
-        edit = PushButton(f"Editar {self.table_name}", self)
-        edit.clicked.connect(self.editData)
-
         # Agregar un botón para insertar 
         insert = PushButton(f"Realizar {self.table_name}", self)
         insert.clicked.connect(self.insertData)
+
+        # # Agregar un botón para editar 
+        edit = PushButton(f"Editar {self.table_name}", self)
+        edit.clicked.connect(self.editData)
 
         # # Agregar un botón para eliminar 
         delete = PushButton(f"Eliminar {self.table_name}", self)
@@ -223,51 +221,74 @@ class INFO():
         self.up = selfis
 
     def detalles_venta(self,table_name):
+        self.table_name=table_name
         talla, ok = QInputDialog.getText(self.up,'¿Qué talla se Necesita?','Ingrese la talla')
-        if talla and ok:
-            # Conectarse a la base de datos y obtener un cursor
-            conn, cursor = connectsql()
-            query = f"SELECT id FROM {table_name} WHERE talla = '{talla.upper()}'"
-            cursor.execute(query)
-            id_prenda = cursor.fetchone()
-            conn.commit()
-            cursor.close()
-            conn.close()
-            #Obtener la cantidad
-            quantity, ok1 = QInputDialog.getInt(self.up,'¿Qué cantidad va a llevar?','Ingrese la cantidad')
-            if quantity and ok1:
-                #Obtener la cantidad del inventario
-                conn, cursor = connectsql()
-                query = f"SELECT cantidad FROM inventario WHERE id_prenda = {id_prenda[0]}"
+        if talla.upper() in self.sizes():
+        
+            if talla and ok:
+                # Conectarse a la base de datos y obtener un cursor
+                conn, cursor = connectsql(host=self.up.ip)
+                query = f"SELECT id FROM {table_name} WHERE talla = '{talla.upper()}'"
                 cursor.execute(query)
-                cantidad_inventario = cursor.fetchone()
+                id_prenda = cursor.fetchone()
                 conn.commit()
                 cursor.close()
                 conn.close()
-
-                if cantidad_inventario[0] >= quantity:
-                    conn, cursor = connectsql()
-                    query = f'''INSERT INTO public.detalle_venta (id_venta,id_prenda,cantidad)
-                    VALUES ({self.up.id_venta},{id_prenda[0]},{quantity});'''
+                #Obtener la cantidad
+                quantity, ok1 = QInputDialog.getInt(self.up,'¿Qué cantidad va a llevar?','Ingrese la cantidad')
+                if quantity and ok1:
+                    #Obtener la cantidad del inventario
+                    conn, cursor = connectsql(host=self.up.ip)
+                    query = f"SELECT cantidad FROM inventario WHERE id_prenda = {id_prenda[0]}"
                     cursor.execute(query)
+                    cantidad_inventario = cursor.fetchone()
                     conn.commit()
                     cursor.close()
-                    conn.close()   
-                    self.up.initUI()
-                else:
-                    QMessageBox.about(self.up, "Error", "No hay inventario")
+                    conn.close()
 
-    def informe_venta(self,id_venta):
-        result = self.query_venta_detalle(id_venta)
+                    if cantidad_inventario[0] >= quantity:
+                        conn, cursor = connectsql(host=self.up.ip)
+                        query = f'''INSERT INTO public.detalle_venta (id_venta,id_prenda,cantidad)
+                        VALUES ({self.up.id_venta},{id_prenda[0]},{quantity});'''
+                        cursor.execute(query)
+                        conn.commit()
+                        cursor.close()
+                        conn.close()   
+                        self.up.initUI()
+                    else:
+                        QMessageBox.about(self.up, "Error", "No hay inventario")
+        else:
+            QMessageBox.about(self.up, "Error", "La talla que haz seleccionado no existe")
+
+    def sizes(self):
+        if self.table_name == 'jeans':
+            X = ['6','8','10','12','14','16','28','30','32','34']
+        elif self.table_name == 'camisetas':
+            X = ['6','8','10','12','14','16','S','M','L','XL','XXL']
+        elif self.table_name == 'yomber' or self.table_name == 'blusas':
+            X = ['6','8','10','12','14','16','S','M','L','XL']
+        elif self.table_name == 'Medias':
+            X = ['6-8','8-10','9-11']
+        elif self.table_name == 'sudaderas' or self.table_name == 'chazul' or self.table_name == 'chgris':
+            X = ['4', '6', '8', '10', '12', '14', '16', 'S', 'M', 'L', 'XL']
+        else:
+            X = ''
+        return X
+
+
+
+    def informe_venta(self):
+        result = self.query_venta_detalle(self.up.id_venta)
         self.result = result
         self.informe = QDialog()
-        self.informe.setWindowTitle(f'Informe de venta {id_venta}')
+        self.informe.setWindowTitle(f'Informe de venta {self.up.id_venta}')
         self.informe.setGeometry(0,0,550,400)
-        names = [row[3] for row in result]
-        sizes = [row[4] for row in result]
-        prices = [row[5] for row in result]
-        quant = [row[6] for row in result]
-        parcial = [row[7] for row in result]
+        self.names = [row[3] for row in result]
+        self.sizes = [row[4] for row in result]
+        self.prices = [row[5] for row in result]
+        self.quant = [row[6] for row in result]
+        self.parcial = [row[7] for row in result]
+        self.id_det = [row[9] for row in result]
         # Crear los labels para mostrar los datos
         try:
             label_cliente = QLabel(f'Nombre del cliente: {result[0][0]} | ID_VENTA: ({result[0][1]})')
@@ -288,18 +309,32 @@ class INFO():
             grid.addWidget(ti_quant,0,6,alignment=Qt.AlignCenter)
             grid.addWidget(ti_spa[3],0,7,alignment=Qt.AlignCenter)
             grid.addWidget(ti_parcial,0,8,alignment=Qt.AlignCenter)
-            for i in range(len(names)):
-                label_name= QLabel(f'{names[i]}')
-                label_size= QLabel(f'{sizes[i]}')
-                label_prices= QLabel(f'{prices[i]}')
-                label_quant= QLabel(f'{quant[i]}')
-                label_parcial= QLabel(f'{parcial[i]}')
+            new = []
+            for i in range(len(self.names)):
+                label_name= QLabel(f'{self.names[i]}')
+                label_size= QLabel(f'{self.sizes[i]}')
+                label_prices= QLabel(f'{self.prices[i]}')
+                label_quant= QSpinBox()
+                label_quant.setMinimum(0)
+                label_quant.setValue(self.quant[i])
+                self.id_detalle = self.id_det[i]
+                label_quant.valueChanged.connect(self.actualizar_cantidad)
+                # new.append(label_quant.value())
+                label_parcial= QLabel(f'{self.parcial[i]}')
                 grid.addWidget(label_name,i+1,0,alignment=Qt.AlignCenter)
                 grid.addWidget(label_size,i+1,2,alignment=Qt.AlignCenter)
                 grid.addWidget(label_prices,i+1,4,alignment=Qt.AlignCenter)
                 grid.addWidget(label_quant,i+1,6,alignment=Qt.AlignCenter)
                 grid.addWidget(label_parcial,i+1,8,alignment=Qt.AlignCenter)
+            grid2 = QGridLayout()
             label_total_venta = QLabel(f'Total de la venta: {result[0][8]}')
+            grid2.addWidget(label_total_venta,0,0,alignment=Qt.AlignCenter)
+            update = PushButton("ACTUALIZAR")
+            update.setFixedSize(200, 20)
+            update.clicked.connect(self.actualizar)
+            grid2.addWidget(update,0,1,alignment=Qt.AlignCenter)
+
+            # print(new)
             # Define el ancho de las columnas
             grid.setColumnStretch(0, 2)
             grid.setColumnStretch(1, 0.2)
@@ -313,10 +348,10 @@ class INFO():
 
             #botones
             hbox = QHBoxLayout()
-            save = PushButton("Guardar Venta")
+            save = PushButton("GUARDAR VENTA")
             save.clicked.connect(self.save_venta)
-            edit = PushButton("Editar Venta")
-            edit.clicked.connect(self.edit_venta)
+            edit = PushButton("AGREGAR PRODUCTOS")
+            edit.clicked.connect(self.informe.close)
             hbox.addWidget(save)
             hbox.addWidget(edit)
 
@@ -325,7 +360,7 @@ class INFO():
             layout.addWidget(label_cliente)
             layout.addWidget(label_fecha)
             layout.addLayout(grid)
-            layout.addWidget(label_total_venta)
+            layout.addLayout(grid2)
             layout.addLayout(hbox)
 
             #Agregar el widget al layout principal de la ventana
@@ -333,22 +368,39 @@ class INFO():
             adj_sup_center(self.informe)
             self.informe.exec_()
 
+            # self.actualizar_cantidad(label_quant,self.id_det[i])
         except IndexError:
             QMessageBox.about(self.up,"Error", "No se han añadido prendas a la venta")
 
+
+    def actualizar(self):
+        self.informe.accept()
+        self.informe_venta()
+
+    def actualizar_cantidad(self,value):
+        conn,cur = connectsql(host=self.up.ip)
+    # Actualizar la cantidad en la tabla detalle_venta.
+        query = f'''UPDATE detalle_venta SET cantidad={value} WHERE id={self.id_detalle}'''
+        make_query(conn,cur,query)
+        # return  self.actualizar_cantidad
+
+
     def save_venta(self):
-        result=self.result
             # Obtiene la fecha actual en formato "YYYY-MM-DD"
+        conn,cur = connectsql(host=self.up.ip)
+        query = f'''UPDATE public.ventas SET finalizada=true WHERE id = {self.up.id_venta}'''
+        make_query(conn,cur,query)
+
         today = datetime.now().strftime("%Y-%m-%d")
         ventas = {'Ventas': []}
         # Crea el diccionario con los datos de la venta
-        data = {'name':result[0][0],
-                'id_cliente':result[0][1],
-                'fecha':result[0][2].strftime("%Y-%m-%d %H:%M:%S"),
-                'detalles':[{'prenda': result[i][3], 'talla': result[i][4],
-                 'precio': str(result[i][5]), 'cantidad': result[i][6], 'subtotal': 
-                 str(result[i][7])} for i in range(len(result))],
-                'total':str(result[0][8])}
+        data = {'name':self.result[0][0],
+                'id_venta':self.result[0][1],
+                'fecha':self.result[0][2].strftime("%Y-%m-%d %H:%M:%S"),
+                'detalles':[{'prenda': self.result[i][3], 'talla': self.result[i][4],
+                 'precio': str(self.result[i][5]), 'cantidad': self.result[i][6], 'subtotal': 
+                 str(self.result[i][7])} for i in range(len(self.result))],
+                'total':str(self.result[0][8])}
       #######
        
         if os.path.exists(f"registro_ventas/{today}.json"):
@@ -377,12 +429,11 @@ class INFO():
                 ventass.update(read)
                 file.seek(0)
                 json.dump(ventass, file, indent = 4)
-        self.informe.close()
+        self.informe.accept()
         self.up.close()       
-    def edit_venta():
-        pass   
+
     def query_venta_detalle(self,id_venta):  
-        conn, cursor = connectsql()
+        conn, cursor = connectsql(host=self.up.ip)
         query = f''' SELECT clientes.nombre AS "Nombre del cliente",
                         ventas.id AS "ID",
                         ventas.fecha AS "Fecha",
@@ -391,7 +442,8 @@ class INFO():
                         prendas.precio AS "Precio",
                         detalle_venta.cantidad AS "Cantidad",
                         (prendas.precio * detalle_venta.cantidad) AS "Total parcial por prenda",
-                        ventas.total AS "Total de la Venta"
+                        ventas.total AS "Total de la Venta",
+                        detalle_venta.id AS "ID_DETALLE"
                         FROM clientes
                         JOIN ventas ON clientes.id = ventas.id_cliente
                         JOIN detalle_venta ON ventas.id = detalle_venta.id_venta

@@ -8,16 +8,6 @@
 ---Ejecutar reinicio:
 --pg_ctl -D /Library/PostgreSQL/15/data restart
 
--- {
---     "Ventas":[{"name": "",
---     "id_cliente": 54,
---     "fecha": "2023-01-09 22:37:37",
---     "detalles": [
---         {"prenda": "Camiseta", "tallas": "6", "precio": "30000", "cantidad": 1, "subtotal": "30000"},
---         {"prenda": "Sudadera", "tallas": "14", "precio": "35000", "cantidad": 1, "subtotal": "35000"},
---         {"prenda": "Jean", "tallas": "14", "precio": "35000", "cantidad": 1, "subtotal": "35000"}], "total": 54}
---     ]
--- }
 
 #llaves foraneas tabla tipo_prendas:
 ALTER TABLE IF EXISTS public.tipo_prendas
@@ -327,3 +317,66 @@ CREATE TABLE detalle_venta (
 INSERT INTO public.detalle_venta (id_venta,id_prenda,cantidad)
 VALUES ((SELECT id FROM ventas WHERE id_cliente = (SELECT id FROM clientes WHERE nombre = 'Manolo')),22,1);
 
+--crear tabla movimientos
+CREATE TABLE movimientos (
+    id SERIAL PRIMARY KEY,
+    tipo VARCHAR(50) NOT NULL,
+    descripcion VARCHAR(255) NOT NULL,
+    monto DECIMAL(10,2) NOT NULL,
+    fecha TIMESTAMP NOT NULL DEFAULT NOW()
+);
+
+--function trigger para llevar ventas a registros
+
+
+
+CREATE OR REPLACE FUNCTION agregar_movimiento_venta()
+RETURNS TRIGGER AS $$
+BEGIN
+    IF NEW.finalizada = TRUE THEN
+        -- Registro de venta en la tabla de movimientos
+        INSERT INTO movimientos (tipo, descripcion, monto, fecha)
+        VALUES ('Venta', 'Ingreso Venta', NEW.total, NOW());
+
+        INSERT INTO movimientos (tipo,fecha, descripcion, monto)
+        SELECT 'Venta',NOW(), 'Comisión por venta', -5000 * SUM(CASE WHEN id_prenda BETWEEN 1 AND 54 THEN cantidad ELSE 0 END)
+        FROM detalle_venta
+        WHERE id_venta = NEW.id;
+
+    END IF;
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+--crear trigger de la funcion
+CREATE TRIGGER agregar_movimiento
+AFTER UPDATE OF finalizada ON ventas
+FOR EACH ROW
+EXECUTE FUNCTION agregar_movimiento_venta();
+
+
+--tabla gastos
+CREATE TABLE gastos_uniformes (
+    id SERIAL PRIMARY KEY,
+    fecha TIMESTAMP NOT NULL DEFAULT NOW(),
+    descripcion VARCHAR(255) NOT NULL,
+    monto NUMERIC(10, 2) NOT NULL,
+    categoria VARCHAR(255) NOT NULL,
+    detalles VARCHAR(255)
+);
+
+--funcion agregar gasto
+CREATE OR REPLACE FUNCTION agregar_movimiento_gasto()
+RETURNS TRIGGER AS $$
+BEGIN
+    INSERT INTO movimientos (fecha, descripcion, monto, tipo)
+    VALUES (NEW.fecha, 'Gasto: ' || NEW.descripcion, NEW.monto*-1, 'Gasto');
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+--trigger agregar gasto
+CREATE TRIGGER agregar_movimiento_gasto
+AFTER INSERT ON gastos_uniformes
+FOR EACH ROW
+EXECUTE FUNCTION agregar_movimiento_gasto();

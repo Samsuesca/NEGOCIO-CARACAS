@@ -15,7 +15,7 @@ class Corte(Pestana):
         if ok and id_prenda and ok1 and quantity:
             
             # Conectarse a la base de datos y obtener un cursor
-            conn, cursor = connectsql(self.ip)
+            conn, cursor = connectsql(host=self.ip)
             # Construir la consulta para insertar una nueva fila
             query = f"INSERT INTO public.{self.table_name}(id_prenda, cantidad) VALUES ('{id_prenda}', {quantity})"
             # Ejecutar la consulta

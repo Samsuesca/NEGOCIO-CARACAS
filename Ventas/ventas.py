@@ -5,7 +5,6 @@ from Ventas.venta import Venta
 from Utils.style import PushButton, adj_left,adj_right,adj_middle, font
 from Inventarios.Inventario.inventario import Inventario
 
-
 class   MenuVentas(QMainWindow):
         def __init__(self,return_window,ip):
             super().__init__()

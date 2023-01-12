@@ -1,7 +1,7 @@
 import psycopg2
           #conectarse a una base de datos
-def connectsql(password='miakhalifA07',dbname='negocio', user='postgres',host=''):
-    conn = psycopg2.connect(dbname=dbname, user=user, password=password, host=host) # U = '10.161.49.171', # MICEL = '192.168.214.173', # HOUSE = '192.168.0.18'
+def connectsql(host):
+    conn = psycopg2.connect(dbname='negocio', user='postgres', password='miakhalifA07', host=host) # U = '10.161.49.171', # MICEL = '192.168.214.173', # HOUSE = '192.168.0.18'
     cursor = conn.cursor()
     return conn, cursor
 
@@ -37,7 +37,7 @@ def uptade_date(self,ok,date,row_id,col_name,ip):
         self.openData()
 
 #Eliminar de una tabla
-def delete_date(self,ok,id,ip):
+def delete_date(self,ok=False,id='',ip=''):
     # Si el usuario hizo clic en el botón "OK" y proporcionó un ID válido, continuar con la eliminación
     if ok and id:
         # Conectarse a la base de datos y obtener un cursor
@@ -46,7 +46,10 @@ def delete_date(self,ok,id,ip):
         query = f"DELETE FROM public.{self.table_name} WHERE ID = {id}"
         # Ejecutar la consulta
         make_query(conn,cursor, query)
-        self.openData()
+        try:
+            self.openData()
+        except AttributeError:
+            pass
 
 #Obtener una fila:
 def get_id(table_name,row,ip):

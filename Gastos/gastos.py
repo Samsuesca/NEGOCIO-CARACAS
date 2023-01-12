@@ -2,7 +2,7 @@ from PyQt5.QtWidgets import QMainWindow, QLabel, QVBoxLayout, QWidget, QComboBox
 from PyQt5.QtCore import Qt
 from Utils.style import PushButton
 
-class MenuBDH(QMainWindow):
+class MenuGastos(QMainWindow):
     def __init__(self, menu_window):
         super().__init__()
         self.menu_window = menu_window

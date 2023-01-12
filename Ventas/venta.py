@@ -7,8 +7,8 @@ from Utils.util_sql import connectsql, make_query, uptade_date, delete_date, get
 class Venta(Ventana):
     def __init__(self, main_window, table_name,ip):
         super().__init__(main_window, table_name,ip)
-        
         self.ip = ip
+
     def insertData(self): 
         client, ok = QInputDialog.getText(self,'Realizar Venta','Inserta el nombre del cliente', QLineEdit.Normal, "")
         phone, ok1 = QInputDialog.getText(self, 'Realizar Venta', 'Inserta el teléfono del cliente', QLineEdit.Normal, "3000000000")
@@ -59,7 +59,7 @@ class Venta(Ventana):
                
     
     def detalles(self,id_venta):
-        self.show_detalles = Detalles(self,id_venta,f'Venta #{id_venta}')
+        self.show_detalles = Detalles(self,id_venta,f'Venta #{id_venta}',self.ip)
         x,y = adj_right(self.show_detalles,1.3)
         self.show_detalles.move(x,y)
         self.show_detalles.show()
@@ -69,7 +69,7 @@ class Venta(Ventana):
 
     def editData(self):
         # Obtener el ID de la fila seleccionada
-        row_id, ok = QInputDialog.getInt(self, 'Editar Lote en Corte', 'Ingresa el ID de la fila que deseas editar:')
+        row_id, ok = QInputDialog.getInt(self, 'Editar Ventas', 'Ingresa el ID de la fila que deseas editar:')
 
         # Si el usuario hizo clic en el botón "OK" y proporcionó un ID válido, continuar con la edición
         if ok and row_id:
@@ -86,7 +86,7 @@ class Venta(Ventana):
 
     def deleteData(self):
         # Obtener el ID de la fila que se desea eliminar
-        row_id, ok = QInputDialog.getInt(self, 'Eliminar Lote en Corte', 'Ingresa el ID que deseas eliminar:')
+        row_id, ok = QInputDialog.getInt(self, 'Eliminar Venta', 'Ingresa el ID que deseas eliminar:')
         if ok and row_id:
             row = get_id(self.table_name,row_id)
             if row is None:

@@ -15,7 +15,7 @@ class Telas(Pestana):
         if ok1 and name and ok2 and price and ok and quantity:
             
             # Conectarse a la base de datos y obtener un cursor
-            conn, cursor = connectsql(self.ip)
+            conn, cursor = connectsql(host=self.ip)
             # Construir la consulta para insertar una nueva fila
             query = f"INSERT INTO public.{self.table_name} (name, precio_mt, cant_metros) VALUES ('{name}', {price}, {quantity})"
             # Ejecutar la consulta

@@ -1,0 +1,108 @@
+{
+    "Ventas": [
+        {
+            "name": "",
+            "id_venta": 106,
+            "fecha": "2023-01-12 10:25:17",
+            "detalles": [
+                {
+                    "prenda": "Camiseta",
+                    "talla": "6",
+                    "precio": "30000",
+                    "cantidad": 1,
+                    "subtotal": "30000"
+                }
+            ],
+            "total": "30000"
+        },
+        {
+            "name": "",
+            "id_venta": 108,
+            "fecha": "2023-01-12 10:30:51",
+            "detalles": [
+                {
+                    "prenda": "Blusas",
+                    "talla": "16",
+                    "precio": "13000",
+                    "cantidad": 1,
+                    "subtotal": "13000"
+                },
+                {
+                    "prenda": "Medias",
+                    "talla": "6-8",
+                    "precio": "9000",
+                    "cantidad": 1,
+                    "subtotal": "9000"
+                }
+            ],
+            "total": "22000"
+        },
+        {
+            "name": "",
+            "id_venta": 110,
+            "fecha": "2023-01-12 10:35:10",
+            "detalles": [
+                {
+                    "prenda": "Camiseta",
+                    "talla": "6",
+                    "precio": "30000",
+                    "cantidad": 1,
+                    "subtotal": "30000"
+                }
+            ],
+            "total": "30000"
+        },
+        {
+            "name": "",
+            "id_venta": 111,
+            "fecha": "2023-01-12 10:36:51",
+            "detalles": [
+                {
+                    "prenda": "Jean",
+                    "talla": "8",
+                    "precio": "33000",
+                    "cantidad": 1,
+                    "subtotal": "33000"
+                }
+            ],
+            "total": "33000"
+        },
+        {
+            "name": "",
+            "id_venta": 120,
+            "fecha": "2023-01-12 11:08:38",
+            "detalles": [
+                {
+                    "prenda": "Camiseta",
+                    "talla": "12",
+                    "precio": "33000",
+                    "cantidad": 1,
+                    "subtotal": "33000"
+                },
+                {
+                    "prenda": "Sudadera",
+                    "talla": "14",
+                    "precio": "35000",
+                    "cantidad": 3,
+                    "subtotal": "105000"
+                }
+            ],
+            "total": "138000"
+        },
+        {
+            "name": "",
+            "id_venta": 6,
+            "fecha": "2023-01-12 12:33:46",
+            "detalles": [
+                {
+                    "prenda": "Camiseta",
+                    "talla": "16",
+                    "precio": "35000",
+                    "cantidad": 2,
+                    "subtotal": "70000"
+                }
+            ],
+            "total": "70000"
+        }
+    ]
+}
