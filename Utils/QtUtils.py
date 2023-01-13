@@ -154,7 +154,8 @@ class Pestana(QMainWindow):
 
 
 class Ventana(QMainWindow):
-    def __init__(self, main_window, table_name,ip):
+    def __init__(self, main_window, table_name,ip,edit=False):
+        self.edit = edit
         self.main_window = main_window
         self.table_name = table_name
         self.ip = ip
@@ -162,6 +163,7 @@ class Ventana(QMainWindow):
         super().__init__()
         self.initUI()
         self.setWindowTitle(f'Estás en: {table_name.title()}')
+
     def initUI(self):
         # Agregar un mensaje de bienvenida 
         label = QLabel(f"Este es tu menú para {self.table_name.title()}", self)
@@ -174,10 +176,6 @@ class Ventana(QMainWindow):
         # Agregar un botón para insertar 
         insert = PushButton(f"Realizar {self.table_name}", self)
         insert.clicked.connect(self.insertData)
-
-        # # Agregar un botón para editar 
-        edit = PushButton(f"Editar {self.table_name}", self)
-        edit.clicked.connect(self.editData)
 
         # # Agregar un botón para eliminar 
         delete = PushButton(f"Eliminar {self.table_name}", self)
@@ -194,7 +192,13 @@ class Ventana(QMainWindow):
         layout.addWidget(show, alignment=Qt.AlignCenter)
         layout.addWidget(insert, alignment=Qt.AlignCenter)
         layout.addWidget(delete, alignment=Qt.AlignCenter)
-        layout.addWidget(edit, alignment=Qt.AlignCenter)
+        if self.edit == True:
+            # # Agregar un botón para editar 
+            edit = PushButton(f"Editar {self.table_name}", self)
+            edit.clicked.connect(self.editData)
+            layout.addWidget(edit, alignment=Qt.AlignCenter)
+        else:
+            pass
         layout.addWidget(volver, alignment=Qt.AlignCenter)
         
         widget = QWidget(self)

@@ -2,7 +2,7 @@ from PyQt5.QtWidgets import  QMainWindow, QWidget,QGridLayout
 from  Inventarios.inventarios import MenuInventarios
 from Ventas.ventas import MenuVentas
 from Analitica.analitica import MenuAnalitica
-from Gas
+from Gastos.gastos import MenuGastos
 from Utils.style import adj_middle, PushButton
 
 
@@ -31,7 +31,7 @@ class MenuWindow(QMainWindow):
         grid_layout = QGridLayout()
         grid_layout.addWidget(button1, 0, 0)
         grid_layout.addWidget(button2, 0, 1)
-        # grid_layout.addWidget(button3, 1, 0)
+        grid_layout.addWidget(button3, 1, 0)
         # grid_layout.addWidget(button4, 1, 1)
         
         # Agregar el widget al layout principal de la ventana
@@ -61,7 +61,7 @@ class MenuWindow(QMainWindow):
 
     def openGastos(self):
         # Crear una instancia de la ventana del menú  y mostrarla
-        self.menu3_window = MenuBDH(self)
+        self.menu3_window = MenuGastos(self)
         x,y = adj_middle(self.menu3_window)
         self.menu3_window.move(x,y)
         self.menu3_window.show()

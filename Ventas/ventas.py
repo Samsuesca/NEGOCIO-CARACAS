@@ -81,7 +81,7 @@ class   MenuVentas(QMainWindow):
 
         def openVenta(self):
             self.close()
-            self.venta = Venta(self,'ventas',self.ip)
+            self.venta = Venta(self,'ventas')
             x,y = adj_middle(self.venta)
             self.venta.move(x,y)
             self.venta.show()
