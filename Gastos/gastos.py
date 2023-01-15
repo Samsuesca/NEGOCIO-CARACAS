@@ -15,12 +15,16 @@ class MenuGastos(Ventana):
             description,ok =QInputDialog.getText(self,'Ingresar Gasto','Ingresa la Descripción',QLineEdit.Normal, "")
             monto, ok1 = QInputDialog.getText(self,'Ingresar Gasto','Ingresa el Monto',QLineEdit.Normal, "00")
             details,ok2 = QInputDialog.getText(self,'Ingresar Gasto','Ingresa los Detalles',QLineEdit.Normal, "")
-            dest_ori =  QInputDialog.getItem(self,'Ingresar Gasto','Agrega el origen',['Efectivo','Bancolombia'])
-            if description and ok and monto and ok1 and details and ok2:
+            dest_ori,ok3 =  QInputDialog.getItem(self,'Ingresar Gasto','Agrega el origen',['Efectivo','Bancolombia'])
+
+            if description and ok and monto and ok1 and details and ok2 and dest_ori and ok3 :
                 conn, cursor = connectsql(host=self.up.ip)
                 # Construir la consulta para insertar una nueva fila
-                query = f"INSERT INTO public.gastos (descripcion, monto, categoria,detalles,metodo_pago) VALUES ('{description}',{int(monto)},'{category}','{details}','{dest_ori}')"
+                query = f'''INSERT INTO public.gastos(descripcion, monto, categoria, detalles, metodo_pago)
+                VALUES ('{description}',{int(monto)},'{category}','{details}','{dest_ori}');'''
                 # Ejecutar la consulta
+    #             '''
+	# VALUES (?, ?, ?, ?, ?, ?, ?);'''
                 make_query(conn,cursor, query)
 
     def editData(self): ##COMPLETAR

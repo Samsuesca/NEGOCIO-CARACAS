@@ -1,0 +1,19 @@
+{
+    "Ventas": [
+        {
+            "name": "",
+            "id_venta": 1,
+            "fecha": "2023-01-15 10:56:56",
+            "detalles": [
+                {
+                    "prenda": "Camiseta",
+                    "talla": "12",
+                    "precio": "33000",
+                    "cantidad": 2,
+                    "subtotal": "66000"
+                }
+            ],
+            "total": "66000.00"
+        }
+    ]
+}
