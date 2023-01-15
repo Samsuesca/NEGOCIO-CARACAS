@@ -380,3 +380,16 @@ CREATE TRIGGER agregar_movimiento_gasto
 AFTER INSERT ON gastos_uniformes
 FOR EACH ROW
 EXECUTE FUNCTION agregar_movimiento_gasto();
+
+
+--cuentas por cobrar:
+CREATE TABLE cuentas_por_pagar (
+    id SERIAL PRIMARY KEY,
+    prestamista VARCHAR(255) NOT NULL,
+    concepto VARCHAR(255) NOT NULL,
+    fecha_compra DATE NOT NULL,
+    fecha_pago DATE NOT NULL,
+    monto DECIMAL(10,2) NOT NULL,
+    interes_men DECIMAL(10,2) NOT NULL,
+    pagado BOOLEAN DEFAULT FALSE
+);

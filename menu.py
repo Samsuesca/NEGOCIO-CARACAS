@@ -24,15 +24,15 @@ class MenuWindow(QMainWindow):
         button2.clicked.connect(self.openInventarios)
         button3 = PushButton("GASTOS")
         button3.clicked.connect(self.openGastos)
-        # button4 = PushButton("ANALÍTICA")
-        # button4.clicked.connect(self.openAnalitica)
+        button4 = PushButton("ANALÍTICA")
+        button4.clicked.connect(self.openAnalitica)
 
         # Crear el layout de la cuadrícula y agregar los botones
         grid_layout = QGridLayout()
         grid_layout.addWidget(button1, 0, 0)
         grid_layout.addWidget(button2, 0, 1)
         grid_layout.addWidget(button3, 1, 0)
-        # grid_layout.addWidget(button4, 1, 1)
+        grid_layout.addWidget(button4, 1, 1)
         
         # Agregar el widget al layout principal de la ventana
         widget = QWidget(self)
