@@ -19,7 +19,7 @@ class MenuGastos(Ventana):
             if description and ok and monto and ok1 and details and ok2:
                 conn, cursor = connectsql(host=self.up.ip)
                 # Construir la consulta para insertar una nueva fila
-                query = f"INSERT INTO public.gastos (descripcion, monto, categoria,detalles,metodo_pago) VALUES ('{description}',{int(monto)},'{category}','{details},'{dest_ori}')"
+                query = f"INSERT INTO public.gastos (descripcion, monto, categoria,detalles,metodo_pago) VALUES ('{description}',{int(monto)},'{category}','{details}','{dest_ori}')"
                 # Ejecutar la consulta
                 make_query(conn,cursor, query)
 
