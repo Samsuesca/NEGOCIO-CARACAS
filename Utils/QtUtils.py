@@ -1,74 +1,36 @@
+#Modulos Internos
 from Utils.util_sql import execute_query, connectsql, make_query
 from Utils.style import PushButton, adj_left, adj_right,adj_sup_center,adj_middle
-from datetime import datetime
-from PyQt5.QtWidgets import QDialog,QSplashScreen,QSpinBox,QTableWidget,QTableWidgetItem,QGridLayout, QMainWindow, QMessageBox, QHeaderView,QLabel, QVBoxLayout, QWidget, QInputDialog,QHBoxLayout
+#Modelos de Terceros
+from PyQt5.QtWidgets import QDialog,QSpinBox,QTableWidget,QTableWidgetItem,QGridLayout, QMainWindow, QMessageBox, QHeaderView,QLabel, QVBoxLayout, QWidget, QInputDialog,QHBoxLayout
 from PyQt5.QtCore import Qt
-from PyQt5.QtGui import QPixmap,QImage 
-import time
-import io
+#Modulos de Python
+from datetime import datetime
+
 import os
 import json
-from PIL import Image
 
-def show_beg(app,welcome_window):
-        # Abre la imagen con "pillow"
-    pil_image = Image.open("icon.png").convert("RGB")
-
-    # Convierte la imagen a formato JPEG y a una cadena de bytes
-    bytes_io = io.BytesIO()
-    pil_image.save(bytes_io, "JPEG")
-    bytes_io.seek(0)
-    img_data = bytes_io.read()
-
-
-    # Convierte la imagen a formato Qt
-    qt_image = QImage.fromData(img_data)
-    # Crea un pixmap a partir de la imagen
-    splash_pix = QPixmap.fromImage(qt_image)
-    # splash_pix = QPixmap(str(path))
-    splash = QSplashScreen(
-        splash_pix,
-        Qt.WindowStaysOnTopHint
-    )
-    splash.setEnabled(False)
-    splash.show()
-    splash.setGeometry(100,100,500,500)
-    adj_middle(splash)
- 
-    # Esto es un simple contador/temporizador para mostrar en pantalla
-    # el splash screen. En el futuro haremos que esto sea más útil.
-    for i in range(0, 3): 
-        msg = ( 
-            '<h1><font color="black">' 
-             f'Iniciando en {3-i}s' 
-             '</font></h1>' 
-        ) 
-        splash.showMessage( 
-            msg, 
-            int(Qt.AlignBottom) | int(Qt.AlignHCenter),  
-            Qt.black  
-        ) 
-        time.sleep(1) 
-        app.processEvents() 
-
-    splash.finish(welcome_window)
 
 
 class ShowData(QMainWindow):
 
-    def __init__(self,main_window, table_name,ip) -> None:
+    def __init__(self,main_window, table_name,ip,query='') -> None:
         super().__init__()
         self.table_name = table_name
         self.ip = ip
         self.main_window = main_window
+        self.query = query
         self.initUI()
         self.setWindowTitle(f"Visualización de {self.table_name.title()}")
         self.setMinimumSize(400, 250)
 
     def initUI(self):
         try:    
+            if self.query == '':
             # Obtener los datos de la tabla "telas"
-            results, column_names = self.get_table_data(self.table_name)
+                results, column_names = self.get_table_data(self.table_name)
+            else:
+                results, column_names = self.get_table_data(self.table_name,self.query)
             # Crear la tabla y establecer los encabezados de las columnas
             table = QTableWidget()
             table.setRowCount(len(results))
@@ -96,11 +58,15 @@ class ShowData(QMainWindow):
             QMessageBox.warning(self.main_window, 'Error', 'Parece que la tabla que tratas de ver esta vacia')
 
 
-    def get_table_data(self,table_name):
+    def get_table_data(self,table_name,dif_query=''):
         conn, cursor = connectsql(host=self.ip)
-        results = execute_query(conn,cursor, f'SELECT * FROM {table_name} ORDER BY id')
+        if dif_query == '':
+            results = execute_query(conn,cursor, f'SELECT * FROM {table_name} ORDER BY id')
+        else: 
+            results = execute_query(conn,cursor, dif_query)
         column_names = [column[0] for column in cursor.description]
         return results, column_names
+
 
 class Pestana(QMainWindow):
     def __init__(self, main_window, table_name,ip):
@@ -154,12 +120,12 @@ class Pestana(QMainWindow):
 
 
 class Ventana(QMainWindow):
-    def __init__(self, main_window, table_name,ip,edit=False):
+    def __init__(self, main_window, table_name,ip,edit=False,query=''):
         self.edit = edit
         self.main_window = main_window
         self.table_name = table_name
         self.ip = ip
-        
+        self.query=query
         super().__init__()
         self.initUI()
         self.setWindowTitle(f'Estás en: {table_name.title()}')
@@ -206,7 +172,7 @@ class Ventana(QMainWindow):
         self.setCentralWidget(widget)
     
     def openData(self):
-        self.show_data = ShowData(self.main_window,self.table_name,self.ip)
+        self.show_data = ShowData(self.main_window,self.table_name,self.ip,self.query)
         x,y = adj_right(self.show_data)
         self.show_data.move(x,y)
         self.show_data.show()
@@ -272,7 +238,7 @@ class INFO():
         elif self.table_name == 'yomber' or self.table_name == 'blusas':
             X = ['6','8','10','12','14','16','S','M','L','XL']
         elif self.table_name == 'Medias':
-            X = ['6-8','8-10','9-11']
+            X = ['6-8','8-10','9-11','TOP','MEDIAS']
         elif self.table_name == 'sudaderas' or self.table_name == 'chazul' or self.table_name == 'chgris':
             X = ['4', '6', '8', '10', '12', '14', '16', 'S', 'M', 'L', 'XL']
         else:

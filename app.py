@@ -1,15 +1,21 @@
 # \ 
+
+#Modulos de Python
 import sys
 import psycopg2
 from pathlib import Path
+from datetime import date
+
+#Modulos de Terceros
 from PyQt5.QtWidgets import QApplication,QMessageBox,QHBoxLayout, QComboBox, QMainWindow, QLabel, QVBoxLayout, QWidget
 from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QFont,  QIcon
-from datetime import date
+
+#Importaciones Internas
 from menu import MenuWindow
 from Utils.util_sql import connectsql
-from Utils.style import adj_middle, Palette, PushButton
-from Utils.QtUtils import show_beg
+from Utils.style import adj_middle, Palette, PushButton,show_beg
+
 
 app = QApplication(sys.argv)
 app.setStyle("Windows")
@@ -79,34 +85,33 @@ class WelcomeWindow(QMainWindow):
         self.setCentralWidget(widget)
 
     def let_ip(self):
-        if self.label1.text()=="HOGAR":
-            self.ip = '127.0.0.1' #'192.168.0.18' #
-            try:
-                conn, cursor = connectsql(self.ip)
-                self.openMenu()
-            except psycopg2.OperationalError:
-                error = QMessageBox
-                error.warning(self,'Error en la Base de Datos','''La Base de Datos no esta corriendo en la IP que seleccionaste. Selecciona otra IP ''')
-            
+        # if self.label1.text()=="HOGAR":
+        self.ip = '127.0.0.1' #'192.168.0.18' #
+        try:
+            conn, cursor = connectsql(self.ip)
+            self.openMenu()
+        except psycopg2.OperationalError:
+            error = QMessageBox
+            error.warning(self,'Error en la Base de Datos','''La Base de Datos no esta corriendo en la IP que seleccionaste. Selecciona otra IP ''')
+    
+        # elif self.label1.text()=="DATOS":
+        #     self.ip = '192.168.230.173' #'192.168.214.173'
+        #     try:
+        #         conn, cursor = connectsql(self.ip)
+        #         self.openMenu()
+        #     except psycopg2.OperationalError:
+        #         QMessageBox.warning(self,'Error en la Base de Datos','''La Base de Datos no está corriendo en la IP que seleccionaste. Selecciona otra IP''')
+        # elif self.label1.text()=="UNIVERSIDAD":
+        #     self.ip = '10.161.49.171'
+        #     try:
+        #         conn, cursor = connectsql(self.ip)
+        #         self.openMenu()
+        #     except psycopg2.OperationalError:
+        #         QMessageBox.warning(self,'Error en la Base de Datos','''La Base de Datos no esta corriendo en la IP que seleccionaste. Selecciona otra IP''')
 
-        elif self.label1.text()=="DATOS":
-            self.ip = '192.168.230.173' #'192.168.214.173'
-            try:
-                conn, cursor = connectsql(self.ip)
-                self.openMenu()
-            except psycopg2.OperationalError:
-                QMessageBox.warning(self,'Error en la Base de Datos','''La Base de Datos no está corriendo en la IP que seleccionaste. Selecciona otra IP''')
-        elif self.label1.text()=="UNIVERSIDAD":
-            self.ip = '10.161.49.171'
-            try:
-                conn, cursor = connectsql(self.ip)
-                self.openMenu()
-            except psycopg2.OperationalError:
-                QMessageBox.warning(self,'Error en la Base de Datos','''La Base de Datos no esta corriendo en la IP que seleccionaste. Selecciona otra IP''')
-
-        else: 
-            self.ip = ''
-            QMessageBox.warning(self,'No puedes continuar','Debes seleccionar una IP')
+        # else: 
+        #     self.ip = ''
+        #     QMessageBox.warning(self,'No puedes continuar','Debes seleccionar una IP')
         
     def openMenu(self):
         # Abrir la ventana del menú principal
@@ -127,4 +132,5 @@ if __name__ == "__main__":
     
     welcome_window.show()
     sys.exit(app.exec_())
+
     

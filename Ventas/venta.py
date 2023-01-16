@@ -2,11 +2,13 @@ from PyQt5.QtWidgets import QInputDialog, QMessageBox, QLineEdit
 from Utils.QtUtils import Ventana
 from Ventas.detalles import Detalles
 from Utils.style import adj_right,adj_left
-from Utils.util_sql import connectsql, make_query, uptade_date, delete_date, get_id
+from Utils.util_sql import connectsql, make_query, delete_date, get_id
 
 class Venta(Ventana):
     def __init__(self, main_window, table_name):
-        super().__init__(main_window, table_name,main_window.ip)
+        query = f''' SELECT clientes.nombre,clientes.telefono,date_trunc('day',ventas.fecha) AS fecha,
+        ventas.total,ventas.metodo_pago FROM ventas JOIN clientes ON ventas.id_cliente = clientes.id;'''
+        super().__init__(main_window, table_name,main_window.ip,query=query)
         self.up = main_window
         self.ip = self.up.ip
 
@@ -61,6 +63,7 @@ class Venta(Ventana):
     def detalles(self,id_venta):
         self.show_detalles = Detalles(self,id_venta,f'Venta #{id_venta}',self.ip)
         x,y = adj_right(self.show_detalles,1.3)
+        
         self.show_detalles.move(x,y)
         self.show_detalles.show()
         x1,y1 = adj_left(self)

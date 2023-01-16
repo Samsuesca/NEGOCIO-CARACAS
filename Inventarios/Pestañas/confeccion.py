@@ -17,7 +17,7 @@ class Confeccion(Pestana):
             # Conectarse a la base de datos y obtener un cursor
             conn, cursor = connectsql(host=self.ip)
             # Construir la consulta para insertar una nueva fila
-            query = f"INSERT INTO public.{self.table_name} (id_prenda, cantidad, negocio) VALUES ('{id_prenda}', {quantity}, {negocio})"
+            query = f"INSERT INTO public.{self.table_name} (id_prenda, cantidad, negocio) VALUES ('{id_prenda}', {quantity}, '{negocio}')"
             # Ejecutar la consulta
             make_query(conn,cursor, query)
             self.openData()

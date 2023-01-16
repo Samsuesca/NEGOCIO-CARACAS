@@ -1,7 +1,10 @@
+#Modulos de Terceros
 from PyQt5.QtWidgets import QMainWindow,QWidget,QGridLayout
+
+#Modulos Internos
 from Utils.style import PushButton
 from Utils.QtUtils import INFO
-from Utils.util_sql import get_id, delete_date
+from Utils.util_sql import delete_date
 
 
 class Detalles(QMainWindow):
@@ -9,8 +12,9 @@ class Detalles(QMainWindow):
         super().__init__() 
         self.main_window = main_window
         self.id_venta = id_venta
-        self.table_name = 'ventas'
-        self.setWindowTitle(title)
+        self.ti = title
+        self.table_name = self.ti.split()[0].lower()
+        self.setWindowTitle(self.ti)
         self.initUI()
         self.ip = ip
         
@@ -33,7 +37,8 @@ class Detalles(QMainWindow):
         button7.clicked.connect(self.openMedias)
         button8 = PushButton("YOMBER")
         button8.clicked.connect(self.openYomber)
-        button9 = PushButton("VER VENTA",self)
+        print(type(self.ti))
+        button9 = PushButton(f"VER {self.ti.split()[0].upper()}",self)
         button9.clicked.connect(self.openFinalizar)
         button10 = PushButton("CANCELAR")
         button10.clicked.connect(self.cancelar)
