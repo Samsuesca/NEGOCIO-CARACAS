@@ -98,7 +98,7 @@ class ShowData(QMainWindow):
 
     def get_table_data(self,table_name):
         conn, cursor = connectsql(host=self.ip)
-        results = execute_query(conn,cursor, f'SELECT * FROM {table_name}')
+        results = execute_query(conn,cursor, f'SELECT * FROM {table_name} ORDER BY id')
         column_names = [column[0] for column in cursor.description]
         return results, column_names
 
