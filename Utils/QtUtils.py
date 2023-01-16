@@ -6,11 +6,8 @@ from PyQt5.QtWidgets import QDialog,QSpinBox,QTableWidget,QTableWidgetItem,QGrid
 from PyQt5.QtCore import Qt
 #Modulos de Python
 from datetime import datetime
-
 import os
 import json
-
-
 
 class ShowData(QMainWindow):
 
@@ -22,10 +19,15 @@ class ShowData(QMainWindow):
         self.query = query
         self.initUI()
         self.setWindowTitle(f"Visualización de {self.table_name.title()}")
-        self.setMinimumSize(400, 250)
+        self.setMinimumSize(500, 450)
 
     def initUI(self):
         try:    
+             # Crear el botón de actualizar
+            self.refresh_button = PushButton("Actualizar", self)
+            self.refresh_button.clicked.connect(self.refresh_table)
+            # Añadir el botón a la ventana
+         
             if self.query == '':
             # Obtener los datos de la tabla "telas"
                 results, column_names = self.get_table_data(self.table_name)
@@ -37,21 +39,27 @@ class ShowData(QMainWindow):
             table.setColumnCount(len(results[0]))
             table.setHorizontalHeaderLabels(column_names)
             table.horizontalHeader().setSectionResizeMode(QHeaderView.ResizeToContents)
-
-
             # Agregar los datos a la tabla
             for i, row in enumerate(results):
                 table.setRowCount(i+1)
                 for j, col in enumerate(row):
                     table.setItem(i, j, QTableWidgetItem(str(col)))
             
-           
+
+
+            self.layout = QVBoxLayout()
+            self.layout.addWidget(self.refresh_button)
+            self.layout.addWidget(table)
+            widget = QWidget(self)
+            widget.setLayout(self.layout)
+            self.setCentralWidget(widget)
+
+
+            
             # Ajustar el tamaño de la ventana al tamaño mínimo necesario para mostrar todos sus widgets
             table_width = table.sizeHint().width()
             table_height = table.sizeHint().height()
-            
-            # Mostrar la tabla en la ventana
-            self.setCentralWidget(table)
+        
             self.setGeometry(0,0,table_width, table_height)
             
         except IndexError:
@@ -66,6 +74,12 @@ class ShowData(QMainWindow):
             results = execute_query(conn,cursor, dif_query)
         column_names = [column[0] for column in cursor.description]
         return results, column_names
+
+    def refresh_table(self):
+        current_geomtry = self.geometry()
+        print(current_geomtry)
+        self.initUI()
+        self.setGeometry(current_geomtry)
 
 
 class Pestana(QMainWindow):
