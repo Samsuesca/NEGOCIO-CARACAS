@@ -215,6 +215,7 @@ class INFO():
                 query = f"SELECT id FROM {table_name} WHERE talla = '{talla.upper()}'"
                 cursor.execute(query)
                 id_prenda = cursor.fetchone()
+                print(id_prenda)
                 conn.commit()
                 cursor.close()
                 conn.close()
@@ -242,7 +243,7 @@ class INFO():
                     else:
                         QMessageBox.about(self.up, "Error", "No hay inventario")
         else:
-            QMessageBox.about(self.up, "Error", "La talla que haz seleccionado no existe")
+            QMessageBox.about(self.up, "Error", "La talla que has seleccionado no existe")
 
     def sizes(self):
         if self.table_name == 'jeans':
@@ -252,7 +253,9 @@ class INFO():
         elif self.table_name == 'yomber' or self.table_name == 'blusas':
             X = ['6','8','10','12','14','16','S','M','L','XL']
         elif self.table_name == 'Medias':
-            X = ['6-8','8-10','9-11','TOP','MEDIAS']
+            X = ['6-8','8-10','9-11']
+        elif self.table_name == 'otros':
+            X = ['TOP','MEDIAS']
         elif self.table_name == 'sudaderas' or self.table_name == 'chazul' or self.table_name == 'chgris':
             X = ['4', '6', '8', '10', '12', '14', '16', 'S', 'M', 'L', 'XL']
         else:
@@ -303,7 +306,6 @@ class INFO():
                 label_quant.setValue(self.quant[i])
                 self.id_detalle = self.id_det[i]
                 label_quant.valueChanged.connect(self.actualizar_cantidad)
-                # new.append(label_quant.value())
                 label_parcial= QLabel(f'{self.parcial[i]}')
                 grid.addWidget(label_name,i+1,0,alignment=Qt.AlignCenter)
                 grid.addWidget(label_size,i+1,2,alignment=Qt.AlignCenter)
@@ -313,10 +315,10 @@ class INFO():
             grid2 = QGridLayout()
             label_total_venta = QLabel(f'Total de la venta: {result[0][8]}')
             grid2.addWidget(label_total_venta,0,0,alignment=Qt.AlignCenter)
-            update = PushButton("ACTUALIZAR")
-            update.setFixedSize(200, 20)
-            update.clicked.connect(self.actualizar)
-            grid2.addWidget(update,0,1,alignment=Qt.AlignCenter)
+            # update = PushButton("ACTUALIZAR")
+            # update.setFixedSize(200, 20)
+            # update.clicked.connect(self.actualizar)
+            # grid2.addWidget(update,0,1,alignment=Qt.AlignCenter)
 
             # print(new)
             # Define el ancho de las columnas
@@ -357,15 +359,18 @@ class INFO():
             QMessageBox.about(self.up,"Error", "No se han añadido prendas a la venta")
 
 
-    def actualizar(self):
-        self.informe.accept()
-        self.informe_venta()
+    # def actualizar(self):
+    #     self.informe.accept()
+    #     self.informe_venta()
 
     def actualizar_cantidad(self,value):
         conn,cur = connectsql(host=self.up.ip)
-    # Actualizar la cantidad en la tabla detalle_venta.
+        # Actualizar la cantidad en la tabla detalle_venta.
         query = f'''UPDATE detalle_venta SET cantidad={value} WHERE id={self.id_detalle}'''
         make_query(conn,cur,query)
+
+        self.informe.accept()
+        self.informe_venta()
         # return  self.actualizar_cantidad
 
 

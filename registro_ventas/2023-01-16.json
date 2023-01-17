@@ -35,6 +35,2257 @@
                 }
             ],
             "total": "166000.00"
+        },
+        {
+            "name": "",
+            "id_venta": 2,
+            "fecha": "2023-01-16 11:20:46",
+            "detalles": [
+                {
+                    "prenda": "Camiseta",
+                    "talla": "8",
+                    "precio": "31000",
+                    "cantidad": 2,
+                    "subtotal": "62000"
+                },
+                {
+                    "prenda": "Sudadera",
+                    "talla": "8",
+                    "precio": "32000",
+                    "cantidad": 1,
+                    "subtotal": "32000"
+                },
+                {
+                    "prenda": "Chompa Azul",
+                    "talla": "8",
+                    "precio": "43000",
+                    "cantidad": 1,
+                    "subtotal": "43000"
+                },
+                {
+                    "prenda": "Jean",
+                    "talla": "8",
+                    "precio": "33000",
+                    "cantidad": 1,
+                    "subtotal": "33000"
+                }
+            ],
+            "total": "170000.00"
+        },
+        {
+            "name": "Liliana Gonzales",
+            "id_venta": 3,
+            "fecha": "2023-01-16 11:22:06",
+            "detalles": [
+                {
+                    "prenda": "Sudadera",
+                    "talla": "12",
+                    "precio": "34000",
+                    "cantidad": 1,
+                    "subtotal": "34000"
+                },
+                {
+                    "prenda": "Chompa Azul",
+                    "talla": "12",
+                    "precio": "45000",
+                    "cantidad": 1,
+                    "subtotal": "45000"
+                },
+                {
+                    "prenda": "Jean",
+                    "talla": "12",
+                    "precio": "35000",
+                    "cantidad": 2,
+                    "subtotal": "70000"
+                }
+            ],
+            "total": "149000.00"
+        },
+        {
+            "name": "Marisol Jimenez",
+            "id_venta": 4,
+            "fecha": "2023-01-16 11:23:27",
+            "detalles": [
+                {
+                    "prenda": "Camiseta",
+                    "talla": "16",
+                    "precio": "35000",
+                    "cantidad": 1,
+                    "subtotal": "35000"
+                },
+                {
+                    "prenda": "Sudadera",
+                    "talla": "16",
+                    "precio": "36000",
+                    "cantidad": 1,
+                    "subtotal": "36000"
+                },
+                {
+                    "prenda": "Chompa Azul",
+                    "talla": "16",
+                    "precio": "47000",
+                    "cantidad": 1,
+                    "subtotal": "47000"
+                }
+            ],
+            "total": "118000.00"
+        },
+        {
+            "name": "Rossy ",
+            "id_venta": 5,
+            "fecha": "2023-01-16 11:24:17",
+            "detalles": [
+                {
+                    "prenda": "Camiseta",
+                    "talla": "16",
+                    "precio": "35000",
+                    "cantidad": 2,
+                    "subtotal": "70000"
+                },
+                {
+                    "prenda": "Sudadera",
+                    "talla": "16",
+                    "precio": "36000",
+                    "cantidad": 1,
+                    "subtotal": "36000"
+                },
+                {
+                    "prenda": "Chompa Azul",
+                    "talla": "16",
+                    "precio": "47000",
+                    "cantidad": 1,
+                    "subtotal": "47000"
+                }
+            ],
+            "total": "153000.00"
+        },
+        {
+            "name": "Yohana",
+            "id_venta": 6,
+            "fecha": "2023-01-16 11:25:02",
+            "detalles": [
+                {
+                    "prenda": "Sudadera",
+                    "talla": "12",
+                    "precio": "34000",
+                    "cantidad": 1,
+                    "subtotal": "34000"
+                },
+                {
+                    "prenda": "Chompa Gris",
+                    "talla": "12",
+                    "precio": "45000",
+                    "cantidad": 1,
+                    "subtotal": "45000"
+                }
+            ],
+            "total": "79000.00"
+        },
+        {
+            "name": "Johana",
+            "id_venta": 8,
+            "fecha": "2023-01-16 11:47:45",
+            "detalles": [
+                {
+                    "prenda": "Camiseta",
+                    "talla": "12",
+                    "precio": "33000",
+                    "cantidad": 2,
+                    "subtotal": "66000"
+                }
+            ],
+            "total": "66000.00"
+        },
+        {
+            "name": "Wendy",
+            "id_venta": 9,
+            "fecha": "2023-01-16 12:43:30",
+            "detalles": [
+                {
+                    "prenda": "Camiseta",
+                    "talla": "12",
+                    "precio": "33000",
+                    "cantidad": 2,
+                    "subtotal": "66000"
+                },
+                {
+                    "prenda": "Sudadera",
+                    "talla": "12",
+                    "precio": "34000",
+                    "cantidad": 2,
+                    "subtotal": "68000"
+                },
+                {
+                    "prenda": "Chompa Azul",
+                    "talla": "12",
+                    "precio": "45000",
+                    "cantidad": 1,
+                    "subtotal": "45000"
+                },
+                {
+                    "prenda": "Blusas",
+                    "talla": "12",
+                    "precio": "13000",
+                    "cantidad": 2,
+                    "subtotal": "26000"
+                },
+                {
+                    "prenda": "Chompa Gris",
+                    "talla": "12",
+                    "precio": "45000",
+                    "cantidad": 1,
+                    "subtotal": "45000"
+                },
+                {
+                    "prenda": "Medias",
+                    "talla": "MEDIAS",
+                    "precio": "4500",
+                    "cantidad": 2,
+                    "subtotal": "9000"
+                }
+            ],
+            "total": "259000.00"
+        },
+        {
+            "name": "Diego",
+            "id_venta": 10,
+            "fecha": "2023-01-16 12:46:17",
+            "detalles": [
+                {
+                    "prenda": "Camiseta",
+                    "talla": "12",
+                    "precio": "33000",
+                    "cantidad": 2,
+                    "subtotal": "66000"
+                },
+                {
+                    "prenda": "Jean",
+                    "talla": "14",
+                    "precio": "35000",
+                    "cantidad": 2,
+                    "subtotal": "70000"
+                }
+            ],
+            "total": "136000.00"
+        },
+        {
+            "name": "Rut Palacio",
+            "id_venta": 11,
+            "fecha": "2023-01-16 12:47:05",
+            "detalles": [
+                {
+                    "prenda": "Sudadera",
+                    "talla": "16",
+                    "precio": "36000",
+                    "cantidad": 1,
+                    "subtotal": "36000"
+                },
+                {
+                    "prenda": "Medias",
+                    "talla": "6-8",
+                    "precio": "9000",
+                    "cantidad": 2,
+                    "subtotal": "18000"
+                }
+            ],
+            "total": "54000.00"
+        },
+        {
+            "name": "Shirley",
+            "id_venta": 12,
+            "fecha": "2023-01-16 12:50:08",
+            "detalles": [
+                {
+                    "prenda": "Jean",
+                    "talla": "14",
+                    "precio": "35000",
+                    "cantidad": 2,
+                    "subtotal": "70000"
+                }
+            ],
+            "total": "70000.00"
+        },
+        {
+            "name": "Marisol",
+            "id_venta": 13,
+            "fecha": "2023-01-16 12:52:26",
+            "detalles": [
+                {
+                    "prenda": "Camiseta",
+                    "talla": "12",
+                    "precio": "33000",
+                    "cantidad": 2,
+                    "subtotal": "66000"
+                },
+                {
+                    "prenda": "Sudadera",
+                    "talla": "12",
+                    "precio": "34000",
+                    "cantidad": 1,
+                    "subtotal": "34000"
+                },
+                {
+                    "prenda": "Jean",
+                    "talla": "12",
+                    "precio": "35000",
+                    "cantidad": 1,
+                    "subtotal": "35000"
+                }
+            ],
+            "total": "135000.00"
+        },
+        {
+            "name": "Marcela",
+            "id_venta": 14,
+            "fecha": "2023-01-16 13:00:38",
+            "detalles": [
+                {
+                    "prenda": "Camiseta",
+                    "talla": "10",
+                    "precio": "32000",
+                    "cantidad": 1,
+                    "subtotal": "32000"
+                },
+                {
+                    "prenda": "Sudadera",
+                    "talla": "10",
+                    "precio": "33000",
+                    "cantidad": 1,
+                    "subtotal": "33000"
+                }
+            ],
+            "total": "65000.00"
+        },
+        {
+            "name": "Cristina Camion",
+            "id_venta": 15,
+            "fecha": "2023-01-16 13:02:15",
+            "detalles": [
+                {
+                    "prenda": "Camiseta",
+                    "talla": "M",
+                    "precio": "37000",
+                    "cantidad": 1,
+                    "subtotal": "37000"
+                },
+                {
+                    "prenda": "Sudadera",
+                    "talla": "M",
+                    "precio": "38000",
+                    "cantidad": 1,
+                    "subtotal": "38000"
+                }
+            ],
+            "total": "75000.00"
+        },
+        {
+            "name": "Karen Rendon Hna",
+            "id_venta": 16,
+            "fecha": "2023-01-16 13:02:48",
+            "detalles": [
+                {
+                    "prenda": "Camiseta",
+                    "talla": "S",
+                    "precio": "36000",
+                    "cantidad": 2,
+                    "subtotal": "72000"
+                },
+                {
+                    "prenda": "Sudadera",
+                    "talla": "S",
+                    "precio": "37000",
+                    "cantidad": 1,
+                    "subtotal": "37000"
+                },
+                {
+                    "prenda": "Chompa Azul",
+                    "talla": "S",
+                    "precio": "48000",
+                    "cantidad": 1,
+                    "subtotal": "48000"
+                }
+            ],
+            "total": "157000.00"
+        },
+        {
+            "name": "Monica Enciso",
+            "id_venta": 17,
+            "fecha": "2023-01-16 13:04:22",
+            "detalles": [
+                {
+                    "prenda": "Camiseta",
+                    "talla": "16",
+                    "precio": "35000",
+                    "cantidad": 1,
+                    "subtotal": "35000"
+                },
+                {
+                    "prenda": "Sudadera",
+                    "talla": "16",
+                    "precio": "36000",
+                    "cantidad": 1,
+                    "subtotal": "36000"
+                },
+                {
+                    "prenda": "Chompa Azul",
+                    "talla": "16",
+                    "precio": "47000",
+                    "cantidad": 1,
+                    "subtotal": "47000"
+                }
+            ],
+            "total": "118000.00"
+        },
+        {
+            "name": "Yesenia Arango",
+            "id_venta": 18,
+            "fecha": "2023-01-16 13:06:08",
+            "detalles": [
+                {
+                    "prenda": "Camiseta",
+                    "talla": "M",
+                    "precio": "37000",
+                    "cantidad": 2,
+                    "subtotal": "74000"
+                },
+                {
+                    "prenda": "Sudadera",
+                    "talla": "L",
+                    "precio": "39000",
+                    "cantidad": 1,
+                    "subtotal": "39000"
+                },
+                {
+                    "prenda": "Chompa Gris",
+                    "talla": "L",
+                    "precio": "50000",
+                    "cantidad": 1,
+                    "subtotal": "50000"
+                }
+            ],
+            "total": "163000.00"
+        },
+        {
+            "name": "Maria Angel",
+            "id_venta": 19,
+            "fecha": "2023-01-16 13:10:54",
+            "detalles": [
+                {
+                    "prenda": "Sudadera",
+                    "talla": "10",
+                    "precio": "33000",
+                    "cantidad": 1,
+                    "subtotal": "33000"
+                },
+                {
+                    "prenda": "Chompa Gris",
+                    "talla": "10",
+                    "precio": "44000",
+                    "cantidad": 1,
+                    "subtotal": "44000"
+                }
+            ],
+            "total": "77000.00"
+        },
+        {
+            "name": "Lucia y Luis",
+            "id_venta": 20,
+            "fecha": "2023-01-16 13:11:31",
+            "detalles": [
+                {
+                    "prenda": "Camiseta",
+                    "talla": "6",
+                    "precio": "30000",
+                    "cantidad": 1,
+                    "subtotal": "30000"
+                },
+                {
+                    "prenda": "Sudadera",
+                    "talla": "6",
+                    "precio": "31000",
+                    "cantidad": 1,
+                    "subtotal": "31000"
+                }
+            ],
+            "total": "61000.00"
+        },
+        {
+            "name": "Cecilia Ortiz",
+            "id_venta": 21,
+            "fecha": "2023-01-16 13:13:12",
+            "detalles": [
+                {
+                    "prenda": "Camiseta",
+                    "talla": "8",
+                    "precio": "31000",
+                    "cantidad": 1,
+                    "subtotal": "31000"
+                },
+                {
+                    "prenda": "Sudadera",
+                    "talla": "8",
+                    "precio": "32000",
+                    "cantidad": 1,
+                    "subtotal": "32000"
+                },
+                {
+                    "prenda": "Chompa Gris",
+                    "talla": "6",
+                    "precio": "42000",
+                    "cantidad": 1,
+                    "subtotal": "42000"
+                }
+            ],
+            "total": "105000.00"
+        },
+        {
+            "name": "Cecilia Ortiz",
+            "id_venta": 22,
+            "fecha": "2023-01-16 13:54:06",
+            "detalles": [
+                {
+                    "prenda": "Camiseta",
+                    "talla": "8",
+                    "precio": "31000",
+                    "cantidad": 1,
+                    "subtotal": "31000"
+                },
+                {
+                    "prenda": "Sudadera",
+                    "talla": "8",
+                    "precio": "32000",
+                    "cantidad": 1,
+                    "subtotal": "32000"
+                },
+                {
+                    "prenda": "Chompa Gris",
+                    "talla": "6",
+                    "precio": "42000",
+                    "cantidad": 1,
+                    "subtotal": "42000"
+                }
+            ],
+            "total": "105000.00"
+        },
+        {
+            "name": "Omaira",
+            "id_venta": 23,
+            "fecha": "2023-01-16 13:56:08",
+            "detalles": [
+                {
+                    "prenda": "Camiseta",
+                    "talla": "12",
+                    "precio": "33000",
+                    "cantidad": 2,
+                    "subtotal": "66000"
+                },
+                {
+                    "prenda": "Sudadera",
+                    "talla": "16",
+                    "precio": "36000",
+                    "cantidad": 2,
+                    "subtotal": "72000"
+                }
+            ],
+            "total": "138000.00"
+        },
+        {
+            "name": "Nelly Lopez",
+            "id_venta": 24,
+            "fecha": "2023-01-16 14:01:45",
+            "detalles": [
+                {
+                    "prenda": "Camiseta",
+                    "talla": "16",
+                    "precio": "35000",
+                    "cantidad": 1,
+                    "subtotal": "35000"
+                },
+                {
+                    "prenda": "Sudadera",
+                    "talla": "S",
+                    "precio": "37000",
+                    "cantidad": 1,
+                    "subtotal": "37000"
+                },
+                {
+                    "prenda": "Chompa Azul",
+                    "talla": "S",
+                    "precio": "48000",
+                    "cantidad": 1,
+                    "subtotal": "48000"
+                }
+            ],
+            "total": "120000.00"
+        },
+        {
+            "name": "Nedy Palacio",
+            "id_venta": 25,
+            "fecha": "2023-01-16 14:10:47",
+            "detalles": [
+                {
+                    "prenda": "Camiseta",
+                    "talla": "S",
+                    "precio": "36000",
+                    "cantidad": 2,
+                    "subtotal": "72000"
+                }
+            ],
+            "total": "72000.00"
+        },
+        {
+            "name": "Isabel Sepulveda",
+            "id_venta": 26,
+            "fecha": "2023-01-16 14:23:20",
+            "detalles": [
+                {
+                    "prenda": "Camiseta",
+                    "talla": "12",
+                    "precio": "33000",
+                    "cantidad": 2,
+                    "subtotal": "66000"
+                },
+                {
+                    "prenda": "Camiseta",
+                    "talla": "M",
+                    "precio": "37000",
+                    "cantidad": 1,
+                    "subtotal": "37000"
+                }
+            ],
+            "total": "103000.00"
+        },
+        {
+            "name": "Juan E Mazo",
+            "id_venta": 27,
+            "fecha": "2023-01-16 14:28:00",
+            "detalles": [
+                {
+                    "prenda": "Camiseta",
+                    "talla": "10",
+                    "precio": "32000",
+                    "cantidad": 1,
+                    "subtotal": "32000"
+                },
+                {
+                    "prenda": "Sudadera",
+                    "talla": "10",
+                    "precio": "33000",
+                    "cantidad": 1,
+                    "subtotal": "33000"
+                },
+                {
+                    "prenda": "Chompa Gris",
+                    "talla": "10",
+                    "precio": "44000",
+                    "cantidad": 1,
+                    "subtotal": "44000"
+                },
+                {
+                    "prenda": "Medias",
+                    "talla": "MEDIAS",
+                    "precio": "4500",
+                    "cantidad": 9,
+                    "subtotal": "40500"
+                }
+            ],
+            "total": "149500.00"
+        },
+        {
+            "name": "Leysi Mercado Profe",
+            "id_venta": 28,
+            "fecha": "2023-01-16 14:34:03",
+            "detalles": [
+                {
+                    "prenda": "Camiseta",
+                    "talla": "16",
+                    "precio": "35000",
+                    "cantidad": 3,
+                    "subtotal": "105000"
+                },
+                {
+                    "prenda": "Sudadera",
+                    "talla": "S",
+                    "precio": "37000",
+                    "cantidad": 3,
+                    "subtotal": "111000"
+                },
+                {
+                    "prenda": "Chompa Gris",
+                    "talla": "16",
+                    "precio": "47000",
+                    "cantidad": 1,
+                    "subtotal": "47000"
+                },
+                {
+                    "prenda": "Medias",
+                    "talla": "MEDIAS",
+                    "precio": "4500",
+                    "cantidad": 2,
+                    "subtotal": "9000"
+                }
+            ],
+            "total": "272000.00"
+        },
+        {
+            "name": "Elmer Osorio",
+            "id_venta": 30,
+            "fecha": "2023-01-16 15:09:14",
+            "detalles": [
+                {
+                    "prenda": "Camiseta",
+                    "talla": "8",
+                    "precio": "31000",
+                    "cantidad": 1,
+                    "subtotal": "31000"
+                },
+                {
+                    "prenda": "Sudadera",
+                    "talla": "8",
+                    "precio": "32000",
+                    "cantidad": 1,
+                    "subtotal": "32000"
+                },
+                {
+                    "prenda": "Chompa Azul",
+                    "talla": "8",
+                    "precio": "43000",
+                    "cantidad": 1,
+                    "subtotal": "43000"
+                },
+                {
+                    "prenda": "Medias",
+                    "talla": "6-8",
+                    "precio": "9000",
+                    "cantidad": 2,
+                    "subtotal": "18000"
+                },
+                {
+                    "prenda": "Chompa Gris",
+                    "talla": "8",
+                    "precio": "43000",
+                    "cantidad": 1,
+                    "subtotal": "43000"
+                }
+            ],
+            "total": "167000.00"
+        },
+        {
+            "name": "Leidy Yepes",
+            "id_venta": 31,
+            "fecha": "2023-01-16 15:15:20",
+            "detalles": [
+                {
+                    "prenda": "Chompa Azul",
+                    "talla": "6",
+                    "precio": "42000",
+                    "cantidad": 1,
+                    "subtotal": "42000"
+                },
+                {
+                    "prenda": "Blusas",
+                    "talla": "6",
+                    "precio": "13000",
+                    "cantidad": 1,
+                    "subtotal": "13000"
+                },
+                {
+                    "prenda": "Blusas",
+                    "talla": "8",
+                    "precio": "13000",
+                    "cantidad": 1,
+                    "subtotal": "13000"
+                }
+            ],
+            "total": "68000.00"
+        },
+        {
+            "name": "Erimar Silva",
+            "id_venta": 32,
+            "fecha": "2023-01-16 15:16:05",
+            "detalles": [
+                {
+                    "prenda": "Camiseta",
+                    "talla": "6",
+                    "precio": "30000",
+                    "cantidad": 1,
+                    "subtotal": "30000"
+                },
+                {
+                    "prenda": "Sudadera",
+                    "talla": "6",
+                    "precio": "31000",
+                    "cantidad": 1,
+                    "subtotal": "31000"
+                }
+            ],
+            "total": "61000.00"
+        },
+        {
+            "name": "Gloria 23",
+            "id_venta": 33,
+            "fecha": "2023-01-16 15:16:36",
+            "detalles": [
+                {
+                    "prenda": "Camiseta",
+                    "talla": "M",
+                    "precio": "37000",
+                    "cantidad": 1,
+                    "subtotal": "37000"
+                },
+                {
+                    "prenda": "Sudadera",
+                    "talla": "16",
+                    "precio": "36000",
+                    "cantidad": 2,
+                    "subtotal": "72000"
+                }
+            ],
+            "total": "109000.00"
+        },
+        {
+            "name": "Manuela Libertad",
+            "id_venta": 34,
+            "fecha": "2023-01-16 15:17:14",
+            "detalles": [
+                {
+                    "prenda": "Camiseta",
+                    "talla": "6",
+                    "precio": "30000",
+                    "cantidad": 1,
+                    "subtotal": "30000"
+                },
+                {
+                    "prenda": "Camiseta",
+                    "talla": "12",
+                    "precio": "33000",
+                    "cantidad": 1,
+                    "subtotal": "33000"
+                },
+                {
+                    "prenda": "Sudadera",
+                    "talla": "6",
+                    "precio": "31000",
+                    "cantidad": 1,
+                    "subtotal": "31000"
+                },
+                {
+                    "prenda": "Sudadera",
+                    "talla": "12",
+                    "precio": "34000",
+                    "cantidad": 1,
+                    "subtotal": "34000"
+                },
+                {
+                    "prenda": "Chompa Gris",
+                    "talla": "6",
+                    "precio": "42000",
+                    "cantidad": 1,
+                    "subtotal": "42000"
+                }
+            ],
+            "total": "170000.00"
+        },
+        {
+            "name": "Esperanza Blasco",
+            "id_venta": 35,
+            "fecha": "2023-01-16 15:17:52",
+            "detalles": [
+                {
+                    "prenda": "Camiseta",
+                    "talla": "12",
+                    "precio": "33000",
+                    "cantidad": 1,
+                    "subtotal": "33000"
+                },
+                {
+                    "prenda": "Sudadera",
+                    "talla": "12",
+                    "precio": "34000",
+                    "cantidad": 1,
+                    "subtotal": "34000"
+                },
+                {
+                    "prenda": "Chompa Azul",
+                    "talla": "12",
+                    "precio": "45000",
+                    "cantidad": 1,
+                    "subtotal": "45000"
+                }
+            ],
+            "total": "112000.00"
+        },
+        {
+            "name": "Santiago Aguiar",
+            "id_venta": 39,
+            "fecha": "2023-01-16 15:26:32",
+            "detalles": [
+                {
+                    "prenda": "Camiseta",
+                    "talla": "8",
+                    "precio": "31000",
+                    "cantidad": 2,
+                    "subtotal": "62000"
+                },
+                {
+                    "prenda": "Sudadera",
+                    "talla": "8",
+                    "precio": "32000",
+                    "cantidad": 1,
+                    "subtotal": "32000"
+                },
+                {
+                    "prenda": "Medias",
+                    "talla": "8-10",
+                    "precio": "9000",
+                    "cantidad": 1,
+                    "subtotal": "9000"
+                }
+            ],
+            "total": "103000.00"
+        },
+        {
+            "name": "Wendy Vecina",
+            "id_venta": 40,
+            "fecha": "2023-01-16 15:29:46",
+            "detalles": [
+                {
+                    "prenda": "Camiseta",
+                    "talla": "8",
+                    "precio": "31000",
+                    "cantidad": 1,
+                    "subtotal": "31000"
+                },
+                {
+                    "prenda": "Sudadera",
+                    "talla": "8",
+                    "precio": "32000",
+                    "cantidad": 1,
+                    "subtotal": "32000"
+                },
+                {
+                    "prenda": "Chompa Gris",
+                    "talla": "8",
+                    "precio": "43000",
+                    "cantidad": 1,
+                    "subtotal": "43000"
+                }
+            ],
+            "total": "106000.00"
+        },
+        {
+            "name": "Wilson Arbelaes",
+            "id_venta": 41,
+            "fecha": "2023-01-16 15:30:34",
+            "detalles": [
+                {
+                    "prenda": "Camiseta",
+                    "talla": "M",
+                    "precio": "37000",
+                    "cantidad": 1,
+                    "subtotal": "37000"
+                },
+                {
+                    "prenda": "Sudadera",
+                    "talla": "S",
+                    "precio": "37000",
+                    "cantidad": 1,
+                    "subtotal": "37000"
+                }
+            ],
+            "total": "74000.00"
+        },
+        {
+            "name": "",
+            "id_venta": 42,
+            "fecha": "2023-01-16 15:31:11",
+            "detalles": [
+                {
+                    "prenda": "Camiseta",
+                    "talla": "L",
+                    "precio": "38000",
+                    "cantidad": 1,
+                    "subtotal": "38000"
+                },
+                {
+                    "prenda": "Jean",
+                    "talla": "34",
+                    "precio": "40000",
+                    "cantidad": 1,
+                    "subtotal": "40000"
+                }
+            ],
+            "total": "78000.00"
+        },
+        {
+            "name": "Sandra Higuita",
+            "id_venta": 43,
+            "fecha": "2023-01-16 15:31:51",
+            "detalles": [
+                {
+                    "prenda": "Blusas",
+                    "talla": "12",
+                    "precio": "13000",
+                    "cantidad": 2,
+                    "subtotal": "26000"
+                },
+                {
+                    "prenda": "Medias",
+                    "talla": "6-8",
+                    "precio": "9000",
+                    "cantidad": 2,
+                    "subtotal": "18000"
+                },
+                {
+                    "prenda": "Medias",
+                    "talla": "MEDIAS",
+                    "precio": "4500",
+                    "cantidad": 2,
+                    "subtotal": "9000"
+                }
+            ],
+            "total": "53000.00"
+        },
+        {
+            "name": "Yuri Casta\u00f1o",
+            "id_venta": 44,
+            "fecha": "2023-01-16 15:33:07",
+            "detalles": [
+                {
+                    "prenda": "Camiseta",
+                    "talla": "14",
+                    "precio": "34000",
+                    "cantidad": 2,
+                    "subtotal": "68000"
+                },
+                {
+                    "prenda": "Chompa Azul",
+                    "talla": "16",
+                    "precio": "47000",
+                    "cantidad": 1,
+                    "subtotal": "47000"
+                }
+            ],
+            "total": "115000.00"
+        },
+        {
+            "name": "Mariluz Londo\u00f1o ",
+            "id_venta": 45,
+            "fecha": "2023-01-16 15:35:46",
+            "detalles": [
+                {
+                    "prenda": "Camiseta",
+                    "talla": "12",
+                    "precio": "33000",
+                    "cantidad": 1,
+                    "subtotal": "33000"
+                },
+                {
+                    "prenda": "Sudadera",
+                    "talla": "14",
+                    "precio": "35000",
+                    "cantidad": 1,
+                    "subtotal": "35000"
+                }
+            ],
+            "total": "68000.00"
+        },
+        {
+            "name": "Andres Mejia",
+            "id_venta": 46,
+            "fecha": "2023-01-16 16:03:22",
+            "detalles": [
+                {
+                    "prenda": "Camiseta",
+                    "talla": "12",
+                    "precio": "33000",
+                    "cantidad": 2,
+                    "subtotal": "66000"
+                },
+                {
+                    "prenda": "Sudadera",
+                    "talla": "12",
+                    "precio": "34000",
+                    "cantidad": 1,
+                    "subtotal": "34000"
+                },
+                {
+                    "prenda": "Chompa Azul",
+                    "talla": "12",
+                    "precio": "45000",
+                    "cantidad": 1,
+                    "subtotal": "45000"
+                }
+            ],
+            "total": "145000.00"
+        },
+        {
+            "name": "Luisa Fernanda",
+            "id_venta": 47,
+            "fecha": "2023-01-16 16:05:16",
+            "detalles": [
+                {
+                    "prenda": "Sudadera",
+                    "talla": "16",
+                    "precio": "36000",
+                    "cantidad": 1,
+                    "subtotal": "36000"
+                }
+            ],
+            "total": "36000.00"
+        },
+        {
+            "name": "Yilma Garcia",
+            "id_venta": 48,
+            "fecha": "2023-01-16 16:06:46",
+            "detalles": [
+                {
+                    "prenda": "Blusas",
+                    "talla": "8",
+                    "precio": "13000",
+                    "cantidad": 1,
+                    "subtotal": "13000"
+                },
+                {
+                    "prenda": "Medias",
+                    "talla": "6-8",
+                    "precio": "9000",
+                    "cantidad": 1,
+                    "subtotal": "9000"
+                },
+                {
+                    "prenda": "Medias",
+                    "talla": "TOP",
+                    "precio": "6000",
+                    "cantidad": 1,
+                    "subtotal": "6000"
+                }
+            ],
+            "total": "28000.00"
+        },
+        {
+            "name": "Marcela",
+            "id_venta": 49,
+            "fecha": "2023-01-16 16:08:23",
+            "detalles": [
+                {
+                    "prenda": "Camiseta",
+                    "talla": "S",
+                    "precio": "36000",
+                    "cantidad": 2,
+                    "subtotal": "72000"
+                },
+                {
+                    "prenda": "Sudadera",
+                    "talla": "S",
+                    "precio": "37000",
+                    "cantidad": 1,
+                    "subtotal": "37000"
+                },
+                {
+                    "prenda": "Chompa Azul",
+                    "talla": "M",
+                    "precio": "49000",
+                    "cantidad": 1,
+                    "subtotal": "49000"
+                }
+            ],
+            "total": "158000.00"
+        },
+        {
+            "name": "Yessenia Ramirez",
+            "id_venta": 50,
+            "fecha": "2023-01-16 16:09:45",
+            "detalles": [
+                {
+                    "prenda": "Camiseta",
+                    "talla": "12",
+                    "precio": "33000",
+                    "cantidad": 1,
+                    "subtotal": "33000"
+                },
+                {
+                    "prenda": "Sudadera",
+                    "talla": "12",
+                    "precio": "34000",
+                    "cantidad": 1,
+                    "subtotal": "34000"
+                }
+            ],
+            "total": "67000.00"
+        },
+        {
+            "name": "Lilibeth",
+            "id_venta": 51,
+            "fecha": "2023-01-16 16:13:19",
+            "detalles": [
+                {
+                    "prenda": "Camiseta",
+                    "talla": "L",
+                    "precio": "38000",
+                    "cantidad": 1,
+                    "subtotal": "38000"
+                },
+                {
+                    "prenda": "Sudadera",
+                    "talla": "L",
+                    "precio": "39000",
+                    "cantidad": 1,
+                    "subtotal": "39000"
+                },
+                {
+                    "prenda": "Chompa Azul",
+                    "talla": "M",
+                    "precio": "49000",
+                    "cantidad": 1,
+                    "subtotal": "49000"
+                },
+                {
+                    "prenda": "Blusas",
+                    "talla": "XL",
+                    "precio": "15000",
+                    "cantidad": 2,
+                    "subtotal": "30000"
+                },
+                {
+                    "prenda": "Chompa Gris",
+                    "talla": "L",
+                    "precio": "50000",
+                    "cantidad": 1,
+                    "subtotal": "50000"
+                }
+            ],
+            "total": "206000.00"
+        },
+        {
+            "name": "",
+            "id_venta": 52,
+            "fecha": "2023-01-16 17:01:43",
+            "detalles": [
+                {
+                    "prenda": "Camiseta",
+                    "talla": "6",
+                    "precio": "30000",
+                    "cantidad": 1,
+                    "subtotal": "30000"
+                },
+                {
+                    "prenda": "Sudadera",
+                    "talla": "6",
+                    "precio": "31000",
+                    "cantidad": 1,
+                    "subtotal": "31000"
+                }
+            ],
+            "total": "61000.00"
+        },
+        {
+            "name": "Gloria Delgado",
+            "id_venta": 53,
+            "fecha": "2023-01-16 17:04:55",
+            "detalles": [
+                {
+                    "prenda": "Camiseta",
+                    "talla": "S",
+                    "precio": "36000",
+                    "cantidad": 1,
+                    "subtotal": "36000"
+                },
+                {
+                    "prenda": "Sudadera",
+                    "talla": "S",
+                    "precio": "37000",
+                    "cantidad": 1,
+                    "subtotal": "37000"
+                }
+            ],
+            "total": "73000.00"
+        },
+        {
+            "name": "Marisol Salazar",
+            "id_venta": 54,
+            "fecha": "2023-01-16 17:05:33",
+            "detalles": [
+                {
+                    "prenda": "Camiseta",
+                    "talla": "8",
+                    "precio": "31000",
+                    "cantidad": 2,
+                    "subtotal": "62000"
+                },
+                {
+                    "prenda": "Sudadera",
+                    "talla": "8",
+                    "precio": "32000",
+                    "cantidad": 2,
+                    "subtotal": "64000"
+                },
+                {
+                    "prenda": "Blusas",
+                    "talla": "6",
+                    "precio": "13000",
+                    "cantidad": 3,
+                    "subtotal": "39000"
+                },
+                {
+                    "prenda": "Medias",
+                    "talla": "6-8",
+                    "precio": "9000",
+                    "cantidad": 3,
+                    "subtotal": "27000"
+                },
+                {
+                    "prenda": "Chompa Gris",
+                    "talla": "4",
+                    "precio": "41000",
+                    "cantidad": 1,
+                    "subtotal": "41000"
+                }
+            ],
+            "total": "233000.00"
+        },
+        {
+            "name": "Johana Rojas",
+            "id_venta": 55,
+            "fecha": "2023-01-16 17:10:02",
+            "detalles": [
+                {
+                    "prenda": "Camiseta",
+                    "talla": "8",
+                    "precio": "31000",
+                    "cantidad": 2,
+                    "subtotal": "62000"
+                },
+                {
+                    "prenda": "Sudadera",
+                    "talla": "10",
+                    "precio": "33000",
+                    "cantidad": 1,
+                    "subtotal": "33000"
+                },
+                {
+                    "prenda": "Chompa Azul",
+                    "talla": "8",
+                    "precio": "43000",
+                    "cantidad": 1,
+                    "subtotal": "43000"
+                }
+            ],
+            "total": "138000.00"
+        },
+        {
+            "name": "Marleny",
+            "id_venta": 56,
+            "fecha": "2023-01-16 17:12:26",
+            "detalles": [
+                {
+                    "prenda": "Camiseta",
+                    "talla": "14",
+                    "precio": "34000",
+                    "cantidad": 2,
+                    "subtotal": "68000"
+                },
+                {
+                    "prenda": "Sudadera",
+                    "talla": "14",
+                    "precio": "35000",
+                    "cantidad": 2,
+                    "subtotal": "70000"
+                },
+                {
+                    "prenda": "Chompa Azul",
+                    "talla": "14",
+                    "precio": "46000",
+                    "cantidad": 1,
+                    "subtotal": "46000"
+                },
+                {
+                    "prenda": "Chompa Gris",
+                    "talla": "14",
+                    "precio": "46000",
+                    "cantidad": 1,
+                    "subtotal": "46000"
+                }
+            ],
+            "total": "230000.00"
+        },
+        {
+            "name": "Miriam Santiago",
+            "id_venta": 57,
+            "fecha": "2023-01-16 17:13:17",
+            "detalles": [
+                {
+                    "prenda": "Camiseta",
+                    "talla": "6",
+                    "precio": "30000",
+                    "cantidad": 2,
+                    "subtotal": "60000"
+                },
+                {
+                    "prenda": "Sudadera",
+                    "talla": "6",
+                    "precio": "31000",
+                    "cantidad": 1,
+                    "subtotal": "31000"
+                },
+                {
+                    "prenda": "Chompa Azul",
+                    "talla": "6",
+                    "precio": "42000",
+                    "cantidad": 1,
+                    "subtotal": "42000"
+                },
+                {
+                    "prenda": "Blusas",
+                    "talla": "6",
+                    "precio": "13000",
+                    "cantidad": 2,
+                    "subtotal": "26000"
+                },
+                {
+                    "prenda": "Medias",
+                    "talla": "6-8",
+                    "precio": "9000",
+                    "cantidad": 2,
+                    "subtotal": "18000"
+                },
+                {
+                    "prenda": "Chompa Gris",
+                    "talla": "6",
+                    "precio": "42000",
+                    "cantidad": 1,
+                    "subtotal": "42000"
+                }
+            ],
+            "total": "219000.00"
+        },
+        {
+            "name": "Sandra Vallejo",
+            "id_venta": 58,
+            "fecha": "2023-01-16 17:16:04",
+            "detalles": [
+                {
+                    "prenda": "Camiseta",
+                    "talla": "14",
+                    "precio": "34000",
+                    "cantidad": 1,
+                    "subtotal": "34000"
+                },
+                {
+                    "prenda": "Sudadera",
+                    "talla": "14",
+                    "precio": "35000",
+                    "cantidad": 1,
+                    "subtotal": "35000"
+                },
+                {
+                    "prenda": "Chompa Azul",
+                    "talla": "12",
+                    "precio": "45000",
+                    "cantidad": 1,
+                    "subtotal": "45000"
+                }
+            ],
+            "total": "114000.00"
+        },
+        {
+            "name": "Alba Moreno",
+            "id_venta": 59,
+            "fecha": "2023-01-16 17:19:14",
+            "detalles": [
+                {
+                    "prenda": "Camiseta",
+                    "talla": "12",
+                    "precio": "33000",
+                    "cantidad": 2,
+                    "subtotal": "66000"
+                },
+                {
+                    "prenda": "Sudadera",
+                    "talla": "14",
+                    "precio": "35000",
+                    "cantidad": 1,
+                    "subtotal": "35000"
+                },
+                {
+                    "prenda": "Jean",
+                    "talla": "12",
+                    "precio": "35000",
+                    "cantidad": 1,
+                    "subtotal": "35000"
+                }
+            ],
+            "total": "136000.00"
+        },
+        {
+            "name": "Yurani Restrepo",
+            "id_venta": 60,
+            "fecha": "2023-01-16 17:20:33",
+            "detalles": [
+                {
+                    "prenda": "Camiseta",
+                    "talla": "L",
+                    "precio": "38000",
+                    "cantidad": 1,
+                    "subtotal": "38000"
+                },
+                {
+                    "prenda": "Sudadera",
+                    "talla": "L",
+                    "precio": "39000",
+                    "cantidad": 1,
+                    "subtotal": "39000"
+                },
+                {
+                    "prenda": "Jean",
+                    "talla": "32",
+                    "precio": "40000",
+                    "cantidad": 1,
+                    "subtotal": "40000"
+                }
+            ],
+            "total": "117000.00"
+        },
+        {
+            "name": "Juan Fernando",
+            "id_venta": 61,
+            "fecha": "2023-01-16 17:21:55",
+            "detalles": [
+                {
+                    "prenda": "Camiseta",
+                    "talla": "10",
+                    "precio": "32000",
+                    "cantidad": 1,
+                    "subtotal": "32000"
+                },
+                {
+                    "prenda": "Camiseta",
+                    "talla": "12",
+                    "precio": "33000",
+                    "cantidad": 1,
+                    "subtotal": "33000"
+                },
+                {
+                    "prenda": "Camiseta",
+                    "talla": "16",
+                    "precio": "35000",
+                    "cantidad": 1,
+                    "subtotal": "35000"
+                },
+                {
+                    "prenda": "Sudadera",
+                    "talla": "S",
+                    "precio": "37000",
+                    "cantidad": 1,
+                    "subtotal": "37000"
+                },
+                {
+                    "prenda": "Chompa Azul",
+                    "talla": "10",
+                    "precio": "44000",
+                    "cantidad": 1,
+                    "subtotal": "44000"
+                },
+                {
+                    "prenda": "Chompa Gris",
+                    "talla": "12",
+                    "precio": "45000",
+                    "cantidad": 1,
+                    "subtotal": "45000"
+                },
+                {
+                    "prenda": "Jean",
+                    "talla": "10",
+                    "precio": "33000",
+                    "cantidad": 1,
+                    "subtotal": "33000"
+                },
+                {
+                    "prenda": "Jean",
+                    "talla": "12",
+                    "precio": "35000",
+                    "cantidad": 1,
+                    "subtotal": "35000"
+                }
+            ],
+            "total": "294000.00"
+        },
+        {
+            "name": "Diana Bedoya",
+            "id_venta": 62,
+            "fecha": "2023-01-16 17:25:43",
+            "detalles": [
+                {
+                    "prenda": "Camiseta",
+                    "talla": "6",
+                    "precio": "30000",
+                    "cantidad": 1,
+                    "subtotal": "30000"
+                },
+                {
+                    "prenda": "Sudadera",
+                    "talla": "8",
+                    "precio": "32000",
+                    "cantidad": 1,
+                    "subtotal": "32000"
+                },
+                {
+                    "prenda": "Chompa Azul",
+                    "talla": "6",
+                    "precio": "42000",
+                    "cantidad": 1,
+                    "subtotal": "42000"
+                }
+            ],
+            "total": "104000.00"
+        },
+        {
+            "name": "Fernanda Oviedo",
+            "id_venta": 63,
+            "fecha": "2023-01-16 17:27:47",
+            "detalles": [
+                {
+                    "prenda": "Jean",
+                    "talla": "12",
+                    "precio": "35000",
+                    "cantidad": 1,
+                    "subtotal": "35000"
+                },
+                {
+                    "prenda": "Medias",
+                    "talla": "MEDIAS",
+                    "precio": "4500",
+                    "cantidad": 1,
+                    "subtotal": "4500"
+                }
+            ],
+            "total": "39500.00"
+        },
+        {
+            "name": "Pilar Loaiza",
+            "id_venta": 64,
+            "fecha": "2023-01-16 17:29:24",
+            "detalles": [
+                {
+                    "prenda": "Camiseta",
+                    "talla": "16",
+                    "precio": "35000",
+                    "cantidad": 1,
+                    "subtotal": "35000"
+                },
+                {
+                    "prenda": "Sudadera",
+                    "talla": "XL",
+                    "precio": "40000",
+                    "cantidad": 1,
+                    "subtotal": "40000"
+                }
+            ],
+            "total": "75000.00"
+        },
+        {
+            "name": "Catherine Rodriguez",
+            "id_venta": 65,
+            "fecha": "2023-01-16 17:37:40",
+            "detalles": [
+                {
+                    "prenda": "Camiseta",
+                    "talla": "S",
+                    "precio": "36000",
+                    "cantidad": 2,
+                    "subtotal": "72000"
+                },
+                {
+                    "prenda": "Sudadera",
+                    "talla": "S",
+                    "precio": "37000",
+                    "cantidad": 1,
+                    "subtotal": "37000"
+                },
+                {
+                    "prenda": "Jean",
+                    "talla": "16",
+                    "precio": "35000",
+                    "cantidad": 1,
+                    "subtotal": "35000"
+                }
+            ],
+            "total": "144000.00"
+        },
+        {
+            "name": "Eri Mar",
+            "id_venta": 66,
+            "fecha": "2023-01-16 17:38:56",
+            "detalles": [
+                {
+                    "prenda": "Camiseta",
+                    "talla": "6",
+                    "precio": "30000",
+                    "cantidad": 1,
+                    "subtotal": "30000"
+                },
+                {
+                    "prenda": "Sudadera",
+                    "talla": "6",
+                    "precio": "31000",
+                    "cantidad": 1,
+                    "subtotal": "31000"
+                }
+            ],
+            "total": "61000.00"
+        },
+        {
+            "name": "Cecilia 15ene",
+            "id_venta": 67,
+            "fecha": "2023-01-16 17:39:39",
+            "detalles": [
+                {
+                    "prenda": "Camiseta",
+                    "talla": "L",
+                    "precio": "38000",
+                    "cantidad": 1,
+                    "subtotal": "38000"
+                },
+                {
+                    "prenda": "Sudadera",
+                    "talla": "L",
+                    "precio": "39000",
+                    "cantidad": 1,
+                    "subtotal": "39000"
+                },
+                {
+                    "prenda": "Medias",
+                    "talla": "MEDIAS",
+                    "precio": "4500",
+                    "cantidad": 2,
+                    "subtotal": "9000"
+                }
+            ],
+            "total": "86000.00"
+        },
+        {
+            "name": "Laura 15ene",
+            "id_venta": 68,
+            "fecha": "2023-01-16 17:40:36",
+            "detalles": [
+                {
+                    "prenda": "Camiseta",
+                    "talla": "10",
+                    "precio": "32000",
+                    "cantidad": 1,
+                    "subtotal": "32000"
+                },
+                {
+                    "prenda": "Sudadera",
+                    "talla": "8",
+                    "precio": "32000",
+                    "cantidad": 1,
+                    "subtotal": "32000"
+                },
+                {
+                    "prenda": "Chompa Azul",
+                    "talla": "8",
+                    "precio": "43000",
+                    "cantidad": 1,
+                    "subtotal": "43000"
+                }
+            ],
+            "total": "107000.00"
+        },
+        {
+            "name": "Yesmith Vega",
+            "id_venta": 69,
+            "fecha": "2023-01-16 17:41:16",
+            "detalles": [
+                {
+                    "prenda": "Camiseta",
+                    "talla": "10",
+                    "precio": "32000",
+                    "cantidad": 2,
+                    "subtotal": "64000"
+                },
+                {
+                    "prenda": "Sudadera",
+                    "talla": "10",
+                    "precio": "33000",
+                    "cantidad": 1,
+                    "subtotal": "33000"
+                },
+                {
+                    "prenda": "Chompa Azul",
+                    "talla": "10",
+                    "precio": "44000",
+                    "cantidad": 1,
+                    "subtotal": "44000"
+                },
+                {
+                    "prenda": "Jean",
+                    "talla": "10",
+                    "precio": "33000",
+                    "cantidad": 2,
+                    "subtotal": "66000"
+                }
+            ],
+            "total": "207000.00"
+        },
+        {
+            "name": "Jackelin",
+            "id_venta": 70,
+            "fecha": "2023-01-16 17:48:08",
+            "detalles": [
+                {
+                    "prenda": "Camiseta",
+                    "talla": "12",
+                    "precio": "33000",
+                    "cantidad": 1,
+                    "subtotal": "33000"
+                },
+                {
+                    "prenda": "Sudadera",
+                    "talla": "14",
+                    "precio": "35000",
+                    "cantidad": 1,
+                    "subtotal": "35000"
+                },
+                {
+                    "prenda": "Chompa Azul",
+                    "talla": "12",
+                    "precio": "45000",
+                    "cantidad": 1,
+                    "subtotal": "45000"
+                }
+            ],
+            "total": "113000.00"
+        },
+        {
+            "name": "",
+            "id_venta": 71,
+            "fecha": "2023-01-16 17:51:13",
+            "detalles": [
+                {
+                    "prenda": "Camiseta",
+                    "talla": "12",
+                    "precio": "33000",
+                    "cantidad": 1,
+                    "subtotal": "33000"
+                },
+                {
+                    "prenda": "Sudadera",
+                    "talla": "14",
+                    "precio": "35000",
+                    "cantidad": 1,
+                    "subtotal": "35000"
+                }
+            ],
+            "total": "68000.00"
+        },
+        {
+            "name": "",
+            "id_venta": 72,
+            "fecha": "2023-01-16 17:52:23",
+            "detalles": [
+                {
+                    "prenda": "Chompa Azul",
+                    "talla": "14",
+                    "precio": "46000",
+                    "cantidad": 1,
+                    "subtotal": "46000"
+                }
+            ],
+            "total": "46000.00"
+        },
+        {
+            "name": "",
+            "id_venta": 73,
+            "fecha": "2023-01-16 17:52:49",
+            "detalles": [
+                {
+                    "prenda": "Camiseta",
+                    "talla": "10",
+                    "precio": "32000",
+                    "cantidad": 1,
+                    "subtotal": "32000"
+                },
+                {
+                    "prenda": "Chompa Azul",
+                    "talla": "10",
+                    "precio": "44000",
+                    "cantidad": 1,
+                    "subtotal": "44000"
+                }
+            ],
+            "total": "76000.00"
+        },
+        {
+            "name": "",
+            "id_venta": 74,
+            "fecha": "2023-01-16 17:53:20",
+            "detalles": [
+                {
+                    "prenda": "Camiseta",
+                    "talla": "6",
+                    "precio": "30000",
+                    "cantidad": 1,
+                    "subtotal": "30000"
+                },
+                {
+                    "prenda": "Sudadera",
+                    "talla": "6",
+                    "precio": "31000",
+                    "cantidad": 1,
+                    "subtotal": "31000"
+                }
+            ],
+            "total": "61000.00"
+        },
+        {
+            "name": "",
+            "id_venta": 75,
+            "fecha": "2023-01-16 17:53:39",
+            "detalles": [
+                {
+                    "prenda": "Camiseta",
+                    "talla": "6",
+                    "precio": "30000",
+                    "cantidad": 1,
+                    "subtotal": "30000"
+                },
+                {
+                    "prenda": "Sudadera",
+                    "talla": "6",
+                    "precio": "31000",
+                    "cantidad": 1,
+                    "subtotal": "31000"
+                }
+            ],
+            "total": "61000.00"
+        },
+        {
+            "name": "",
+            "id_venta": 76,
+            "fecha": "2023-01-16 18:03:03",
+            "detalles": [
+                {
+                    "prenda": "Camiseta",
+                    "talla": "8",
+                    "precio": "31000",
+                    "cantidad": 1,
+                    "subtotal": "31000"
+                },
+                {
+                    "prenda": "Camiseta",
+                    "talla": "14",
+                    "precio": "34000",
+                    "cantidad": 2,
+                    "subtotal": "68000"
+                },
+                {
+                    "prenda": "Sudadera",
+                    "talla": "10",
+                    "precio": "33000",
+                    "cantidad": 1,
+                    "subtotal": "33000"
+                },
+                {
+                    "prenda": "Sudadera",
+                    "talla": "16",
+                    "precio": "36000",
+                    "cantidad": 2,
+                    "subtotal": "72000"
+                }
+            ],
+            "total": "204000.00"
+        },
+        {
+            "name": "",
+            "id_venta": 77,
+            "fecha": "2023-01-16 18:03:35",
+            "detalles": [
+                {
+                    "prenda": "Camiseta",
+                    "talla": "6",
+                    "precio": "30000",
+                    "cantidad": 1,
+                    "subtotal": "30000"
+                },
+                {
+                    "prenda": "Sudadera",
+                    "talla": "6",
+                    "precio": "31000",
+                    "cantidad": 1,
+                    "subtotal": "31000"
+                },
+                {
+                    "prenda": "Chompa Azul",
+                    "talla": "4",
+                    "precio": "41000",
+                    "cantidad": 1,
+                    "subtotal": "41000"
+                },
+                {
+                    "prenda": "Medias",
+                    "talla": "6-8",
+                    "precio": "9000",
+                    "cantidad": 1,
+                    "subtotal": "9000"
+                }
+            ],
+            "total": "111000.00"
+        },
+        {
+            "name": "",
+            "id_venta": 78,
+            "fecha": "2023-01-16 18:04:12",
+            "detalles": [
+                {
+                    "prenda": "Sudadera",
+                    "talla": "M",
+                    "precio": "38000",
+                    "cantidad": 1,
+                    "subtotal": "38000"
+                }
+            ],
+            "total": "38000.00"
+        },
+        {
+            "name": "",
+            "id_venta": 79,
+            "fecha": "2023-01-16 18:04:29",
+            "detalles": [
+                {
+                    "prenda": "Camiseta",
+                    "talla": "14",
+                    "precio": "34000",
+                    "cantidad": 2,
+                    "subtotal": "68000"
+                },
+                {
+                    "prenda": "Sudadera",
+                    "talla": "14",
+                    "precio": "35000",
+                    "cantidad": 2,
+                    "subtotal": "70000"
+                },
+                {
+                    "prenda": "Jean",
+                    "talla": "14",
+                    "precio": "35000",
+                    "cantidad": 2,
+                    "subtotal": "70000"
+                }
+            ],
+            "total": "208000.00"
+        },
+        {
+            "name": "",
+            "id_venta": 80,
+            "fecha": "2023-01-16 18:05:01",
+            "detalles": [
+                {
+                    "prenda": "Camiseta",
+                    "talla": "8",
+                    "precio": "31000",
+                    "cantidad": 1,
+                    "subtotal": "31000"
+                },
+                {
+                    "prenda": "Sudadera",
+                    "talla": "8",
+                    "precio": "32000",
+                    "cantidad": 1,
+                    "subtotal": "32000"
+                },
+                {
+                    "prenda": "Chompa Azul",
+                    "talla": "8",
+                    "precio": "43000",
+                    "cantidad": 1,
+                    "subtotal": "43000"
+                },
+                {
+                    "prenda": "Medias",
+                    "talla": "6-8",
+                    "precio": "9000",
+                    "cantidad": 1,
+                    "subtotal": "9000"
+                },
+                {
+                    "prenda": "Chompa Gris",
+                    "talla": "8",
+                    "precio": "43000",
+                    "cantidad": 1,
+                    "subtotal": "43000"
+                }
+            ],
+            "total": "158000.00"
+        },
+        {
+            "name": "Jessica Carvajal",
+            "id_venta": 81,
+            "fecha": "2023-01-16 19:09:47",
+            "detalles": [
+                {
+                    "prenda": "Camiseta",
+                    "talla": "8",
+                    "precio": "31000",
+                    "cantidad": 1,
+                    "subtotal": "31000"
+                },
+                {
+                    "prenda": "Camiseta",
+                    "talla": "14",
+                    "precio": "34000",
+                    "cantidad": 2,
+                    "subtotal": "68000"
+                },
+                {
+                    "prenda": "Sudadera",
+                    "talla": "8",
+                    "precio": "32000",
+                    "cantidad": 1,
+                    "subtotal": "32000"
+                },
+                {
+                    "prenda": "Sudadera",
+                    "talla": "16",
+                    "precio": "36000",
+                    "cantidad": 1,
+                    "subtotal": "36000"
+                },
+                {
+                    "prenda": "Chompa Gris",
+                    "talla": "8",
+                    "precio": "43000",
+                    "cantidad": 1,
+                    "subtotal": "43000"
+                },
+                {
+                    "prenda": "Chompa Gris",
+                    "talla": "16",
+                    "precio": "47000",
+                    "cantidad": 1,
+                    "subtotal": "47000"
+                },
+                {
+                    "prenda": "Jean",
+                    "talla": "14",
+                    "precio": "35000",
+                    "cantidad": 1,
+                    "subtotal": "35000"
+                }
+            ],
+            "total": "292000.00"
+        },
+        {
+            "name": "",
+            "id_venta": 82,
+            "fecha": "2023-01-16 19:29:51",
+            "detalles": [
+                {
+                    "prenda": "Medias",
+                    "talla": "MEDIAS",
+                    "precio": "4500",
+                    "cantidad": 5,
+                    "subtotal": "22500"
+                }
+            ],
+            "total": "22500.00"
+        },
+        {
+            "name": "Edilma Cata\u00f1o",
+            "id_venta": 83,
+            "fecha": "2023-01-16 19:37:15",
+            "detalles": [
+                {
+                    "prenda": "Sudadera",
+                    "talla": "10",
+                    "precio": "33000",
+                    "cantidad": 1,
+                    "subtotal": "33000"
+                },
+                {
+                    "prenda": "Chompa Azul",
+                    "talla": "12",
+                    "precio": "45000",
+                    "cantidad": 1,
+                    "subtotal": "45000"
+                }
+            ],
+            "total": "78000.00"
+        },
+        {
+            "name": "",
+            "id_venta": 84,
+            "fecha": "2023-01-16 19:38:44",
+            "detalles": [
+                {
+                    "prenda": "Sudadera",
+                    "talla": "S",
+                    "precio": "37000",
+                    "cantidad": 1,
+                    "subtotal": "37000"
+                }
+            ],
+            "total": "37000.00"
+        },
+        {
+            "name": "",
+            "id_venta": 85,
+            "fecha": "2023-01-16 19:44:35",
+            "detalles": [
+                {
+                    "prenda": "Camiseta",
+                    "talla": "6",
+                    "precio": "30000",
+                    "cantidad": 1,
+                    "subtotal": "30000"
+                },
+                {
+                    "prenda": "Sudadera",
+                    "talla": "4",
+                    "precio": "30000",
+                    "cantidad": 1,
+                    "subtotal": "30000"
+                }
+            ],
+            "total": "60000.00"
+        },
+        {
+            "name": "",
+            "id_venta": 86,
+            "fecha": "2023-01-16 21:48:44",
+            "detalles": [
+                {
+                    "prenda": "Chompa Gris",
+                    "talla": "10",
+                    "precio": "44000",
+                    "cantidad": 1,
+                    "subtotal": "44000"
+                },
+                {
+                    "prenda": "Medias",
+                    "talla": "MEDIAS",
+                    "precio": "4500",
+                    "cantidad": 2,
+                    "subtotal": "9000"
+                }
+            ],
+            "total": "53000.00"
+        },
+        {
+            "name": "",
+            "id_venta": 87,
+            "fecha": "2023-01-16 21:49:51",
+            "detalles": [
+                {
+                    "prenda": "Sudadera",
+                    "talla": "S",
+                    "precio": "37000",
+                    "cantidad": 1,
+                    "subtotal": "37000"
+                }
+            ],
+            "total": "37000.00"
         }
     ]
 }

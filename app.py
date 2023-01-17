@@ -1,5 +1,3 @@
-# \ 
-
 #Modulos de Python
 import sys
 import psycopg2

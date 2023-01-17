@@ -7,7 +7,7 @@ from Utils.util_sql import connectsql, make_query, delete_date, get_id
 class Venta(Ventana):
     def __init__(self, main_window, table_name):
         query = f''' SELECT clientes.nombre,clientes.telefono,date_trunc('day',ventas.fecha) AS fecha,
-        ventas.total,ventas.metodo_pago FROM ventas JOIN clientes ON ventas.id_cliente = clientes.id;'''
+        ventas.total,ventas.metodo_pago FROM ventas JOIN clientes ON ventas.id_cliente = clientes.id ORDER BY ventas.id DESC;'''
         super().__init__(main_window, table_name,main_window.ip,query=query)
         self.up = main_window
         self.ip = self.up.ip

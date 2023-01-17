@@ -13,7 +13,7 @@ class Detalles(QMainWindow):
         self.main_window = main_window
         self.id_venta = id_venta
         self.ti = title
-        self.table_name = self.ti.split()[0].lower()
+        self.table_name = self.ti.split()[0].lower() + 's'
         self.setWindowTitle(self.ti)
         self.initUI()
         self.ip = ip
@@ -35,8 +35,8 @@ class Detalles(QMainWindow):
         button6.clicked.connect(self.openBlusas)
         button7 = PushButton("MEDIAS")
         button7.clicked.connect(self.openMedias)
-        button8 = PushButton("YOMBER")
-        button8.clicked.connect(self.openYomber)
+        button8 = PushButton("OTROS")
+        button8.clicked.connect(self.openOtros)
         print(type(self.ti))
         button9 = PushButton(f"VER {self.ti.split()[0].upper()}",self)
         button9.clicked.connect(self.openFinalizar)
@@ -67,7 +67,6 @@ class Detalles(QMainWindow):
     def openChompaAzul(self):
         INFO(self).detalles_venta('chazul')
         
-
     def openChompaGris(self):
         INFO(self).detalles_venta('chgris')
         
@@ -83,8 +82,8 @@ class Detalles(QMainWindow):
     def openMedias(self):
         INFO(self).detalles_venta('Medias')
     
-    def openYomber(self): ### CONECTAR A ENCARGO
-        pass
+    def openOtros(self): ### CONECTAR A ENCARGO
+        INFO(self).detalles_venta('otros')
 
     def openFinalizar(self):
         INFO(self).informe_venta()

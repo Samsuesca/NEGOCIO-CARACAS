@@ -225,6 +225,7 @@ FROM prendas
 JOIN tipo_prendas ON prendas.id_tipo_prenda = tipo_prendas.id
 JOIN inventario ON prendas.id = inventario.id_prenda;
 
+
 --VER INVENTARIO CAMISETAS:
 SELECT * FROM camisetas;
 CREATE VIEW camisetas AS
@@ -233,6 +234,16 @@ FROM prendas
 JOIN tipo_prendas ON prendas.id_tipo_prenda = tipo_prendas.id
 JOIN inventario ON prendas.id = inventario.id_prenda
 WHERE prendas.id BETWEEN 1 AND 11;
+
+--VER INVENTARIO OTROS:
+SELECT * FROM otros;
+CREATE VIEW otros AS
+SELECT prendas.id, tipo_prendas.name, prendas.talla, prendas.precio, inventario.cantidad
+FROM prendas
+JOIN tipo_prendas ON prendas.id_tipo_prenda = tipo_prendas.id
+JOIN inventario ON prendas.id = inventario.id_prenda
+WHERE prendas.id BETWEEN 87 AND 89;
+
 
 --VER INVENTARIO SUDADERAS:
 SELECT * FROM sudaderas;
