@@ -4,7 +4,7 @@ from Utils.util_sql import connectsql, make_query,get_id,delete_date
 
 class MenuGastos(Ventana):
     def __init__(self, selfis):
-        super().__init__(selfis,'Gastos',selfis.ip,True)
+        super().__init__(selfis,'Gastos',selfis.ip)
         self.up = selfis
         self.initUI()
 
@@ -38,7 +38,7 @@ class MenuGastos(Ventana):
                             # Ejecutar la consulta
                             make_query(conn,cursor, query)
 
-    def editData(self): ##COMPLETAR
+    def editata(self): ##COMPLETAR
         pass
 
     def deleteData(self):
@@ -50,4 +50,4 @@ class MenuGastos(Ventana):
                 QMessageBox.warning(self, 'Error', 'No se encontró ninguna fila con ese ID.')
             else:
                 delete_date(self,ok,row_id,self.up.ip)
-        
+        D

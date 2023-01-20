@@ -1,0 +1,85 @@
+{
+    "Ventas": [
+        {
+            "name": "Leidy Polo",
+            "id_venta": 107,
+            "fecha": "2023-01-18 09:19:38",
+            "detalles": [
+                {
+                    "prenda": "Camiseta",
+                    "talla": "14",
+                    "precio": "34000",
+                    "cantidad": 1,
+                    "subtotal": "34000"
+                }
+            ],
+            "total": "34000.00"
+        },
+        {
+            "name": "Angel Vargas",
+            "id_venta": 108,
+            "fecha": "2023-01-18 09:21:16",
+            "detalles": [
+                {
+                    "prenda": "Camiseta",
+                    "talla": "10",
+                    "precio": "32000",
+                    "cantidad": 1,
+                    "subtotal": "32000"
+                },
+                {
+                    "prenda": "Sudadera",
+                    "talla": "10",
+                    "precio": "33000",
+                    "cantidad": 1,
+                    "subtotal": "33000"
+                }
+            ],
+            "total": "65000.00"
+        },
+        {
+            "name": "Xiomara Murillo",
+            "id_venta": 109,
+            "fecha": "2023-01-18 09:21:54",
+            "detalles": [
+                {
+                    "prenda": "Camiseta",
+                    "talla": "XL",
+                    "precio": "39000",
+                    "cantidad": 1,
+                    "subtotal": "39000"
+                },
+                {
+                    "prenda": "Jean",
+                    "talla": "30",
+                    "precio": "40000",
+                    "cantidad": 1,
+                    "subtotal": "40000"
+                }
+            ],
+            "total": "79000.00"
+        },
+        {
+            "name": "Oscar Cordero",
+            "id_venta": 111,
+            "fecha": "2023-01-18 11:48:43",
+            "detalles": [
+                {
+                    "prenda": "Camiseta",
+                    "talla": "12",
+                    "precio": "33000",
+                    "cantidad": 1,
+                    "subtotal": "33000"
+                },
+                {
+                    "prenda": "Jean",
+                    "talla": "10",
+                    "precio": "33000",
+                    "cantidad": 1,
+                    "subtotal": "33000"
+                }
+            ],
+            "total": "66000.00"
+        }
+    ]
+}

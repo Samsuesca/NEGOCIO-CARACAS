@@ -17,14 +17,11 @@ class Venta(Ventana):
         phone, ok1 = QInputDialog.getText(self, 'Realizar Venta', 'Inserta el teléfono del cliente', QLineEdit.Normal, "3000000000")
         if phone.isdigit() and len(phone) == 10:
 
-            # El número de teléfono es válido
-            email, ok2 = QInputDialog.getText(self,'Realizar Venta','Inserta el correo del cliente',QLineEdit.Normal, "negocio@gmail.com")
-
-            if ok  and ok1  and ok2:
+            if ok and phone and ok1:
                 # CREAR CLIENTE
                 conn, cursor = connectsql(host=self.ip)
                 # Construir la consulta para insertar una nueva fila
-                query = f"INSERT INTO public.clientes (nombre, telefono, correo) VALUES ('{client}',{int(phone)},'{email}')"
+                query = f"INSERT INTO public.clientes (nombre, telefono) VALUES ('{client}',{int(phone)})"
                 # Ejecutar la consulta
                 make_query(conn,cursor, query)
 

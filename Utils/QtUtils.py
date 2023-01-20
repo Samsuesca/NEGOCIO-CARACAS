@@ -2,7 +2,7 @@
 from Utils.util_sql import execute_query, connectsql, make_query
 from Utils.style import PushButton, adj_left, adj_right,adj_sup_center,adj_middle
 #Modelos de Terceros
-from PyQt5.QtWidgets import QDialog,QSpinBox,QTableWidget,QTableWidgetItem,QGridLayout, QMainWindow, QMessageBox, QHeaderView,QLabel, QVBoxLayout, QWidget, QInputDialog,QHBoxLayout
+from PyQt5.QtWidgets import QDialog,QSpinBox,QTableWidget,QTableWidgetItem,QLineEdit,QGridLayout, QMainWindow, QMessageBox, QHeaderView,QLabel, QVBoxLayout, QWidget, QInputDialog,QHBoxLayout
 from PyQt5.QtCore import Qt
 #Modulos de Python
 from datetime import datetime
@@ -14,6 +14,7 @@ class ShowData(QMainWindow):
     def __init__(self,main_window, table_name,ip,query='') -> None:
         super().__init__()
         self.table_name = table_name
+        print(self.table_name)
         self.ip = ip
         self.main_window = main_window
         self.query = query
@@ -30,9 +31,9 @@ class ShowData(QMainWindow):
          
             if self.query == '':
             # Obtener los datos de la tabla "telas"
-                results, column_names = self.get_table_data(self.table_name)
+                results, column_names = self.get_table_data()
             else:
-                results, column_names = self.get_table_data(self.table_name,self.query)
+                results, column_names = self.get_table_data(self.query)
             # Crear la tabla y establecer los encabezados de las columnas
             table = QTableWidget()
             table.setRowCount(len(results))
@@ -66,10 +67,11 @@ class ShowData(QMainWindow):
             QMessageBox.warning(self.main_window, 'Error', 'Parece que la tabla que tratas de ver esta vacia')
 
 
-    def get_table_data(self,table_name,dif_query=''):
+    def get_table_data(self,dif_query=''):
         conn, cursor = connectsql(host=self.ip)
+        print(self.table_name)
         if dif_query == '':
-            results = execute_query(conn,cursor, f'SELECT * FROM {table_name} ORDER BY id')
+            results = execute_query(conn,cursor, f'SELECT * FROM {self.table_name} ORDER BY id')
         else: 
             results = execute_query(conn,cursor, dif_query)
         column_names = [column[0] for column in cursor.description]
@@ -253,9 +255,9 @@ class INFO():
         elif self.table_name == 'yomber' or self.table_name == 'blusas':
             X = ['6','8','10','12','14','16','S','M','L','XL']
         elif self.table_name == 'Medias':
-            X = ['6-8','8-10','9-11']
+            X = ['4-6','6-8','8-10','9-11','CANILLERA P','CANILLERA G']
         elif self.table_name == 'otros':
-            X = ['TOP','MEDIAS']
+            X = ['TOP','CAMISILLA','BICICLETERO']
         elif self.table_name == 'sudaderas' or self.table_name == 'chazul' or self.table_name == 'chgris':
             X = ['4', '6', '8', '10', '12', '14', '16', 'S', 'M', 'L', 'XL']
         else:
@@ -296,7 +298,6 @@ class INFO():
             grid.addWidget(ti_quant,0,6,alignment=Qt.AlignCenter)
             grid.addWidget(ti_spa[3],0,7,alignment=Qt.AlignCenter)
             grid.addWidget(ti_parcial,0,8,alignment=Qt.AlignCenter)
-            new = []
             for i in range(len(self.names)):
                 label_name= QLabel(f'{self.names[i]}')
                 label_size= QLabel(f'{self.sizes[i]}')
@@ -315,12 +316,7 @@ class INFO():
             grid2 = QGridLayout()
             label_total_venta = QLabel(f'Total de la venta: {result[0][8]}')
             grid2.addWidget(label_total_venta,0,0,alignment=Qt.AlignCenter)
-            # update = PushButton("ACTUALIZAR")
-            # update.setFixedSize(200, 20)
-            # update.clicked.connect(self.actualizar)
-            # grid2.addWidget(update,0,1,alignment=Qt.AlignCenter)
 
-            # print(new)
             # Define el ancho de las columnas
             grid.setColumnStretch(0, 2)
             grid.setColumnStretch(1, 0.2)
@@ -354,14 +350,8 @@ class INFO():
             adj_sup_center(self.informe)
             self.informe.exec_()
 
-            # self.actualizar_cantidad(label_quant,self.id_det[i])
         except IndexError:
             QMessageBox.about(self.up,"Error", "No se han añadido prendas a la venta")
-
-
-    # def actualizar(self):
-    #     self.informe.accept()
-    #     self.informe_venta()
 
     def actualizar_cantidad(self,value):
         conn,cur = connectsql(host=self.up.ip)
@@ -375,52 +365,64 @@ class INFO():
 
 
     def save_venta(self):
-            # Obtiene la fecha actual en formato "YYYY-MM-DD"
-        conn,cur = connectsql(host=self.up.ip)
-        query = f'''UPDATE public.ventas SET finalizada=true WHERE id = {self.up.id_venta}'''
-        make_query(conn,cur,query)
-
-        today = datetime.now().strftime("%Y-%m-%d")
-        ventas = {'Ventas': []}
-        # Crea el diccionario con los datos de la venta
-        data = {'name':self.result[0][0],
-                'id_venta':self.result[0][1],
-                'fecha':self.result[0][2].strftime("%Y-%m-%d %H:%M:%S"),
-                'detalles':[{'prenda': self.result[i][3], 'talla': self.result[i][4],
-                 'precio': str(self.result[i][5]), 'cantidad': self.result[i][6], 'subtotal': 
-                 str(self.result[i][7])} for i in range(len(self.result))],
-                'total':str(self.result[0][8])}
-      #######
-       
-        if os.path.exists(f"registro_ventas/{today}.json"):
-            # Escribe la lista de ventas con la venta actual en el archivo
-            f = open(f"registro_ventas/{today}.json")
-            read = json.load(f)
-            with open(f"registro_ventas/{today}.json", "r+") as file:
-                # Carga el contenido del archivo en formato JSON
-                ventass = json.load(file)
-                read['Ventas'].append(data)
-                ventass.update(read)
-                file.seek(0)
-                json.dump(ventass, file, indent = 4)
+        obs,ok1 = QInputDialog.getText(self.up,'Método de Pago','Selecciona el método de pago',QLineEdit.Normal, "")
+        if obs and ok1:
+            conn,cur = connectsql(host=self.up.ip)
+            query = f'''UPDATE public.ventas SET observaciones='{obs}' WHERE id = {self.up.id_venta}'''
+            make_query(conn,cur,query)
         else:
-            # Si no existe, abre el archivo en modo "w" (sobreescribir)
-            with open(f"registro_ventas/{today}.json", "w") as f:
-                # Escribe el diccionario en formato JSON en el archivo
-                json.dump(ventas, f)
-            # Escribe la lista de ventas con la venta actual en el archivo
-            f = open(f"registro_ventas/{today}.json")
-            read = json.load(f)
-            with open(f"registro_ventas/{today}.json", "r+") as file:
-                # Carga el contenido del archivo en formato JSON
-                ventass = json.load(file)
-                read['Ventas'].append(data)
-                ventass.update(read)
-                file.seek(0)
-                json.dump(ventass, file, indent = 4)
-        self.informe.accept()
-        self.up.close()       
+            pass
+        metodo,ok = QInputDialog.getItem(self.up,'Método de Pago','Selecciona el método de pago',['Efectivo','Transferencia'])
+        if metodo and ok:
+            conn,cur = connectsql(host=self.up.ip)
+            query = f'''UPDATE public.ventas SET finalizada=true,metodo_pago='{metodo}' WHERE id = {self.up.id_venta}'''
+            make_query(conn,cur,query)
+        
+        else:
+            QMessageBox.about(self.up,"Error", "Debes seleccionar un método de pago")
+    
 
+    #     today = datetime.now().strftime("%Y-%m-%d")
+    #     ventas = {'Ventas': []}
+    #     # Crea el diccionario con los datos de la venta
+    #     data = {'name':self.result[0][0],
+    #             'id_venta':self.result[0][1],
+    #             'fecha':self.result[0][2].strftime("%Y-%m-%d %H:%M:%S"),
+    #             'detalles':[{'prenda': self.result[i][3], 'talla': self.result[i][4],
+    #              'precio': str(self.result[i][5]), 'cantidad': self.result[i][6], 'subtotal': 
+    #              str(self.result[i][7])} for i in range(len(self.result))],
+    #             'total':str(self.result[0][8])}
+    #   #######
+       
+    #     if os.path.exists(f"registro_ventas/{today}.json"):
+    #         # Escribe la lista de ventas con la venta actual en el archivo
+    #         f = open(f"registro_ventas/{today}.json")
+    #         read = json.load(f)
+    #         with open(f"registro_ventas/{today}.json", "r+") as file:
+    #             # Carga el contenido del archivo en formato JSON
+    #             ventass = json.load(file)
+    #             read['Ventas'].append(data)
+    #             ventass.update(read)
+    #             file.seek(0)
+    #             json.dump(ventass, file, indent = 4)
+    #     else:
+    #         # Si no existe, abre el archivo en modo "w" (sobreescribir)
+    #         with open(f"registro_ventas/{today}.json", "w") as f:
+    #             # Escribe el diccionario en formato JSON en el archivo
+    #             json.dump(ventas, f)
+    #         # Escribe la lista de ventas con la venta actual en el archivo
+    #         f = open(f"registro_ventas/{today}.json")
+    #         read = json.load(f)
+    #         with open(f"registro_ventas/{today}.json", "r+") as file:
+    #             # Carga el contenido del archivo en formato JSON
+    #             ventass = json.load(file)
+    #             read['Ventas'].append(data)
+    #             ventass.update(read)
+    #             file.seek(0)
+    #             json.dump(ventass, file, indent = 4)
+            self.informe.accept()
+            self.up.close()    
+    
     def query_venta_detalle(self,id_venta):  
         conn, cursor = connectsql(host=self.up.ip)
         query = f''' SELECT clientes.nombre AS "Nombre del cliente",
@@ -438,7 +440,8 @@ class INFO():
                         JOIN detalle_venta ON ventas.id = detalle_venta.id_venta
                         JOIN prendas ON detalle_venta.id_prenda = prendas.id
                         JOIN tipo_prendas ON prendas.id_tipo_prenda = tipo_prendas.id
-                        WHERE ventas.id = {id_venta}'''
+                        WHERE ventas.id = {id_venta}
+                        ORDER BY detalle_venta.id'''
         cursor.execute(query)
         result = cursor.fetchall()
         conn.commit()

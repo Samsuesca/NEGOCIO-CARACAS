@@ -8,6 +8,37 @@
 ---Ejecutar reinicio:
 --pg_ctl -D /Library/PostgreSQL/15/data restart
 
+(SELECT clientes.nombre AS "Nombre del cliente",
+                        ventas.id AS "ID",
+                        ventas.fecha AS "Fecha",
+                        tipo_prendas.name AS "Nombre de la prenda",
+                        prendas.talla AS "Talla",
+                        prendas.precio AS "Precio",
+                        detalle_venta.cantidad AS "Cantidad",
+                        (prendas.precio * detalle_venta.cantidad) AS "Total parcial por prenda",
+                        ventas.total AS "Total de la Venta",
+                        detalle_venta.id AS "ID_DETALLE"
+                        FROM clientes
+                        JOIN ventas ON clientes.id = ventas.id_cliente
+                        JOIN detalle_venta ON ventas.id = detalle_venta.id_venta
+                        JOIN prendas ON detalle_venta.id_prenda = prendas.id
+                        JOIN tipo_prendas ON prendas.id_tipo_prenda = tipo_prendas.id
+                        WHERE ventas.id = 37
+                        ORDER BY detalle_venta.id;)
+
+
+#vista encargos yombers:
+CREATE VIEW yombers_encargados AS 
+SELECT clientes.nombre AS "Cliente", clientes.telefono AS "Teléfono",  yombers.nombre_nina AS "Niña",
+prendas.talla, yombers.delantero AS "D", yombers.trasero AS "T", yombers.espalda AS "E",
+ yombers.cintura AS "C", yombers.largo AS "L", encargos.fecha_encargo AS "Encargado el:", encargos.fecha_entrega AS "Para entregar el:", encargos.saldo AS "SALDO"
+FROM encargos
+JOIN detalle_encargo ON encargos.id = detalle_encargo.id_encargo
+JOIN prendas ON detalle_encargo.id_prenda = prendas.id
+JOIN clientes ON encargos.id_cliente = clientes.id
+JOIN yombers ON encargos.id = yombers.id_encargo
+WHERE encargos.entregado = FALSE;
+
 
 #llaves foraneas tabla tipo_prendas:
 ALTER TABLE IF EXISTS public.tipo_prendas
@@ -281,6 +312,15 @@ JOIN tipo_prendas ON prendas.id_tipo_prenda = tipo_prendas.id
 JOIN inventario ON prendas.id = inventario.id_prenda
 WHERE prendas.id BETWEEN 34 AND 44;
 
+--VER INVENTARIO yomber:
+SELECT * FROM yomber;
+CREATE VIEW yomber AS
+SELECT prendas.id, tipo_prendas.name, prendas.talla, prendas.precio, inventario.cantidad
+FROM prendas
+JOIN tipo_prendas ON prendas.id_tipo_prenda = tipo_prendas.id
+JOIN inventario ON prendas.id = inventario.id_prenda
+WHERE prendas.id BETWEEN 45 AND 54;
+
 --VER INVENTARIO BLUSAS:
 SELECT * FROM blusas;
 CREATE VIEW blusas AS
@@ -364,6 +404,37 @@ CREATE TRIGGER agregar_movimiento
 AFTER UPDATE OF finalizada ON ventas
 FOR EACH ROW
 EXECUTE FUNCTION agregar_movimiento_venta();
+
+--tabla encargo TRIGGERS
+CREATE OR REPLACE FUNCTION saldo()
+RETURNS TRIGGER AS $$
+BEGIN
+	NEW.saldo := NEW.total - NEW.abono;
+	RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER update_saldo
+AFTER INSERT OR UPDATE OF total,abono
+ON encargos
+FOR EACH ROW
+EXECUTE FUNCTION saldo()
+
+CREATE OR REPLACE FUNCTION update_fecha_entrega()
+RETURNS TRIGGER AS $$
+BEGIN 
+    NEW.fecha_entrega := NEW.fecha_encargo + INTERVAL '1 day'*NEW.dias_entrega;
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER actualizar_fecha_entrega
+AFTER INSERT OR UPDATE OF dias_entrega,fecha_encargo
+ON encargos
+FOR EACH ROW
+EXECUTE FUNCTION update_fecha_entrega();
+
+
 
 
 --tabla gastos
