@@ -1,16 +1,16 @@
 from PyQt5.QtWidgets import QMainWindow
 from Utils.QtUtils import ShowData
-from Ventas.detalles import DetallesVenta
+from Ventas.detalles import DetallesCambio
 from Ventas.clientes import clients, create_operation
 
-class Venta(QMainWindow):
+class Cambio(QMainWindow):
     def __init__(self, main_window):
         super().__init__()
-        self.query = f''' SELECT ventas.id, clientes.nombre,clientes.telefono,ventas.fecha AS fecha,
-        ventas.total,ventas.metodo_pago,ventas.observaciones FROM ventas JOIN clientes ON ventas.id_cliente = clientes.id ORDER BY ventas.id DESC;'''
+        self.query = f'''SELECT cambios.id, clientes.nombre,clientes.telefono,cambios.fecha AS fecha,
+        cambios.total_entrada,cambios.total_salida,cambios.metodo_pago,cambios.observaciones FROM cambios JOIN clientes ON cambios.id_cliente = clientes.id ORDER BY cambios.id DESC;'''
         self.up = main_window
-        self.table_name = 'ventas'
-        self.filtro = ['nombre','telefono','fecha','total']
+        self.table_name = 'cambios'
+        self.filtro = ['nombre','telefono','fecha','total_entrada','total_salida']
         self.ip = self.up.ip
         self.add_row_bool = False
 
@@ -28,22 +28,16 @@ class Venta(QMainWindow):
         if self.bool:
             query = f'''INSERT INTO public.{self.table_name} (id_cliente)
                         VALUES ({self.id_cliente});'''
-            self.id_venta = create_operation(parent=self,
+            self.id_cambio = create_operation(parent=self,
                                             query=query,
                                             id_cliente=self.id_cliente,
                                             type=self.table_name)   
-
+                              
     def detalles(self):
         if self.bool:
-            self.show_detalles = DetallesVenta(self,self.id_venta[0],f'Venta #{self.id_venta[0]}',self.ip)
+            self.show_detalles = DetallesCambio(self,self.id_cambio[0])
             return self.show_detalles
         else:
             return None
-
-        
-
-    
-
-        
 
         

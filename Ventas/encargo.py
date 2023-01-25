@@ -1,79 +1,64 @@
-from PyQt5.QtWidgets import QInputDialog, QMessageBox, QLineEdit
-from Utils.QtUtils import Ventana
-from Ventas.detalles import Detalles
-from Utils.style import adj_right,adj_left
-from Utils.util_sql import connectsql, make_query, delete_date, get_id
+from PyQt5.QtWidgets import QInputDialog,QMainWindow,QLineEdit
+from Utils.QtUtils import ShowData
+from Ventas.detalles import DetallesEncargo
+from Ventas.clientes import clients, create_operation
 
-class Encargo(Ventana):
-    def __init__(self, main_window, table_name):
-        super().__init__(main_window, table_name,main_window.ip)
+class Encargo(QMainWindow):
+    def __init__(self, main_window):
+        super().__init__()
         self.up = main_window
+        self.filter = ['fecha_entrega','fecha_encargo']
         self.ip = self.up.ip
+        self.table_name = 'encargos'
+        self.add_row_bool = False
+        self.filtro = ['nombre','telefono','entregarel','saldo','encargado']
+        self.query = f''' SELECT encargos.id, clientes.nombre,clientes.telefono,
+        date_trunc('day',encargos.fecha_encargo) AS Encargado,
+        date_trunc('day',encargos.fecha_entrega) AS EntregarEl,
+        encargos.saldo,encargos.metodo_pago,encargos.observaciones,encargos.entregado 
+        FROM encargos JOIN clientes ON encargos.id_cliente = clientes.id
+         ORDER BY encargos.id DESC;'''
+
+    def openData(self):
+        self.show_data = ShowData(main_window=self.up,
+                                  table_name=self.table_name,
+                                  ip=self.ip,
+                                  query=self.query,
+                                  add_row=self.add_row_bool,
+                                  filtro=self.filtro)
+        return self.show_data
 
     def insertData(self): 
-        client, ok = QInputDialog.getText(self,'Realizar Encargo','Inserta el nombre del cliente', QLineEdit.Normal, "")
-        phone, ok1 = QInputDialog.getText(self, 'Realizar Encargo', 'Inserta el teléfono del cliente', QLineEdit.Normal, "3000000000")
-        if phone.isdigit() and len(phone) == 10:
+        plazo, ok2 = QInputDialog.getText(self, 'Realizar Encargo',
+                                                       'Inserta el plazo del encargo',
+                                                         QLineEdit.Normal, "10")
+        if  plazo and ok2:
+            self.id_cliente, self.bool = clients(self,self.table_name)
+            if self.bool:
+                query = f'''INSERT INTO public.{self.table_name} (id_cliente)
+                            VALUES ({self.id_cliente});'''
+                self.id_encargo = create_operation(parent=self,
+                                                query=query,
+                                                id_cliente=self.id_cliente,
+                                                type=self.table_name)
+        else: 
+            self.bool = False         
 
-            # El número de teléfono es válido
-            email, ok2 = QInputDialog.getText(self,'Realizar Encargo','Inserta el correo del cliente',QLineEdit.Normal, "negocio@gmail.com")
-
-            if ok  and ok1  and ok2:
-                # CREAR CLIENTE
-                conn, cursor = connectsql(host=self.ip)
-                # Construir la consulta para insertar una nueva fila
-                query = f"INSERT INTO public.clientes (nombre, telefono, correo) VALUES ('{client}',{int(phone)},'{email}')"
-                # Ejecutar la consulta
-                make_query(conn,cursor, query)
-
-
-                #OBTENER ID_CLIENTE:
-                conn1, cursor1 = connectsql(host=self.ip)
-                query1 = f'''SELECT Max(id) FROM clientes WHERE nombre = '{client}' '''
-                cursor1.execute(query1)
-                id_cliente= cursor1.fetchone()
-                conn1.commit()
-                cursor1.close()
-                conn1.close()
-
-                #CREAR VENTA
-                conn2, cursor2 = connectsql(host=self.ip)
-                query2 = f'''INSERT INTO public.encargos (id_cliente)
-                VALUES ({id_cliente[0]});'''
-                make_query(conn2,cursor2, query2)
-
-                #OBTENER ID_VENTA:
-                conn3, cursor3 = connectsql(host=self.ip)
-                query3 = f'''SELECT id FROM encargos WHERE id_cliente = {id_cliente[0]}'''
-                cursor3.execute(query3)
-                id_venta= cursor3.fetchone()
-            
-                conn3.commit()
-                cursor3.close()
-                conn3.close()
-                
-                #CREAR DETALLE VENTA:
-                self.detalles(id_venta[0])
+    def detalles(self):
+        if self.bool:
+            self.show_detalles = DetallesEncargo(self,self.id_encargo[0])
+            return self.show_detalles
         else:
-            # El número de teléfono no es válido, muestra un mensaje de error y vuelve a mostrar el cuadro de diálogo
-            QMessageBox.warning(self, 'Error', 'El número de teléfono debe tener 10 dígitos')
-               
-    def detalles(self,id_venta):
-        self.show_detalles = Detalles(self,id_venta,f'Encargo #{id_venta}',self.ip)
-        x,y = adj_right(self.show_detalles,1.3)
-        self.show_detalles.move(x,y)
-        self.show_detalles.show()
-        x1,y1 = adj_left(self)
-        self.move(x1,y1)
-             
+            return None
+    
+    def showYomber(self):
+        query='SELECT * FROM yombers_encargados;'
+        self.show_yomber = ShowData(main_window=self.up,
+                                  table_name='yombers_encargados',
+                                  ip=self.ip,
+                                  query=query,
+                                  add_row=False,
+                                  filtro=self.filtro)
+        return self.show_yomber
 
-    def deleteData(self):
-        # Obtener el ID de la fila que se desea eliminar
-        row_id, ok = QInputDialog.getInt(self, 'Eliminar Encargo', 'Ingresa el ID que deseas eliminar:')
-        if ok and row_id:
-            row = get_id(self.table_name,row_id,self.ip)
-            if row is None:
-                QMessageBox.warning(self, 'Error', 'No se encontró ninguna fila con ese ID.')
-            else:
-                delete_date(self,ok,row_id,self.ip)
         

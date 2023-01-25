@@ -63,3 +63,14 @@ def get_id(table_name,row,ip):
         conn.close()
         return row
 
+def get_id_prenda(talla,table,ip):
+    conn, cursor = connectsql(host=ip)
+    query = f"SELECT id FROM {table} WHERE talla = '{talla.upper()}'"
+    cursor.execute(query)
+    id_prenda = cursor.fetchone()
+    conn.commit()
+    cursor.close()
+    conn.close()
+
+    return id_prenda
+

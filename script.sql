@@ -8,6 +8,45 @@
 ---Ejecutar reinicio:
 --pg_ctl -D /Library/PostgreSQL/15/data restart
 
+---Delete clientes que no tienen encargos ni ventas:
+DELETE FROM clientes
+WHERE NOT EXISTS (SELECT * FROM encargos WHERE encargos.id_cliente = clientes.id)
+AND NOT EXISTS (SELECT * FROM ventas WHERE ventas.id_cliente = clientes.id)
+AND NOT EXISTS (SELECT * FROM cambios WHERE cambios.id_cliente = clientes.id) ;
+
+
+---query
+(SELECT clientes.nombre AS "Nombre del cliente",
+                        ventas.id AS "ID",
+                        ventas.fecha AS "Fecha",
+                        tipo_prendas.name AS "Nombre de la prenda",
+                        prendas.talla AS "Talla",
+                        prendas.precio AS "Precio",
+                        detalle_venta.cantidad AS "Cantidad",
+                        (prendas.precio * detalle_venta.cantidad) AS "Total parcial por prenda",
+                        ventas.total AS "Total de la Venta",
+                        detalle_venta.id AS "ID_DETALLE"
+                        FROM clientes
+                        JOIN ventas ON clientes.id = ventas.id_cliente
+                        JOIN detalle_venta ON ventas.id = detalle_venta.id_venta
+                        JOIN prendas ON detalle_venta.id_prenda = prendas.id
+                        JOIN tipo_prendas ON prendas.id_tipo_prenda = tipo_prendas.id
+                        WHERE ventas.id = 37
+                        ORDER BY detalle_venta.id;)
+
+
+#vista encargos yombers:
+CREATE VIEW yombers_encargados AS 
+SELECT clientes.nombre AS "Cliente", clientes.telefono AS "Teléfono",  yombers.nombre_nina AS "Niña",
+prendas.talla, yombers.delantero AS "D", yombers.trasero AS "T", yombers.espalda AS "E",
+ yombers.cintura AS "C", yombers.largo AS "L", encargos.fecha_encargo AS "Encargado el:", encargos.fecha_entrega AS "Para entregar el:", encargos.saldo AS "SALDO"
+FROM encargos
+JOIN detalle_encargo ON encargos.id = detalle_encargo.id_encargo
+JOIN prendas ON detalle_encargo.id_prenda = prendas.id
+JOIN clientes ON encargos.id_cliente = clientes.id
+JOIN yombers ON encargos.id = yombers.id_encargo
+WHERE encargos.entregado = FALSE;
+
 
 #llaves foraneas tabla tipo_prendas:
 ALTER TABLE IF EXISTS public.tipo_prendas
@@ -281,6 +320,15 @@ JOIN tipo_prendas ON prendas.id_tipo_prenda = tipo_prendas.id
 JOIN inventario ON prendas.id = inventario.id_prenda
 WHERE prendas.id BETWEEN 34 AND 44;
 
+--VER INVENTARIO yomber:
+SELECT * FROM yomber;
+CREATE VIEW yomber AS
+SELECT prendas.id, tipo_prendas.name, prendas.talla, prendas.precio, inventario.cantidad
+FROM prendas
+JOIN tipo_prendas ON prendas.id_tipo_prenda = tipo_prendas.id
+JOIN inventario ON prendas.id = inventario.id_prenda
+WHERE prendas.id BETWEEN 45 AND 54;
+
 --VER INVENTARIO BLUSAS:
 SELECT * FROM blusas;
 CREATE VIEW blusas AS
@@ -365,6 +413,37 @@ AFTER UPDATE OF finalizada ON ventas
 FOR EACH ROW
 EXECUTE FUNCTION agregar_movimiento_venta();
 
+--tabla encargo TRIGGERS
+CREATE OR REPLACE FUNCTION saldo()
+RETURNS TRIGGER AS $$
+BEGIN
+	NEW.saldo := NEW.total - NEW.abono;
+	RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER update_saldo
+AFTER INSERT OR UPDATE OF total,abono
+ON encargos
+FOR EACH ROW
+EXECUTE FUNCTION saldo()
+
+CREATE OR REPLACE FUNCTION update_fecha_entrega()
+RETURNS TRIGGER AS $$
+BEGIN 
+    NEW.fecha_entrega := NEW.fecha_encargo + INTERVAL '1 day'*NEW.dias_entrega;
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER actualizar_fecha_entrega
+AFTER INSERT OR UPDATE OF dias_entrega,fecha_encargo
+ON encargos
+FOR EACH ROW
+EXECUTE FUNCTION update_fecha_entrega();
+
+
+
 
 --tabla gastos
 CREATE TABLE gastos_uniformes (
@@ -404,3 +483,68 @@ CREATE TABLE cuentas_por_pagar (
     interes_men DECIMAL(10,2) NOT NULL,
     pagado BOOLEAN DEFAULT FALSE
 );
+
+----DIADIOIOASDJISA 
+ALTER TABLE detalle_venta
+    DROP CONSTRAINT detalle_venta_id_venta_fkey,
+    ADD CONSTRAINT detalle_venta_id_venta_fkey
+    FOREIGN KEY (id_venta)
+    REFERENCES ventas (id)
+    ON UPDATE CASCADE
+    ON DELETE CASCADE;
+
+CREATE TRIGGER guardar_dv_copy
+AFTER DELETE ON detalle_venta
+FOR EACH ROW
+BEGIN
+    INSERT INTO detalle_venta_copy
+    SELECT * FROM deleted;
+END;
+
+select * from detalle_venta_copy;
+
+CREATE OR REPLACE FUNCTION copiar_detalle_venta_eliminado()
+RETURNS TRIGGER AS $$
+BEGIN
+    INSERT INTO detalle_venta_copy SELECT * FROM detalle_venta WHERE detalle_venta.id = OLD.id;
+    RETURN OLD;
+END;
+$$ LANGUAGE plpgsql;
+
+
+CREATE TRIGGER copia_dv_eliminado
+    BEFORE DELETE ON detalle_venta
+    FOR EACH ROW
+    EXECUTE FUNCTION copiar_detalle_venta_eliminado();
+
+---- CAMBIOS 
+CREATE TABLE detalle_cambio (
+id SERIAL PRIMARY KEY,	
+id_cambio INTEGER REFERENCES cambios (id) ON DELETE CASCADE ON UPDATE CASCADE,
+id_prenda_entrante INTEGER REFERENCES prendas(id) ON DELETE CASCADE ON UPDATE CASCADE,
+id_prenda_saliente INTEGER REFERENCES prendas(id) ON DELETE CASCADE ON UPDATE CASCADE,
+cantidad_entrante INTEGER,
+cantidad_saliente INTEGER
+);
+
+
+CREATE FUNCTION actualizar_cambio()
+RETURNS TRIGGER AS $$
+BEGIN
+	UPDATE cambios
+    SET total_entrada = total_entrada + (SELECT prendas.precio FROM prendas WHERE prendas.id = NEW.id_prenda_entrante) * NEW.cantidad_entrante,
+        total_salida = total_salida + (SELECT prendas.precio FROM prendas WHERE prendas.id = NEW.id_prenda_saliente) * NEW.cantidad_saliente
+    WHERE id = NEW.id_cambio;
+
+    -- Actualizar el inventario al hacer un cambio
+    UPDATE inventario
+    SET cantidad = cantidad + NEW.cantidad_entrante - NEW.cantidad_saliente
+    WHERE id_prenda = NEW.id_prenda_entrante OR id_prenda = NEW.id_prenda_saliente;
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER actualizar_totales_cambio
+AFTER INSERT ON detalle_cambio
+FOR EACH ROW
+EXECUTE FUNCTION actualizar_cambio();
