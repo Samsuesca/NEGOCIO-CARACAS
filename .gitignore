@@ -1,4 +1,6 @@
 /.vscode
+.registro_ventas
+/registro_ventas
 
 ### macOS ###
 # General
@@ -214,3 +216,4 @@ poetry.toml
 [Ss]cripts
 pyvenv.cfg
 pip-selfcheck.json
+registro_ventas/2023-01-16.json

@@ -5,7 +5,7 @@ from pathlib import Path
 from datetime import date
 
 #Modulos de Terceros
-from PyQt5.QtWidgets import QApplication,QMessageBox,QHBoxLayout, QComboBox, QMainWindow, QLabel, QVBoxLayout, QWidget
+from PyQt5.QtWidgets import QApplication,QMessageBox, QMainWindow, QLabel, QVBoxLayout, QWidget
 from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QFont,  QIcon
 
@@ -63,7 +63,7 @@ class WelcomeWindow(QMainWindow):
 
     def let_ip(self):
         # if self.label1.text()=="HOGAR":
-        self.ip = '127.0.0.1' #'192.168.0.18' #
+        self.ip = '192.168.0.111'
         try:
             conn, cursor = connectsql(self.ip)
             self.openMenu()
