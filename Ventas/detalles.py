@@ -1,63 +1,52 @@
 #Modulos de Terceros
-from PyQt5.QtWidgets import QMainWindow,QWidget,QLineEdit,QInputDialog,QGridLayout,QFormLayout,QMessageBox
-
+from PyQt5.QtWidgets import (QMainWindow,QWidget,QLineEdit,QInputDialog,
+                             QGridLayout,QHBoxLayout,QVBoxLayout,QSpinBox,
+                             QFormLayout,QMessageBox,QLabel,QComboBox,
+                             QPushButton)
+from PyQt5.QtCore import Qt
 #Modulos Internos
 from Utils.style import PushButton
 from Utils.QtUtils import INFO
-from Utils.util_sql import delete_date,connectsql,make_query
+from Utils.util_sql import delete_date,connectsql,make_query,get_id_prenda
 
-def get_id_prenda(talla,table,ip):
-     # Conectarse a la base de datos y obtener un cursor
-    conn, cursor = connectsql(host=ip)
-    query = f"SELECT id FROM {table} WHERE talla = '{talla.upper()}'"
-    cursor.execute(query)
-    id_prenda = cursor.fetchone()
-    conn.commit()
-    cursor.close()
-    conn.close()
-    return id_prenda
 
 def update_metodo_pago(metodo,id_encargo,ip):
     conn, cursor = connectsql(host=ip)
     query = f'''UPDATE encargos SET metodo_pago = '{metodo}' WHERE id = {id_encargo};'''
-    cursor.execute(query)
-    conn.commit()
-    cursor.close()
-    conn.close()   
+    make_query(conn,cursor,query) 
+
+def update_obs(obs,id_encargo,ip):
+    conn, cursor = connectsql(host=ip)
+    query = f'''UPDATE encargos SET observaciones = '{obs}' WHERE id = {id_encargo};'''
+    make_query(conn,cursor,query)
 
 def make_detail_encargo(cantidad,id_encargo,id_prenda,ip):
     conn, cursor = connectsql(host=ip)
     query = f'''INSERT INTO detalle_encargo (id_encargo,id_prenda,cantidad)
-    VALUES ({id_encargo},{id_prenda[0]},{cantidad});'''
-    cursor.execute(query)
-    conn.commit()
-    cursor.close()
-    conn.close()   
+    VALUES ({id_encargo},{id_prenda},{cantidad});'''
+    make_query(conn,cursor,query) 
 
 def update_abono(abono,id_encargo,ip):
     conn, cursor = connectsql(host=ip)
     query = f'''UPDATE encargos SET abono = {abono} WHERE id = {id_encargo};'''
-    cursor.execute(query)
-    conn.commit()
-    cursor.close()
-    conn.close()   
+    make_query(conn,cursor,query)
 
 
 
 
-class Detalles(QMainWindow):
-    def __init__(self, main_window, id_venta,title,ip) -> None:
+class DetallesVenta(QMainWindow):
+    def __init__(self,main_window,id_venta,title,ip) -> None:
         super().__init__() 
         self.main_window = main_window
         self.id_venta = id_venta
         self.ti = title
         self.table_name= self.ti.split()[0].lower() + 's'
-        self.setWindowTitle(self.ti)
         self.initUI()
         self.ip = ip
         
     def initUI(self):
        
+        label = QLabel(self.ti)
         # Crear los botones
         button1 = PushButton("CAMISETAS")
         button1.clicked.connect(self.openCamisetas)
@@ -82,6 +71,8 @@ class Detalles(QMainWindow):
         button10.clicked.connect(self.cancelar)
     
         # # Crear el layout de la cuadrícula y agregar los botones
+        hbox = QHBoxLayout()
+        hbox.addWidget(label,alignment=Qt.AlignCenter) 
         grid_layout = QGridLayout()
         grid_layout.addWidget(button1, 0, 0)
         grid_layout.addWidget(button2, 0, 1)
@@ -93,10 +84,13 @@ class Detalles(QMainWindow):
         grid_layout.addWidget(button8, 3, 1)
         grid_layout.addWidget(button9, 4, 0)
         grid_layout.addWidget(button10, 4, 1)
+        vbox = QVBoxLayout()
+        vbox.addLayout(hbox)
+        vbox.addLayout(grid_layout)
 
         # Agregar el widget al layout principal de la ventana
         widget = QWidget(self)
-        widget.setLayout(grid_layout)
+        widget.setLayout(vbox)
         self.setCentralWidget(widget)
 
     def openCamisetas(self):
@@ -131,202 +125,149 @@ class Detalles(QMainWindow):
         self.close()
     
     
-class DetallesEncargo():
-    def __init__(self, main_window, id_encargo,title,ip) -> None:
+class DetallesEncargo(QMainWindow):
+    def __init__(self, main_window, id_encargo) -> None:
         super().__init__() 
-        self.main_window = main_window
+        self.up = main_window
         self.id_encargo = id_encargo
-        self.ti = title
-        self.table_name = self.ti.split()[0].lower() + 's'
-        self.ip = ip
+        self.ip = self.up.ip
         self.initUI()
-        
+        self.prendas = ['Yomber','Zapatos','Chompa Azul','Chompa Gris','Sudaderas',
+        'Camisetas','Blusas','Jeans','Medias','Otros']
 
     def initUI(self):
-        self.prenda, ok = QInputDialog.getItem(self.main_window,'Title','Selecciona el tipo de prenda',
-        ['Yomber','Zapatos','Chompa Azul','Chompa Gris','Sudadera',
-        'Camiseta','Blusas','Jeans','Medias','Otros'])
+        self.prenda, ok = QInputDialog.getItem(self.up,'Title',
+        'Selecciona el tipo de prenda',self.prendas)
 
         if self.prenda and ok:
             self.logic()
         else:
             self.cancelar
         
-
     def logic(self):
         ##YOMBER
         if self.prenda == 'Yomber':
-            talla, ok = QInputDialog.getText(self.main_window,'¿Qué talla se Necesita?','Ingrese la talla')
-            if talla.upper() in self.sizes():
-                if talla and ok:
-                    id_prenda = get_id_prenda(talla,'yomber',self.ip)
-                    print(id_prenda)
-                    print(type(id_prenda))
-                    make_detail_encargo(1,self.id_encargo,id_prenda,self.ip)
-                    abono,ok1=QInputDialog.getText(self.main_window,'Abono','¿Cuánto va a abonar?')
+            self.talla, ok = QInputDialog.getText(self.up,'¿Qué talla se Necesita?',
+                                             'Ingrese la talla')
+            if ok:
+                if self.talla.upper() in self.sizes():
+                    id_prenda = get_id_prenda(self.talla,'yomber',self.ip)
+                    make_detail_encargo(1,self.id_encargo,id_prenda[0],self.ip)
+                    abono,ok1=QInputDialog.getText(self.up,'Abono','¿Cuánto va a abonar?')
                     if abono and ok1:
                         update_abono(abono,self.id_encargo,self.ip)
                         self.openYomber()
-            else:
-                QMessageBox.about(self.main_window, "Error", "La talla que has seleccionado no existe")
+                else:
+                    QMessageBox.about(self.up, "Error", "La talla que has seleccionado no existe")
         
         ##ZAPATOS        
         elif self.prenda == 'Zapatos':
-            self.tipo,ok2= QInputDialog.getItem(self.main_window,'Tipo Zapato',
+            self.tipo,ok2= QInputDialog.getItem(self.up,'Tipo Zapato',
                 'Selecciona el tipo de Zapato',['Blanco','Negro','Goma'])
             if self.tipo and ok2:
-                self.talla, ok = QInputDialog.getText(self.main_window,'¿Qué talla se Necesita?','Ingrese la talla')
-                if self.talla.upper() in self.sizes():
-                    if self.talla and ok:
-                        self.abono,ok1=QInputDialog.getText(self.main_window,'Abono','¿Cuánto va a abonar?')
-                        if self.abono and ok1:
-                            self.openZapatos()
-                else:
-                    QMessageBox.about(self.main_window, "Error", "La talla que has seleccionado no existe")
+                self.talla, ok = QInputDialog.getText(self.up,'¿Qué talla se Necesita?',
+                                                      'Ingrese la talla')
+                if ok:
+                    if self.talla.upper() in self.sizes():
+                            self.abono,ok1=QInputDialog.getText(self.up,'Abono',
+                                                                '¿Cuánto va a abonar?')
+                            if self.abono and ok1:
+                                self.openZapatos()
+                    else:
+                        QMessageBox.about(self.up, "Error", 
+                                          "La talla que has seleccionado no existe")
         
         ##CHOMPA AZUL
         elif self.prenda == 'Chompa Azul':
-            talla, ok = QInputDialog.getText(self.main_window,'¿Qué talla se Necesita?','Ingrese la talla')
-            if talla.upper() in self.sizes():
-                if talla and ok:
-                    abono,ok1=QInputDialog.getText(self.main_window,'Abono','¿Cuánto va a abonar?')
-                    if abono and ok1:
-                        self.openChompaAzul
-            else:
-                QMessageBox.about(self.main_window, "Error", "La talla que has seleccionado no existe")
+            self.talla,self.abono=self.get_size_and_abono(self.openChompaAzul)
+        ##CHOMPA GRIS        
         elif self.prenda == 'Chompa Gris':
-            talla, ok = QInputDialog.getText(self.main_window,'¿Qué talla se Necesita?','Ingrese la talla')
-            if talla.upper() in self.sizes():
-                if talla and ok:
-                    abono,ok1=QInputDialog.getText(self.main_window,'Abono','¿Cuánto va a abonar?')
-                    if abono and ok1:
-                        self.openChompaGris
-            else:
-                QMessageBox.about(self.main_window, "Error", "La talla que has seleccionado no existe")
-        elif self.prenda == 'Sudadera':
-            talla, ok = QInputDialog.getText(self.main_window,'¿Qué talla se Necesita?','Ingrese la talla')
-            if talla.upper() in self.sizes():
-                if talla and ok:
-                    abono,ok1=QInputDialog.getText(self.main_window,'Abono','¿Cuánto va a abonar?')
-                    if abono and ok1:
-                        self.openSudaderas
-            else:
-                QMessageBox.about(self.main_window, "Error", "La talla que has seleccionado no existe")
-        elif self.prenda == 'Camiseta':
-            talla, ok = QInputDialog.getText(self.main_window,'¿Qué talla se Necesita?','Ingrese la talla')
-            if talla.upper() in self.sizes():
-                if talla and ok:
-                    abono,ok1=QInputDialog.getText(self.main_window,'Abono','¿Cuánto va a abonar?')
-                    if abono and ok1:
-                        self.openCamisetas
-            else:
-                QMessageBox.about(self.main_window, "Error", "La talla que has seleccionado no existe")
+            self.talla,self.abono=self.get_size_and_abono(self.openChompaGris)  
+        ##SUDADERA        
+        elif self.prenda == 'Sudaderas':
+            self.talla,self.abono=self.get_size_and_abono(self.openSudaderas)
+        ##CAMISETA        
+        elif self.prenda == 'Camisetas':
+            self.talla,self.abono=self.get_size_and_abono(self.openCamisetas)
+        ##BLUSAS
         elif self.prenda == 'Blusas':          
-            talla, ok = QInputDialog.getText(self.main_window,'¿Qué talla se Necesita?','Ingrese la talla')
-            if talla.upper() in self.sizes():
-                if talla and ok:
-                    abono,ok1=QInputDialog.getText(self.main_window,'Abono','¿Cuánto va a abonar?')
-                    if abono and ok1:
-                        self.openBlusas
-            else:
-                QMessageBox.about(self.main_window, "Error", "La talla que has seleccionado no existe")
+            self.talla,self.abono=self.get_size_and_abono(self.openBlusas)
+        ##MEDIAS        
         elif self.prenda == 'Medias':
-            talla, ok = QInputDialog.getText(self.main_window,'¿Qué talla se Necesita?','Ingrese la talla')
-            if talla.upper() in self.sizes():
-                if talla and ok:
-                    abono,ok1=QInputDialog.getText(self.main_window,'Abono','¿Cuánto va a abonar?')
-                    if abono and ok1:
-                        self.openMedias
-            else:
-                QMessageBox.about(self.main_window, "Error", "La talla que has seleccionado no existe")
+            self.talla,self.abono=self.get_size_and_abono(self.openMedias)
+                    
+        ##JEANS        
         elif self.prenda == 'Jeans':
-            talla, ok = QInputDialog.getText(self.main_window,'¿Qué talla se Necesita?','Ingrese la talla')
-            if talla.upper() in self.sizes():
-                if talla and ok:
-                    abono,ok1=QInputDialog.getText(self.main_window,'Abono','¿Cuánto va a abonar?')
-                    if abono and ok1:
-                        self.openJeans
-            else:
-                QMessageBox.about(self.main_window, "Error", "La talla que has seleccionado no existe")
+            self.talla,self.abono=self.get_size_and_abono(self.openJeans)
+            
         else:
             QMessageBox.warning(self,'Elección Incorrecta',
             'Debes seleccionar un tipo de prenda válido')
-   
-    def openZapatos(self):
-        def conditional_size(x1,x2,x3):
-            if int(self.talla) >= 25 and int(self.talla) <= 32:
-                return x1
-            elif int(self.talla) >= 33 and int(self.talla) <= 38:
-                return x2
-            else:
-                return x3        
-            
-        if self.tipo == 'Blanco':
-            id_prenda = conditional_size(71,72,73)
-            make_detail_encargo(1,self.id_encargo,[id_prenda,0],self.ip)
-        elif self.tipo == 'Negro':
-            id_prenda = conditional_size(68,69,70)
-            make_detail_encargo(1,self.id_encargo,[id_prenda,0],self.ip)
-        elif self.tipo == 'Goma':
-            id_prenda = conditional_size(74,75,76)
-            make_detail_encargo(1,self.id_encargo,[id_prenda,0],self.ip)
-        else:
-            pass
-        update_abono(self.abono,self.id_encargo,self.ip)
+            self.initUI()
+
+
     def openCamisetas(self):
-        pass
-        
+        id_prenda = get_id_prenda(self.talla,'camisetas',self.ip)
+        make_detail_encargo(1,self.id_encargo,id_prenda[0],self.ip)
+        self.get_metodo_pago()
+        update_abono(self.abono,self.id_encargo,self.ip)
+        self.get_obs()
+            
 
     def openChompaAzul(self):
-        pass
+        id_prenda = get_id_prenda(self.talla,'chazul',self.ip)
+        make_detail_encargo(1,self.id_encargo,id_prenda[0],self.ip)
+        self.get_metodo_pago()
+        update_abono(self.abono,self.id_encargo,self.ip)
+        self.get_obs()
         
     def openChompaGris(self):
-        pass
+        id_prenda = get_id_prenda(self.talla,'chgris',self.ip)
+        make_detail_encargo(1,self.id_encargo,id_prenda[0],self.ip)
+        self.get_metodo_pago()
+        update_abono(self.abono,self.id_encargo,self.ip)
+        self.get_obs()
         
     def openSudaderas(self):
-        pass
+        id_prenda = get_id_prenda(self.talla,'sudaderas',self.ip)
+        make_detail_encargo(1,self.id_encargo,id_prenda[0],self.ip)
+        self.get_metodo_pago()
+        update_abono(self.abono,self.id_encargo,self.ip)
+        self.get_obs()
         
         
     def openJeans(self):
-        pass
+        id_prenda = get_id_prenda(self.talla,'jeans',self.ip)
+        make_detail_encargo(1,self.id_encargo,id_prenda[0],self.ip)
+        self.get_metodo_pago()
+        update_abono(self.abono,self.id_encargo,self.ip)
+        self.get_obs()
     
     def openBlusas(self):
-        pass 
+        id_prenda = get_id_prenda(self.talla,'blusas',self.ip) 
+        make_detail_encargo(1,self.id_encargo,id_prenda[0],self.ip)
+        self.get_metodo_pago()
+        update_abono(self.abono,self.id_encargo,self.ip)
+        self.get_obs()
 
     def openMedias(self):
-        pass
+        id_prenda = get_id_prenda(self.talla,'medias',self.ip)
+        make_detail_encargo(1,self.id_encargo,id_prenda[0],self.ip)
+        self.get_metodo_pago()
+        update_abono(self.abono,self.id_encargo,self.ip)
+        self.get_obs()
 
     def openOtros(self):
-        pass
-    
-    def openOtros(self):
-        pass ### CONECTAR A ENCARG
+        id_prenda = get_id_prenda(self.talla,'otros',self.ip)
+        make_detail_encargo(1,self.id_encargo,id_prenda[0],self.ip)
+        self.get_metodo_pago()
+        update_abono(self.abono,self.id_encargo,self.ip)
+        self.get_obs()
 
-    def openFinalizar(self):
-        INFO(self).informe_venta()
-
-    def cancelar(self):
-        delete_date(self,ok=True,id=self.id_venta,ip=self.ip)
-        self.close()
-
-    def sizes(self):
-        if self.prenda == 'Jeans':
-            X = ['6','8','10','12','14','16','28','30','32','34']
-        elif self.prenda == 'Camisetas':
-            X = ['6','8','10','12','14','16','S','M','L','XL','XXL']
-        elif self.prenda == 'Yomber' or self.prenda == 'Blusas':
-            X = ['6','8','10','12','14','16','S','M','L','XL']
-        elif self.prenda == 'Medias':
-            X = ['6-8','8-10','9-11']
-        elif self.prenda == 'Zapatos':
-            X = ['26','27','28','29','30','31','32','33','34','35','36','37','38','39','40','41','42','43','44']
-        elif self.prenda == 'Otros':
-            X = ['TOP','MEDIAS']
-        elif self.prenda == 'Sudaderas' or self.prenda == 'Chompa Azul' or self.prenda == 'Chompa Gris':
-            X = ['4', '6', '8', '10', '12', '14', '16', 'S', 'M', 'L', 'XL']
-        else:
-            X = ''
-        return X
+    def update_obs(self,obs):
+        conn, cursor = connectsql(host=self.ip)
+        query = f'''UPDATE encargos SET observaciones = '{obs}' WHERE id = {self.id_encargo};'''
+        make_query(conn,cursor,query)
     
     def openYomber(self):
 
@@ -340,6 +281,7 @@ class DetallesEncargo():
         self.cintura = QLineEdit()
         self.largo = QLineEdit()
         self.nombre_nina = QLineEdit()
+        self.obs = QLineEdit()
         
         layout.addRow("Nombre de la Niña:", self.nombre_nina)
         layout.addRow("Delantero:", self.delantero)
@@ -347,7 +289,8 @@ class DetallesEncargo():
         layout.addRow("Espalda:", self.espalda)
         layout.addRow("Cintura:", self.cintura)
         layout.addRow("Largo:", self.largo)
-        
+        layout.addRow("Observaciones:", self.obs)
+        update_obs(self.obs,self.id_encargo,self.ip)
         
         insert_button = PushButton("Insertar")
         insert_button.clicked.connect(self.insert_yomber)
@@ -367,7 +310,248 @@ class DetallesEncargo():
         {self.espalda.text()}, {self.cintura.text()}, {self.largo.text()}, 
         '{self.nombre_nina.text()}')'''
         make_query(conn, cursor, query)
-        self.metodo_pago,ok=QInputDialog.getItem(self.yomber_window,'Método de Pago','Selecciona el método de pago',['Efectivo','Transferencia'])
-        update_metodo_pago(self.metodo_pago,self.id_encargo,self.ip)
-        self.yomber_window.close()
+        self.metodo_pago,ok=QInputDialog.getItem(self.yomber_window,'Método de Pago',
+                                                'Selecciona el método de pago',
+                                                ['Efectivo','Transferencia'])
+        if self.metodo_pago and ok:
+            update_metodo_pago(self.metodo_pago,self.id_encargo,self.ip)
+            self.yomber_window.close()
+        else:
+            QMessageBox.about(self.up,"Error", "Debes seleccionar un método de pago")
+
     
+    def sizes(self):
+        print(self.prenda)
+        if self.prenda == 'Jeans':
+            X = ['6','8','10','12','14','16','28','30','32','34']
+        elif self.prenda == 'Camisetas':
+            X = ['6','8','10','12','14','16','S','M','L','XL','XXL']
+        elif self.prenda == 'Yomber' or self.prenda == 'Blusas':
+            X = ['6','8','10','12','14','16','S','M','L','XL']
+        elif self.prenda == 'Medias':
+            X = ['6-8','8-10','9-11']
+        elif self.prenda == 'Zapatos':
+            X = ['26','27','28','29','30','31','32','33','34','35',
+                 '36','37','38','39','40','41','42','43','44']
+        elif self.prenda == 'Otros':
+            X = ['TOP','MEDIAS']
+        elif self.prenda == 'Sudaderas' or self.prenda == 'Chompa Azul' or self.prenda == 'Chompa Gris':
+            X = ['4', '6', '8', '10', '12', '14', '16', 'S', 'M', 'L', 'XL']
+        else:
+            X = ''
+        return X
+    
+    def openFinalizar(self):
+        INFO(self).informe_venta()
+
+    def cancelar(self):
+        delete_date(self,ok=True,id=self.id_venta,ip=self.ip)
+        self.close()
+
+    def openZapatos(self):
+        def conditional_size(x1,x2,x3):
+            if int(self.talla) >= 25 and int(self.talla) <= 32:
+                return x1
+            elif int(self.talla) >= 33 and int(self.talla) <= 38:
+                return x2
+            else:
+                return x3                    
+        if self.tipo == 'Blanco':
+            id_prenda = conditional_size(71,72,73)
+            make_detail_encargo(1,self.id_encargo,id_prenda,self.ip)
+        elif self.tipo == 'Negro':
+            id_prenda = conditional_size(68,69,70)
+            make_detail_encargo(1,self.id_encargo,id_prenda,self.ip)
+        elif self.tipo == 'Goma':
+            id_prenda = conditional_size(74,75,76)
+            make_detail_encargo(1,self.id_encargo,id_prenda,self.ip)
+        else:
+             QMessageBox.about(self.up,"Error", "Debes seleccionar un tipo de zapato correcto")
+        update_abono(self.abono,self.id_encargo,self.ip)
+      
+
+    def get_size_and_abono(self,metodo):
+        print(self.prenda)
+        self.talla, ok = QInputDialog.getText(self.up,'¿Qué talla se Necesita?',
+                                                'Ingrese la talla')
+        print(self.talla)
+        if ok:
+            if self.talla.upper() in self.sizes():
+                    self.abono,ok1=QInputDialog.getText(self.up,'Abono',
+                                                    '¿Cuánto va a abonar?')
+                    if self.abono and ok1:
+                        metodo()
+            else:
+                QMessageBox.about(self.up, "Error", "La talla que has seleccionado no existe")
+                self.abono = None
+            return self.talla, self.abono
+            
+    def get_metodo_pago(self):
+        self.metodo_pago,ok=QInputDialog.getItem(self,'Método de Pago',
+                                                'Selecciona el método de pago',
+                                                ['Efectivo','Transferencia'])
+        if self.metodo_pago and ok:
+            update_metodo_pago(self.metodo_pago,self.id_encargo,self.ip)
+        else:
+            QMessageBox.about(self.up,"Error", "Debes seleccionar un método de pago")
+
+    def get_obs(self):
+        self.obs,ok=QInputDialog.getText(self,'Observaciones',
+                                                '¿Deseas agregar observaciones?')
+        if self.metodo_pago and ok:
+            self.update_obs(self.obs)
+            
+class DetallesCambio(QMainWindow):
+    def __init__(self, main_window, id_cambio) -> None:
+        super().__init__() 
+        self.up = main_window
+        self.id_cambio = id_cambio
+        self.ip = self.up.ip
+        self.prendas = ['Zapatos','Chompa Azul','Chompa Gris','Sudaderas',
+        'Camisetas','Blusas','Jeans','Medias','Otros']
+        self.title = f'Cambio #{self.id_cambio}'
+        self.initUI()
+        
+
+    def initUI(self):
+        print('1')
+        self.setWindowTitle(self.title)
+        # Crear el layout principal
+        vbox = QVBoxLayout()  
+        layout = QHBoxLayout()
+        principal_label = QLabel('Cambio')
+        # Crear el layout para las prendas entrantes
+        entrante_layout = QFormLayout()
+        
+        # Crear los widgets para seleccionar el tipo y la talla de la prenda entrante
+        self.prenda_entrante_label = QLabel("Prenda entrante:")
+        self.prenda_entrante_combo = QComboBox()
+        self.prenda_entrante_combo.addItems(self.prendas)
+        self.prenda_entrante_combo.activated.connect(lambda: self.talla_entrante_combo.clear() or 
+                                                    self.talla_entrante_combo.addItems(
+                                                    self.sizes(
+                                                    self.prenda_entrante_combo.currentText())))
+        self.talla_entrante_label = QLabel("Talla entrante:")
+        self.talla_entrante_combo = QComboBox()
+        #Crear los widgets para seleccionar la cantidad de prendas entrantes y salientes
+        self.cantidad_entrante_label = QLabel("Cantidad entrante:", self)
+        self.cantidad_entrante_spinbox = QSpinBox(self)
+        self.cantidad_entrante_spinbox.setMinimum(0)
+        entrante_layout.addRow(self.prenda_entrante_label,self.prenda_entrante_combo)
+        entrante_layout.addRow(self.talla_entrante_label,self.talla_entrante_combo)
+        entrante_layout.addRow(self.cantidad_entrante_label,self.cantidad_entrante_spinbox)
+
+        saliente_layout = QFormLayout()
+         # Crear los widgets para seleccionar el tipo y la talla de la prenda entrante
+        self.prenda_saliente_label = QLabel("Prenda saliente:")
+        self.prenda_saliente_combo = QComboBox()
+        self.prenda_saliente_combo.addItems(self.prendas)
+        self.prenda_saliente_combo.activated.connect(lambda: self.talla_saliente_combo.clear() or
+                                                    self.talla_saliente_combo.addItems(
+                                                    self.sizes(
+                                                    self.prenda_saliente_combo.currentText())))
+        self.talla_saliente_label = QLabel("Talla saliente:")
+        self.talla_saliente_combo = QComboBox()
+        self.talla_saliente_combo.addItems(self.sizes(self.prenda_saliente_combo.currentText()))
+        # Crear los widgets para seleccionar la cantidad de prendas salientes y salientes
+        self.cantidad_saliente_label = QLabel("Cantidad saliente:", self)
+        self.cantidad_saliente_spinbox = QSpinBox(self)
+        self.cantidad_saliente_spinbox.setMinimum(0)
+        saliente_layout.addRow(self.prenda_saliente_label,self.prenda_saliente_combo)
+        saliente_layout.addRow(self.talla_saliente_label,self.talla_saliente_combo)
+        saliente_layout.addRow(self.cantidad_saliente_label,self.cantidad_saliente_spinbox)
+        layout.addLayout(entrante_layout)
+        layout.addLayout(saliente_layout)
+        print('2')
+        insert_button = QPushButton("Realizar Cambio")
+        insert_button.clicked.connect(self.openLogic)
+        vbox.addLayout(layout)
+        vbox.addWidget(insert_button)
+        
+        widget = QWidget(self)
+        widget.setLayout(vbox)
+        self.setCentralWidget(widget)
+    
+
+    def openLogic(self):
+        print('3')
+        self.id_prenda_entrante = get_id_prenda(self.talla_entrante_combo.currentText(),
+                                                self.prenda_entrante_combo.currentText(),
+                                                self.ip)
+        print('4')
+        self.id_prenda_saliente = get_id_prenda(self.talla_saliente_combo.currentText(),
+                                                self.prenda_saliente_combo.currentText(),
+                                                self.ip)
+
+        print('5')
+        self.make_cambio(self.id_prenda_entrante,
+                         self.id_prenda_saliente)
+        self.get_obs()
+
+    def make_cambio(self,id_entrante,id_saliente):
+        print('6')
+        conn, cursor = connectsql(host=self.ip)
+        query = f'''INSERT INTO public.detalle_cambio(
+	    id_cambio, id_prenda_entrante, id_prenda_saliente, cantidad_entrante, cantidad_saliente)
+	    VALUES ({self.id_cambio}, {id_entrante}, {id_saliente},
+        {self.cantidad_entrante_spinbox.value()}, {self.cantidad_saliente_spinbox.value()});'''
+        print('7')
+        make_query(conn,cursor,query)
+        print('8')
+
+    def update_obs(self,obs):
+        conn, cursor = connectsql(host=self.ip)
+        query = f'''UPDATE cambios SET observaciones = '{obs}' WHERE id = {self.id_encargo};'''
+        make_query(conn,cursor,query)  
+
+    def get_obs(self):
+        self.obs,ok=QInputDialog.getText(self,'Observaciones',
+                                                '¿Deseas agregar observaciones?')
+        if self.metodo_pago and ok:
+            update_obs(self.obs)
+              
+    def sizes(self,prenda):
+        if prenda == 'Jeans':
+            X = ['6','8','10','12','14','16','28','30','32','34']
+        elif prenda == 'Camisetas':
+            X = ['6','8','10','12','14','16','S','M','L','XL','XXL']
+        elif prenda == 'Blusas':
+            X = ['6','8','10','12','14','16','S','M','L','XL']
+        elif prenda == 'Medias':
+            X = ['6-8','8-10','9-11']
+        elif prenda == 'Zapatos':
+            X = ['26','27','28','29','30','31','32','33','34','35',
+                 '36','37','38','39','40','41','42','43','44']
+        elif prenda == 'Otros':
+            X = ['TOP','MEDIAS']
+        elif prenda == 'Sudaderas' or prenda == 'Chompa Azul' or prenda == 'Chompa Gris':
+            X = ['4', '6', '8', '10', '12', '14', '16', 'S', 'M', 'L', 'XL']
+        else:
+            X = ''
+        return X
+
+    def cancelar(self):
+        delete_date(self,ok=True,id=self.id_venta,ip=self.ip)
+        self.close()
+
+    def openZapatos(self):
+        def conditional_size(x1,x2,x3):
+            if int(self.talla) >= 25 and int(self.talla) <= 32:
+                return x1
+            elif int(self.talla) >= 33 and int(self.talla) <= 38:
+                return x2
+            else:
+                return x3                    
+        if self.tipo == 'Blanco':
+            id_prenda = conditional_size(71,72,73)
+            make_detail_encargo(1,self.id_encargo,id_prenda,self.ip)
+        elif self.tipo == 'Negro':
+            id_prenda = conditional_size(68,69,70)
+            make_detail_encargo(1,self.id_encargo,id_prenda,self.ip)
+        elif self.tipo == 'Goma':
+            id_prenda = conditional_size(74,75,76)
+            make_detail_encargo(1,self.id_encargo,id_prenda,self.ip)
+        else:
+             QMessageBox.about(self.up,"Error", "Debes seleccionar un tipo de zapato correcto")
+        update_abono(self.abono,self.id_encargo,self.ip)
+

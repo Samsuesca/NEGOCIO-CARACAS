@@ -5,14 +5,22 @@ from pathlib import Path
 from datetime import date
 
 #Modulos de Terceros
-from PyQt5.QtWidgets import QApplication,QMessageBox, QMainWindow, QLabel, QVBoxLayout, QWidget
+from PyQt5.QtWidgets import (QApplication,QMessageBox, QMainWindow,
+                              QLabel, QVBoxLayout, QWidget,
+                              QSplitter,QSizePolicy,QAction)
 from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QFont,  QIcon
 
 #Importaciones Internas
-from menu import MenuWindow
+from Utils.QtUtils import delete_widgets
+from Ventas.venta import Venta
+from Ventas.encargo import Encargo
+from Ventas.cambios import Cambio
+from Analitica.movimientos import Movimientos
+from Analitica.gastos import Gastos
+from Inventarios.Inventario.inventario import Inventario
 from Utils.util_sql import connectsql
-from Utils.style import adj_middle, Palette, PushButton,show_beg
+from Utils.style import Palette, PushButton,show_beg
 
 
 app = QApplication(sys.argv)
@@ -30,55 +38,186 @@ class WelcomeWindow(QMainWindow):
     def __init__(self):
         super().__init__()
         self.initUI()
+        self.ip = '127.0.0.1'
         # Establecer título y tamaño de la ventana
         self.setWindowTitle("INICIO")
-        self.setGeometry(250, 250, 500, 350)
-        x,y = adj_middle(self)
-        self.move(x,y)
+
+    def menu_bar(self):
+
+        ########VENTAS:
+        menubar = self.menuBar()
+        venta_menu = menubar.addMenu("VENTAS")
+        #realizar:
+        self.make_ventas = QAction('Realizar', self)
+        self.make_ventas.setShortcut("Ctrl+V")
+        self.make_ventas.triggered.connect(self.make_ventas_show)
+        #ver:
+        self.show_ventas = QAction('Ver', self)
+        self.show_ventas.setShortcut("Ctrl+S")
+        self.show_ventas.triggered.connect(self.show_ventas_show)
+        #add_aactions
+        venta_menu.addActions([self.make_ventas,self.show_ventas])
+
+        #######ENCARGO:
+        encargo_menu = menubar.addMenu("ENCARGOS")
+        #realizar:
+        self.make_encargo = QAction('Realizar', self)
+        self.make_encargo.setShortcut("Ctrl+E")
+        self.make_encargo.triggered.connect(self.make_encargo_show)
+        #ver:
+        self.show_encargo = QAction('Ver', self)
+        self.show_encargo.setShortcut("Ctrl+H")
+        self.show_encargo.triggered.connect(self.show_encargo_show)
+        #ver:
+        self.show_yomber = QAction('Yombers', self)
+        self.show_yomber.setShortcut("Ctrl+Y")
+        self.show_yomber.triggered.connect(self.show_yomber_show)
+        #add_aactions
+        encargo_menu.addActions([self.make_encargo,self.show_encargo,self.show_yomber])
+
+        ########CAMBIOS:
+        cambio_menu = menubar.addMenu("CAMBIOS")
+        #realizar:
+        self.make_cambios = QAction('Realizar', self)
+        self.make_cambios.setShortcut("Ctrl+K")
+        self.make_cambios.triggered.connect(self.make_cambios_show)
+        #ver:
+        self.show_cambios = QAction('Ver', self)
+        self.show_cambios.setShortcut("Ctrl+T")
+        self.show_cambios.triggered.connect(self.show_cambios_show)
+        #add_aactions
+        cambio_menu.addActions([self.make_cambios,self.show_cambios])
+
+
+        #######MOVIMIENTOS:
+        register_menu = menubar.addMenu("REGISTROS")
+        ##Movimientos de Efectivo
+        self.show_moves = QAction('Movimientos', self)
+        self.show_moves.setShortcut("Ctrl+M")
+        self.show_moves.triggered.connect(self.movimientos_show)
+        ##GASTOS
+        self.show_gastos = QAction('Gastos', self)
+        self.show_gastos.setShortcut("Ctrl+G")
+        self.show_gastos.triggered.connect(self.gastos_show)
+        #add_aactions
+        register_menu.addActions([self.show_moves,self.show_gastos])
+
         
-        
+        #######iNVENTARIOS:
+        inventario_menu = menubar.addMenu("INVENTARIOS")
+        ##Movimientos de Efectivo
+        self.show_inv = QAction('Inventario Prendas', self)
+        self.show_inv.setShortcut("Ctrl+I")
+        self.show_inv.triggered.connect(self.inventario_show)
+        inventario_menu.addActions([self.show_inv])
+
+
+    def make_cambios_show(self):
+        self.cambio = Cambio(self)
+        self.cambio.insertData()
+        details = self.cambio.detalles()
+        delete_widgets(self.side_layout)
+        self.splitter.setSizes([40, 60])
+        self.side_layout.addWidget(details)
+
+    def show_cambios_show(self):
+        delete_widgets(self.layoutapp)
+        self.cambio_window = Cambio(self).openData()
+        self.layoutapp.addWidget(self.cambio_window)
+
     def initUI(self):
+        
+        self.menu_bar()
+
+        # Crear el layout de la barra lateral izquierda
+        self.side_layout = QVBoxLayout()
+        # Agregar widgets al layout de la barra lateral (ejemplo: botones de navegación)
+        btn_menu = PushButton("Probar Conection", self)
+        btn_menu.clicked.connect(self.check_connection)
+        self.side_layout.addWidget(btn_menu)
+
+         # Agregar los widgets a un layout 
+        self.layoutapp = QVBoxLayout()
         # Agregar un mensaje de bienvenida
-        label = QLabel("BIENVENIDO A NEGOCIO CARACAS", self)
-        label.setAlignment(Qt.AlignCenter)
-
-
+        label = QLabel("BIENVENIDO A TU NEGOCIO", self)
+        # Agregar un botón para ir al menú principal
+        self.layoutapp.addWidget(label, alignment=Qt.AlignCenter)
         today = date.today()
         label_date = QLabel(today.strftime("%B %d, %Y"))
         label_date.setAlignment(Qt.AlignCenter)
+        self.layoutapp.addWidget(label_date,alignment=Qt.AlignCenter)
 
-        # Agregar un botón para ir al menú principal
-        btn_menu = PushButton("Ir al menú principal", self)
-        btn_menu.clicked.connect(self.let_ip)
-        
-        # Agregar los widgets a un layout y establecerlo como el layout principal de la ventana
-        layout = QVBoxLayout()
-        layout.addWidget(label)
-        layout.addWidget(label_date)
-        layout.addWidget(btn_menu)
-        
-        widget = QWidget(self)
-        widget.setLayout(layout)
-        self.setCentralWidget(widget)
+        self.splitter = QSplitter(Qt.Horizontal)
+        side_widget = QWidget()
+        side_widget.setLayout(self.side_layout)
+        side_widget.setSizePolicy(QSizePolicy.Preferred, QSizePolicy.Preferred)
+        main_widget = QWidget()
+        main_widget.setLayout(self.layoutapp)
+        main_widget.setSizePolicy(QSizePolicy.Preferred, QSizePolicy.Preferred)
+        self.splitter.addWidget(side_widget)
+        self.splitter.addWidget(main_widget)
+        self.splitter.setStyleSheet("QSplitter::handle { background-color: rgb(0,100,30); }")
+        self.splitter.setSizes([50, 50])
+        self.splitter.setHandleWidth(3)
 
-    def let_ip(self):
-        # if self.label1.text()=="HOGAR":
-        self.ip = '127.0.0.1' #'192.168.0.18' #
+        self.setCentralWidget(self.splitter)
+        self.showMaximized()
+
+    def make_ventas_show(self):
+        self.venta = Venta(self)
+        self.venta.insertData()
+        details = self.venta.detalles()
+        delete_widgets(self.side_layout)
+        self.splitter.setSizes([40, 60])
+        self.side_layout.addWidget(details)
+
+    def show_ventas_show(self):
+        delete_widgets(self.layoutapp)
+        self.ventas_window = Venta(self).openData()
+        self.layoutapp.addWidget(self.ventas_window)
+
+    def show_yomber_show(self):
+        delete_widgets(self.layoutapp)
+        self.yombers_window = Encargo(self).showYomber()
+        self.layoutapp.addWidget(self.yombers_window)
+
+    def make_encargo_show(self):
+        self.encargo = Encargo(self)
+        self.encargo.insertData()
+        details = self.encargo.detalles()
+        delete_widgets(self.side_layout)
+        self.splitter.setSizes([35, 70])
+        self.side_layout.addWidget(details)
+
+    def show_encargo_show(self):
+        delete_widgets(self.layoutapp)
+        self.encargos_window = Encargo(self).openData()
+        self.layoutapp.addWidget(self.encargos_window)
+
+    def inventario_show(self):
+        delete_widgets(self.layoutapp)
+        self.inventario_window = Inventario(self).openTotal()
+        self.layoutapp.addWidget(self.inventario_window)
+
+
+    def gastos_show(self):
+        delete_widgets(self.layoutapp)
+        self.gastos_window = Gastos(self).openData()
+        self.layoutapp.addWidget(self.gastos_window)
+
+    def movimientos_show(self):
+        delete_widgets(self.layoutapp)
+        self.moves_window = Movimientos(self).openData()
+        self.layoutapp.addWidget(self.moves_window)
+
+
+    def check_connection(self): #'192.168.0.18' #
         try:
-            conn, cursor = connectsql(self.ip)
-            self.openMenu()
+            conn, cursor = connectsql(self.ip) 
+            success =  QMessageBox.about(self,'Conexión Exitosa','''Conexión establecida a la Base de Datos, puedes usar la app''')
         except psycopg2.OperationalError:
-            error = QMessageBox
-            error.warning(self,'Error en la Base de Datos','''La Base de Datos no esta corriendo en la IP que seleccionaste. Selecciona otra IP ''')
+            error = QMessageBox.warning(self,'Error en la Base de Datos','''La Base de Datos no esta corriendo en la IP que seleccionaste. Selecciona otra IP ''')
         
-    def openMenu(self):
-        # Abrir la ventana del menú principal
-        # Cerrar la ventana de bienvenida
-        self.close()
-        self.menu_window = MenuWindow(self.ip)
-        x,y = adj_middle(self.menu_window)
-        self.menu_window.move(x,y)
-        self.menu_window.show()
 
 if __name__ == "__main__":
 

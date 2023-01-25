@@ -8,6 +8,14 @@
 ---Ejecutar reinicio:
 --pg_ctl -D /Library/PostgreSQL/15/data restart
 
+---Delete clientes que no tienen encargos ni ventas:
+DELETE FROM clientes
+WHERE NOT EXISTS (SELECT * FROM encargos WHERE encargos.id_cliente = clientes.id)
+AND NOT EXISTS (SELECT * FROM ventas WHERE ventas.id_cliente = clientes.id)
+AND NOT EXISTS (SELECT * FROM cambios WHERE cambios.id_cliente = clientes.id) ;
+
+
+---query
 (SELECT clientes.nombre AS "Nombre del cliente",
                         ventas.id AS "ID",
                         ventas.fecha AS "Fecha",
@@ -475,3 +483,68 @@ CREATE TABLE cuentas_por_pagar (
     interes_men DECIMAL(10,2) NOT NULL,
     pagado BOOLEAN DEFAULT FALSE
 );
+
+----DIADIOIOASDJISA 
+ALTER TABLE detalle_venta
+    DROP CONSTRAINT detalle_venta_id_venta_fkey,
+    ADD CONSTRAINT detalle_venta_id_venta_fkey
+    FOREIGN KEY (id_venta)
+    REFERENCES ventas (id)
+    ON UPDATE CASCADE
+    ON DELETE CASCADE;
+
+CREATE TRIGGER guardar_dv_copy
+AFTER DELETE ON detalle_venta
+FOR EACH ROW
+BEGIN
+    INSERT INTO detalle_venta_copy
+    SELECT * FROM deleted;
+END;
+
+select * from detalle_venta_copy;
+
+CREATE OR REPLACE FUNCTION copiar_detalle_venta_eliminado()
+RETURNS TRIGGER AS $$
+BEGIN
+    INSERT INTO detalle_venta_copy SELECT * FROM detalle_venta WHERE detalle_venta.id = OLD.id;
+    RETURN OLD;
+END;
+$$ LANGUAGE plpgsql;
+
+
+CREATE TRIGGER copia_dv_eliminado
+    BEFORE DELETE ON detalle_venta
+    FOR EACH ROW
+    EXECUTE FUNCTION copiar_detalle_venta_eliminado();
+
+---- CAMBIOS 
+CREATE TABLE detalle_cambio (
+id SERIAL PRIMARY KEY,	
+id_cambio INTEGER REFERENCES cambios (id) ON DELETE CASCADE ON UPDATE CASCADE,
+id_prenda_entrante INTEGER REFERENCES prendas(id) ON DELETE CASCADE ON UPDATE CASCADE,
+id_prenda_saliente INTEGER REFERENCES prendas(id) ON DELETE CASCADE ON UPDATE CASCADE,
+cantidad_entrante INTEGER,
+cantidad_saliente INTEGER
+);
+
+
+CREATE FUNCTION actualizar_cambio()
+RETURNS TRIGGER AS $$
+BEGIN
+	UPDATE cambios
+    SET total_entrada = total_entrada + (SELECT prendas.precio FROM prendas WHERE prendas.id = NEW.id_prenda_entrante) * NEW.cantidad_entrante,
+        total_salida = total_salida + (SELECT prendas.precio FROM prendas WHERE prendas.id = NEW.id_prenda_saliente) * NEW.cantidad_saliente
+    WHERE id = NEW.id_cambio;
+
+    -- Actualizar el inventario al hacer un cambio
+    UPDATE inventario
+    SET cantidad = cantidad + NEW.cantidad_entrante - NEW.cantidad_saliente
+    WHERE id_prenda = NEW.id_prenda_entrante OR id_prenda = NEW.id_prenda_saliente;
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER actualizar_totales_cambio
+AFTER INSERT ON detalle_cambio
+FOR EACH ROW
+EXECUTE FUNCTION actualizar_cambio();

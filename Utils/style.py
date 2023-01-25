@@ -116,7 +116,7 @@ def adj_sup_center(window):
 class PushButton(QPushButton):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.setStyleSheet("PushButton { min-width: 160px; min-height: 80px; }")
+        self.setStyleSheet("PushButton { min-width: 120px; min-height: 60px; }")
 
 def font(self,scale):
     font = QFont()

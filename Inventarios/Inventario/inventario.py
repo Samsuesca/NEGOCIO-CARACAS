@@ -3,15 +3,15 @@ from Utils.style import PushButton, adj_right
 from Utils.QtUtils import ShowData
 
 class Inventario(QMainWindow):
-    def __init__(self, return_window,ip):
+    def __init__(self, main_window):
         super().__init__()
         self.initUI()
-        self.return_window = return_window
-        self.ip = ip
+        self.up = main_window
+        self.ip = self.up.ip
 
-        # Establecer título y tamaño de la ventana
-        self.setWindowTitle("Inventario Principal")
-        self.setGeometry(400, 500, 550, 300)
+        # # Establecer título y tamaño de la ventana
+        # self.setWindowTitle("Inventario Principal")
+        # self.setGeometry(400, 500, 550, 300)
 
     def initUI(self):
 
@@ -48,6 +48,11 @@ class Inventario(QMainWindow):
         widget = QWidget(self)
         widget.setLayout(grid_layout)
         self.setCentralWidget(widget)
+        
+    def openTotal(self):
+        show_data = ShowData(self,'total',self.ip)
+        show_data.show()
+        return show_data
     
     class Inv(QMainWindow):
         def __init__(self,up) -> QStackedLayout():
@@ -60,7 +65,6 @@ class Inventario(QMainWindow):
             self.stacked_layout.addWidget(self.openChompaGris())
             self.stacked_layout.addWidget(self.openJeans())
             self.stacked_layout.addWidget(self.openBlusas())
-            self.stacked_layout.addWidget(self.openTotal())
             widget = QWidget(self)
             widget.setLayout(self.stacked_layout)
             x,y = adj_right(self)
@@ -68,11 +72,6 @@ class Inventario(QMainWindow):
             self.setMinimumSize(500, 350)
             self.setCentralWidget(widget)
             self.show()
-
-        def openTotal(self):
-            show_data = ShowData(self,'total',self.up.ip)
-            show_data.show()
-            return show_data
 
         def openCamisetas(self):
             show_data = ShowData(self,'camisetas',self.up.ip)

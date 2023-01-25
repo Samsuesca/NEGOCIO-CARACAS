@@ -1,14 +1,31 @@
-from PyQt5.QtWidgets import QInputDialog, QLineEdit,QMessageBox
-from Utils.QtUtils import Ventana
-from Utils.util_sql import connectsql,make_query,get_id,delete_date
 
-class MenuAnalitica(Ventana):
-    def __init__(self,selfis):
-        query = f'''SELECT tipo,descripcion,monto,date_trunc('day',fecha),destino_origen
+#Librerias de terceros
+from PyQt5.QtWidgets import QInputDialog, QLineEdit,QMainWindow
+
+#Importaciones internas
+from Utils.util_sql import connectsql,make_query
+from Utils.QtUtils import ShowData
+
+class Movimientos(QMainWindow):
+    def __init__(self,main_window):
+        super().__init__()
+        self.query = f'''SELECT id,tipo,descripcion,monto,date_trunc('day',fecha) AS fecha,destino_origen
         FROM movimientos ORDER BY id DESC'''
-        super().__init__(selfis,'movimientos',selfis.ip,True,query)
-        self.up = selfis
-        self.initUI()
+        self.filtro = ['fecha']
+        self.up = main_window
+        self.table_name = 'movimientos'
+        self.ip = self.up.ip
+        self.add_row_bool = True
+
+    def openData(self):
+        self.show_data = ShowData(main_window=self.up,
+                                  table_name=self.table_name,
+                                  ip=self.ip,
+                                  query=self.query,
+                                  add_row=self.add_row_bool,
+                                  filtro=self.filtro)
+        return self.show_data 
+
 
     def insertData(self):
         category,ok = QInputDialog.getText(self,'Ingresar Movimiento','Tipo de Movimiento',QLineEdit.Normal, "")
@@ -23,17 +40,5 @@ class MenuAnalitica(Ventana):
                 # Ejecutar la consulta
                 make_query(conn,cursor, query)
 
-    def editData(self):
-        pass
-
-    def deleteData(self):
-          # Obtener el ID de la fila que se desea eliminar
-        row_id, ok = QInputDialog.getInt(self, 'Eliminar Gasto', 'Ingresa el ID que deseas eliminar:')
-        if ok and row_id:
-            row = get_id(self.table_name,row_id,self.up.ip)
-            if row is None:
-                QMessageBox.warning(self, 'Error', 'No se encontró ninguna fila con ese ID.')
-            else:
-                delete_date(self,ok,row_id,self.up.ip)
 
 
