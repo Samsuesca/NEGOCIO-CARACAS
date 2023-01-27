@@ -38,7 +38,7 @@ class WelcomeWindow(QMainWindow):
     def __init__(self):
         super().__init__()
         self.initUI()
-        self.ip = '192.168.0.35'
+        self.ip = '127.0.0.1'
         # Establecer título y tamaño de la ventana
         self.setWindowTitle("INICIO")
 

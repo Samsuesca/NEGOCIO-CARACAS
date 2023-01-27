@@ -20,7 +20,8 @@ class Venta(QMainWindow):
                                   ip=self.ip,
                                   query=self.query,
                                   add_row=self.add_row_bool,
-                                  filtro=self.filtro)
+                                  filtro=self.filtro,
+                                  operation='informe')
         return self.show_data    
 
     def insertData(self): 
