@@ -12,6 +12,8 @@ from datetime import datetime
 import os
 import json
 
+#####COMENTARIO DE PRUEBA
+
 def delete_widgets(layout:QLayout):
     while layout.count():
             item = layout.takeAt(0)
