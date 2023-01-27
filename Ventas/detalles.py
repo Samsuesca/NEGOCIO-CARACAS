@@ -9,7 +9,7 @@ from Utils.style import PushButton,adj_sup_center
 from Utils.util_sql import delete_date,connectsql,make_query,get_id_prenda
 
 
-
+###PRUEBA 22222 
 
 
 class DetallesVenta(QMainWindow):
