@@ -10,6 +10,7 @@ from Utils.util_sql import delete_date,connectsql,make_query,get_id_prenda
 
 
 ###PRUEBA 22222 
+#3ofsdopfsd
 
 
 class DetallesVenta(QMainWindow):
