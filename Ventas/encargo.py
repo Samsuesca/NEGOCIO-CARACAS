@@ -9,6 +9,7 @@ class Encargo(Client):
         self.ip = self.up.ip
         self.table_name = 'encargos'
         self.add_row_bool = False
+        self.operation = 'informe'
         self.filtro = ['nombre','telefono','entregarel','saldo','encargado']
         self.show_query = f''' SELECT encargos.id, clientes.nombre,clientes.telefono,
         date_trunc('day',encargos.fecha_encargo) AS Encargado,

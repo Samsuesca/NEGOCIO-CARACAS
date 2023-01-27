@@ -44,8 +44,17 @@ class WelcomeWindow(QMainWindow):
 
     def menu_bar(self):
 
-        ########VENTAS:
         menubar = self.menuBar()
+
+        ########Conexión:       
+        conect_menu = menubar.addMenu("Conexión")
+        #realizar:
+        self.probe_conexion = QAction('Verificar', self)
+        self.probe_conexion.setShortcut("Ctrl+Ñ")
+        self.probe_conexion.triggered.connect(self.check_connection)
+        conect_menu.addAction(self.probe_conexion)
+
+        ########VENTAS:       
         venta_menu = menubar.addMenu("VENTAS")
         #realizar:
         self.make_ventas = QAction('Realizar', self)
@@ -124,14 +133,7 @@ class WelcomeWindow(QMainWindow):
     def initUI(self):
         
         self.menu_bar()
-
-        # Crear el layout de la barra lateral izquierda
-        self.side_layout = QVBoxLayout()
-        # Agregar widgets al layout de la barra lateral (ejemplo: botones de navegación)
-        btn_menu = PushButton("Probar Conection", self)
-        btn_menu.clicked.connect(self.check_connection)
-        self.side_layout.addWidget(btn_menu)
-
+     
          # Agregar los widgets a un layout 
         self.layoutapp = QVBoxLayout()
         # Agregar un mensaje de bienvenida
@@ -144,13 +146,9 @@ class WelcomeWindow(QMainWindow):
         self.layoutapp.addWidget(label_date,alignment=Qt.AlignCenter)
 
         self.splitter = QSplitter(Qt.Horizontal)
-        side_widget = QWidget()
-        side_widget.setLayout(self.side_layout)
-        side_widget.setSizePolicy(QSizePolicy.Preferred, QSizePolicy.Preferred)
         main_widget = QWidget()
         main_widget.setLayout(self.layoutapp)
         main_widget.setSizePolicy(QSizePolicy.Preferred, QSizePolicy.Preferred)
-        self.splitter.addWidget(side_widget)
         self.splitter.addWidget(main_widget)
         self.splitter.setStyleSheet("QSplitter::handle { background-color: rgb(0,100,30); }")
         self.splitter.setSizes([50, 50])

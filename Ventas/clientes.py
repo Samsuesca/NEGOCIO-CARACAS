@@ -14,7 +14,8 @@ class Client(QMainWindow):
                                   ip=self.ip,
                                   query=self.show_query,
                                   add_row=self.add_row_bool,
-                                  filtro=self.filtro)
+                                  filtro=self.filtro,
+                                  operation=self.operation)
         return self.show_data    
     
     def insertData(self):

@@ -9,6 +9,7 @@ class Venta(Client):
         self.table_name = 'ventas'
         self.filtro = ['nombre','telefono','fecha','total']
         self.ip = self.up.ip
+        self.operation = 'informe'
         self.add_row_bool = False
 
 

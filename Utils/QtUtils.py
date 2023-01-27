@@ -1,4 +1,5 @@
 #Modulos Internos
+from Ventas.detalles import DetallesCambio,INFO,DetallesEncargo
 from Utils.util_sql import execute_query, connectsql, make_query,get_id_prenda
 from Utils.style import PushButton, adj_left, adj_right,adj_sup_center,adj_middle
 #Modelos de Terceros
@@ -74,6 +75,7 @@ class ShowData(QMainWindow):
             self.table.resizeColumnsToContents()
             self.table.setHorizontalHeaderItem(len(results[0]), QTableWidgetItem("⟳"))
             self.table.setHorizontalHeaderItem(len(results[0])+1, QTableWidgetItem("X"))
+            self.table.setHorizontalHeaderItem(len(results[0])+2, QTableWidgetItem("Info"))
 
             # Agregar los datos a la tabla
             for i, row in enumerate(results):
@@ -134,8 +136,10 @@ class ShowData(QMainWindow):
         id_value = self.table.item(current_row, 0).text()
         if self.table_name == 'ventas':
             venta = INFO(self,id_venta=id_value)
-            venta.informe_venta()
-    
+            venta.informe_venta(mode='venta')
+        elif self.table_name == 'encargos':
+            encargo = DetallesEncargo(self,id_encargo=id_value,info=True)
+            encargo.informe_encargo(mode='encargo')
     def update_row(self):
         # Obtener la fila seleccionada
         current_row = self.table.currentRow()
@@ -226,7 +230,6 @@ class ShowData(QMainWindow):
         data = {}
         # Iterar sobre los nombres de las columnas
         for column_name in column_names:
-            # column_type = self.tablesql.columns[column_name].type
             # Pedir al usuario que ingrese un valor para la columna actual
             value,ok = QInputDialog.getText(self,'Insertar Nueva Fila',f"Ingresa un valor para la columna {column_name}: ",
                                          QLineEdit.Normal, "")
@@ -323,211 +326,6 @@ class Pestana(QMainWindow):
         x,y = adj_left(self.main_window)
         self.main_window.move(x,y)
 
-
-class INFO():
-    def __init__(self,selfis,id_venta) -> None:
-        self.up = selfis
-        self.id_venta = id_venta
-        self.ip = selfis.ip
-    def detalles_venta(self,table_name):
-        self.table_name=table_name
-        talla, ok = QInputDialog.getText(self.up,'¿Qué talla se Necesita?','Ingrese la talla')
-        if talla.upper() in self.sizes():
-        
-            if talla and ok:
-                id_prenda = get_id_prenda(talla,self.table_name,self.up.ip)
-                #Obtener la cantidad
-                quantity, ok1 = QInputDialog.getInt(self.up,'¿Qué cantidad va a llevar?','Ingrese la cantidad')
-                if quantity and ok1:
-                    #Obtener la cantidad del inventario
-                    conn, cursor = connectsql(host=self.ip)
-                    query = f"SELECT cantidad FROM inventario WHERE id_prenda = {id_prenda[0]}"
-                    cursor.execute(query)
-                    cantidad_inventario = cursor.fetchone()
-                    conn.commit()
-                    cursor.close()
-                    conn.close()
-
-                    if cantidad_inventario[0] >= quantity:
-                        conn, cursor = connectsql(host=self.ip)
-                        query = f'''INSERT INTO public.detalle_venta (id_venta,id_prenda,cantidad)
-                        VALUES ({self.up.id_venta},{id_prenda[0]},{quantity});'''
-                        cursor.execute(query)
-                        conn.commit()
-                        cursor.close()
-                        conn.close()   
-                        self.up.initUI()
-                    else:
-                        QMessageBox.about(self.up, "Error", "No hay inventario")
-        else:
-            QMessageBox.about(self.up, "Error", "La talla que has seleccionado no existe")
-
-    def sizes(self):
-        if self.table_name == 'jeans':
-            X = ['6','8','10','12','14','16','28','30','32','34']
-        elif self.table_name == 'camisetas':
-            X = ['6','8','10','12','14','16','S','M','L','XL','XXL']
-        elif self.table_name == 'yomber' or self.table_name == 'blusas':
-            X = ['6','8','10','12','14','16','S','M','L','XL']
-        elif self.table_name == 'Medias':
-            X = ['4-6','6-8','8-10','9-11','CANILLERA P','CANILLERA G']
-        elif self.table_name == 'otros':
-            X = ['TOP','CAMISILLA','BICICLETERO','CORREA']
-        elif self.table_name == 'sudaderas' or self.table_name == 'chazul' or self.table_name == 'chgris':
-            X = ['4', '6', '8', '10', '12', '14', '16', 'S', 'M', 'L', 'XL']
-        else:
-            X = ''
-        return X
-
-
-
-    def informe_venta(self):
-        result = self.query_venta_detalle()
-        self.result = result
-        self.informe = QDialog()
-        self.informe.setWindowTitle(f'Informe de venta {self.id_venta} I.E CARACAS')
-        self.informe.setGeometry(0,0,550,400)
-        self.names = [row[3] for row in result]
-        self.sizes = [row[4] for row in result]
-        self.prices = [row[5] for row in result]
-        self.quant = [row[6] for row in result]
-        self.parcial = [row[7] for row in result]
-        self.id_det = [row[9] for row in result]
-        # Crear los labels para mostrar los datos
-        try:
-            label_title = QLabel(f'Uniformes Consuelo Rios')
-            label_cliente = QLabel(f'Nombre del cliente: {result[0][0]} | ID_VENTA: ({result[0][1]})')
-            label_fecha = QLabel(f'Fecha: {result[0][2]}')
-            grid = QGridLayout()
-            ti_name = QLabel("Prenda") 
-            ti_size = QLabel("Talla")
-            ti_price = QLabel("Precio")
-            ti_quant = QLabel("Cantidad")
-            ti_parcial = QLabel("Subtotal")
-            ti_spa = [QLabel("|") for i in range(4)]
-            grid.addWidget(ti_name,0,0,alignment=Qt.AlignCenter)
-            grid.addWidget(ti_spa[0],0,1,alignment=Qt.AlignCenter)
-            grid.addWidget(ti_size,0,2,alignment=Qt.AlignCenter)
-            grid.addWidget(ti_spa[1],0,3,alignment=Qt.AlignCenter)
-            grid.addWidget(ti_price,0,4,alignment=Qt.AlignCenter)
-            grid.addWidget(ti_spa[2],0,5,alignment=Qt.AlignCenter)
-            grid.addWidget(ti_quant,0,6,alignment=Qt.AlignCenter)
-            grid.addWidget(ti_spa[3],0,7,alignment=Qt.AlignCenter)
-            grid.addWidget(ti_parcial,0,8,alignment=Qt.AlignCenter)
-            for i in range(len(self.names)):
-                label_name= QLabel(f'{self.names[i]}')
-                label_size= QLabel(f'{self.sizes[i]}')
-                label_prices= QLabel(f'{self.prices[i]}')
-                label_quant= QSpinBox()
-                label_quant.setMinimum(0)
-                label_quant.setValue(self.quant[i])
-                self.id_detalle = self.id_det[i]
-                label_quant.valueChanged.connect(self.actualizar_cantidad)
-                label_parcial= QLabel(f'{self.parcial[i]}')
-                grid.addWidget(label_name,i+1,0,alignment=Qt.AlignCenter)
-                grid.addWidget(label_size,i+1,2,alignment=Qt.AlignCenter)
-                grid.addWidget(label_prices,i+1,4,alignment=Qt.AlignCenter)
-                grid.addWidget(label_quant,i+1,6,alignment=Qt.AlignCenter)
-                grid.addWidget(label_parcial,i+1,8,alignment=Qt.AlignCenter)
-            grid2 = QGridLayout()
-            label_total_venta = QLabel(f'Total de la venta: {result[0][8]}')
-            grid2.addWidget(label_total_venta,0,0,alignment=Qt.AlignCenter)
-
-            # Define el ancho de las columnas
-            grid.setColumnStretch(0, 2)
-            grid.setColumnStretch(1, 0.2)
-            grid.setColumnStretch(2, 1)
-            grid.setColumnStretch(3, 0.2)
-            grid.setColumnStretch(4, 2)
-            grid.setColumnStretch(5, 0.2)
-            grid.setColumnStretch(6, 1)
-            grid.setColumnStretch(7, 0.2)
-            grid.setColumnStretch(8, 2)
-
-            #botones
-            hbox = QHBoxLayout()
-            save = PushButton("GUARDAR VENTA")
-            save.clicked.connect(self.save_venta)
-            edit = PushButton("AGREGAR PRODUCTOS")
-            edit.clicked.connect(self.informe.close)
-            hbox.addWidget(save)
-            hbox.addWidget(edit)
-
-            # Crear un layout para organizar los labels
-            layout = QVBoxLayout()
-            layout.addWidget(label_title,alignment=Qt.AlignCenter)
-            layout.addWidget(label_cliente)
-            layout.addWidget(label_fecha)
-            layout.addLayout(grid)
-            layout.addLayout(grid2)
-            layout.addLayout(hbox)
-
-            #Agregar el widget al layout principal de la ventana
-            self.informe.setLayout(layout)
-            adj_sup_center(self.informe)
-            self.informe.exec_()
-
-        except IndexError:
-            QMessageBox.about(self.up,"Error", "No se han añadido prendas a la venta")
-
-    def actualizar_cantidad(self,value):
-        conn,cur = connectsql(host=self.ip)
-        # Actualizar la cantidad en la tabla detalle_venta.
-        query = f'''UPDATE detalle_venta SET cantidad={value} WHERE id={self.id_detalle}'''
-        make_query(conn,cur,query)
-
-        self.informe.accept()
-        self.informe_venta()
-
-
-    def save_venta(self):
-        
-        obs,ok1 = QInputDialog.getText(self.up,'Observaciones','¿Deseas agregar observaciones?',QLineEdit.Normal, "Sin obs")
-        if obs and ok1:
-            conn,cur = connectsql(host=self.ip)
-            query = f'''UPDATE public.ventas SET observaciones='{obs}' WHERE id = {self.up.id_venta}'''
-            make_query(conn,cur,query)
-        else:
-            self.informe.accept()
-            self.up.close()    
-
-        metodo,ok = QInputDialog.getItem(self.up,'Método de Pago','Selecciona el método de pago',['Efectivo','Transferencia'])
-        if metodo and ok:
-            conn,cur = connectsql(host=self.up.ip)
-            query = f'''UPDATE public.ventas SET finalizada=true,metodo_pago='{metodo}' WHERE id = {self.up.id_venta}'''
-            make_query(conn,cur,query)
-            self.informe.accept()
-            self.up.close()   
-        else:
-            QMessageBox.about(self.up,"Error", "Debes seleccionar un método de pago")
-            self.informe.accept()
-            self.up.close()    
-
-    def query_venta_detalle(self):  
-        conn, cursor = connectsql(host=self.ip)
-        query = f''' SELECT clientes.nombre AS "Nombre del cliente",
-                        ventas.id AS "ID",
-                        ventas.fecha AS "Fecha",
-                        tipo_prendas.name AS "Nombre de la prenda",
-                        prendas.talla AS "Talla",
-                        prendas.precio AS "Precio",
-                        detalle_venta.cantidad AS "Cantidad",
-                        (prendas.precio * detalle_venta.cantidad) AS "Total parcial por prenda",
-                        ventas.total AS "Total de la Venta",
-                        detalle_venta.id AS "ID_DETALLE"
-                        FROM clientes
-                        JOIN ventas ON clientes.id = ventas.id_cliente
-                        JOIN detalle_venta ON ventas.id = detalle_venta.id_venta
-                        JOIN prendas ON detalle_venta.id_prenda = prendas.id
-                        JOIN tipo_prendas ON prendas.id_tipo_prenda = tipo_prendas.id
-                        WHERE ventas.id = {self.id_venta}
-                        ORDER BY detalle_venta.id'''
-        cursor.execute(query)
-        result = cursor.fetchall()
-        conn.commit()
-        cursor.close()
-        conn.close() 
-        return result   
 
 
     #     today = datetime.now().strftime("%Y-%m-%d")
