@@ -347,6 +347,34 @@ JOIN tipo_prendas ON prendas.id_tipo_prenda = tipo_prendas.id
 JOIN inventario ON prendas.id = inventario.id_prenda
 WHERE prendas.id BETWEEN 77 AND 86;
 
+
+--VER INVENTARIO zapatoblanco:
+SELECT * FROM zapatoblanco;
+CREATE VIEW zapatoblanco AS
+SELECT prendas.id, tipo_prendas.name, prendas.talla, prendas.precio, inventario.cantidad
+FROM prendas
+JOIN tipo_prendas ON prendas.id_tipo_prenda = tipo_prendas.id
+JOIN inventario ON prendas.id = inventario.id_prenda
+WHERE prendas.id BETWEEN 95  AND 113;
+
+--VER INVENTARIO zapatoblanco:
+SELECT * FROM zapatonegro;
+CREATE VIEW zapatonegro AS
+SELECT prendas.id, tipo_prendas.name, prendas.talla, prendas.precio, inventario.cantidad
+FROM prendas
+JOIN tipo_prendas ON prendas.id_tipo_prenda = tipo_prendas.id
+JOIN inventario ON prendas.id = inventario.id_prenda
+WHERE prendas.id BETWEEN 114 AND 132;
+
+--VER INVENTARIO zapatogoma:
+SELECT * FROM zapatogoma;
+CREATE VIEW zapatogoma AS
+SELECT prendas.id, tipo_prendas.name, prendas.talla, prendas.precio, inventario.cantidad
+FROM prendas
+JOIN tipo_prendas ON prendas.id_tipo_prenda = tipo_prendas.id
+JOIN inventario ON prendas.id = inventario.id_prenda
+WHERE prendas.id BETWEEN 132 AND 151;
+
 --CREAR TABLA DE DETALLES DE VENTA:
 
 
@@ -548,3 +576,27 @@ CREATE TRIGGER actualizar_totales_cambio
 AFTER INSERT ON detalle_cambio
 FOR EACH ROW
 EXECUTE FUNCTION actualizar_cambio();
+
+INSERT INTO public.prendas(
+	precio, id_tipo_prenda, talla, costo)
+	VALUES5(70000, 8, 'B26', 55000)5(70000, 8, 'B27', 55000)5(70000, 8, 'B28', 55000),
+5(70000, 8, 'B29', 55000)5(70000, 8, 'B30', 55000),(70000, 8, 'B31', 55000),(70000, 8, 'B32', 55000),
+	(70000, 8, 'B33', 55000),(70000, 8, 'B34', 55000),(70000, 8, 'B35', 55000),(70000, 8, 'B36', 55000)
+	,(70000, 8, 'B37', 55000),(75000, 8, 'B38', 60000),(75000, 8, 'B39', 60000),(75000, 8, 'B40', 60000),
+	(75000, 8, 'B41', 60000),(75000, 8, 'B42', 60000),(75000, 8, 'B43', 60000),(75000, 8, 'B44', 60000);
+
+INSERT INTO public.prendas(
+	precio, id_tipo_prenda, talla, costo)
+	VALUES (70000, 8, 'N26', 55000),(70000, 8, 'N27', 55000),(70000, 8, 'N28', 55000),
+	(70000, 8, 'N29', 55000),(70000, 8, 'N30', 55000),(70000, 8, 'N31', 55000),(70000, 8, 'N32', 55000),
+	(70000, 8, 'N33', 55000),(70000, 8, 'N34', 55000),(70000, 8, 'N35', 55000),(70000, 8, 'N36', 55000)
+	,(70000, 8, 'N37', 55000),(75000, 8, 'N38', 60000),(75000, 8, 'N39', 60000),(75000, 8, 'N40', 60000),
+	(75000, 8, 'N41', 60000),(75000, 8, 'N42', 60000),(75000, 8, 'N43', 60000),(75000, 8, 'N44', 60000);
+
+INSERT INTO public.prendas(
+	precio, id_tipo_prenda, talla, costo)
+	VALUES (75000, 8, 'G26', 65000),(75000, 8, 'G27', 65000),(75000, 8, 'G28', 65000),
+	(75000, 8, 'G29', 65000),(75000, 8, 'G30', 65000),(75000, 8, 'G31', 65000),(75000, 8, 'G32', 65000),
+	(75000, 8, 'G33', 65000),(75000, 8, 'G34', 65000),(75000, 8, 'G35', 65000),(75000, 8, 'G36', 65000)
+	,(75000, 8, 'G37', 65000),(80000, 8, 'G38', 72000),(80000, 8, 'G39', 72000),(80000, 8, 'G40', 72000),
+	(80000, 8, 'G41', 72000),(80000, 8, 'G42', 72000),(80000, 8, 'G43', 72000),(80000, 8, 'G44', 72000);

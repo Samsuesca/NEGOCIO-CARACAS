@@ -228,16 +228,16 @@ class ShowData(QMainWindow):
             QMessageBox.warning(self.main_window, 'Error', '''No se pudo realizar la Inserción. 
               Tal vez la cancelaste o Hiciste algo mal. Intentalo de nuevo''')
 
-
-
     def get_table_data(self,dif_query=''):
-        conn, cursor = connectsql(host=self.ip)
-        print(self.table_name)
+
         if dif_query == '':
-            results = execute_query(conn,cursor, f'SELECT * FROM {self.table_name} ORDER BY id')
+            results,conn,cursor = execute_query(f'SELECT * FROM {self.table_name} ORDER BY id',self.ip,
+                                                get_conncur=True)
         else: 
-            results = execute_query(conn,cursor, dif_query)
+            results,conn,cursor = execute_query(dif_query,self.ip,get_conncur=True)
         column_names = [column[0] for column in cursor.description]
+        conn.close()
+        cursor.close()
         return results, column_names
 
     def refresh_table(self):

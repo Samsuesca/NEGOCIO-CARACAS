@@ -10,27 +10,6 @@ from Utils.QtUtils import INFO
 from Utils.util_sql import delete_date,connectsql,make_query,get_id_prenda
 
 
-def update_metodo_pago(metodo,id_encargo,ip):
-    conn, cursor = connectsql(host=ip)
-    query = f'''UPDATE encargos SET metodo_pago = '{metodo}' WHERE id = {id_encargo};'''
-    make_query(conn,cursor,query) 
-
-def update_obs(obs,id_encargo,ip):
-    conn, cursor = connectsql(host=ip)
-    query = f'''UPDATE encargos SET observaciones = '{obs}' WHERE id = {id_encargo};'''
-    make_query(conn,cursor,query)
-
-def make_detail_encargo(cantidad,id_encargo,id_prenda,ip):
-    conn, cursor = connectsql(host=ip)
-    query = f'''INSERT INTO detalle_encargo (id_encargo,id_prenda,cantidad)
-    VALUES ({id_encargo},{id_prenda},{cantidad});'''
-    make_query(conn,cursor,query) 
-
-def update_abono(abono,id_encargo,ip):
-    conn, cursor = connectsql(host=ip)
-    query = f'''UPDATE encargos SET abono = {abono} WHERE id = {id_encargo};'''
-    make_query(conn,cursor,query)
-
 
 
 
@@ -40,9 +19,11 @@ class DetallesVenta(QMainWindow):
         self.main_window = main_window
         self.id_venta = id_venta
         self.ti = title
+        self.ip = ip
         self.table_name= self.ti.split()[0].lower() + 's'
         self.initUI()
-        self.ip = ip
+        self.show()
+   
         
     def initUI(self):
        
@@ -134,17 +115,22 @@ class DetallesEncargo(QMainWindow):
         self.prendas = ['Yomber','Zapatos B','Zapatos N','Zapatos G','Chompa Azul','Chompa Gris','Sudaderas',
         'Camisetas','Blusas','Jeans','Medias','Otros']
         self.initUI()
+        self.show()
         
 
     def initUI(self):
-        self.prenda, ok = QInputDialog.getItem(self.up,'Title',
-        'Selecciona el tipo de prenda',self.prendas)
+        self.plazo,ok1 =  QInputDialog.getText(self, 'Realizar Encargo',
+                                                       'Inserta el plazo del encargo',
+                                                         QLineEdit.Normal, "10")
+        if self.plazo and ok1:   
+            self.prenda, ok = QInputDialog.getItem(self.up,'Title',
+            'Selecciona el tipo de prenda',self.prendas)
 
-        if self.prenda and ok:
-            self.logic()
-        else:
-            self.cancelar
-        
+            if self.prenda and ok:
+                self.logic()
+            else:
+                self.cancelar
+            
     def logic(self):
         ##YOMBER
         if self.prenda == 'Yomber':
@@ -152,11 +138,11 @@ class DetallesEncargo(QMainWindow):
                                              'Ingrese la talla')
             if ok:
                 if self.talla.upper() in self.sizes():
-                    id_prenda = get_id_prenda(self.talla,'yomber',self.ip)
-                    make_detail_encargo(1,self.id_encargo,id_prenda[0],self.ip)
-                    abono,ok1=QInputDialog.getText(self.up,'Abono','¿Cuánto va a abonar?')
-                    if abono and ok1:
-                        update_abono(abono,self.id_encargo,self.ip)
+                    self.id_prenda = get_id_prenda(self.talla,'yomber',self.ip)
+                    self.make_detail_encargo()
+                    self.abono,ok1=QInputDialog.getText(self.up,'Abono','¿Cuánto va a abonar?')
+                    if self.abono and ok1:
+                        self.update_abono(self.abono,self.id_encargo,self.ip)
                         self.openYomber()
                 else:
                     QMessageBox.about(self.up, "Error", "La talla que has seleccionado no existe")
@@ -180,7 +166,7 @@ class DetallesEncargo(QMainWindow):
             self.talla,self.abono=self.get_size_and_abono(self.openSudaderas)
         ##CAMISETA        
         elif self.prenda == 'Camisetas':
-            self.talla,self.abono=self.get_size_and_abono(self.openCamisetas)
+            self.talla,self.abono=self.get_size_and_abono(self.openCamiseta)
         ##BLUSAS
         elif self.prenda == 'Blusas':          
             self.talla,self.abono=self.get_size_and_abono(self.openBlusas)
@@ -197,84 +183,94 @@ class DetallesEncargo(QMainWindow):
             'Debes seleccionar un tipo de prenda válido')
             self.initUI()
 
+    def make_detail_encargo(self):
+        conn, cursor = connectsql(host=self.ip)
+        query = f'''INSERT INTO detalle_encargo (id_encargo,id_prenda,cantidad)
+        VALUES ({self.id_encargo},{self.id_prenda[0]},{1});'''
+        make_query(conn,cursor,query) 
 
-    
+    def update_abono(self):
+        conn, cursor = connectsql(host=self.ip)
+        query = f'''UPDATE encargos SET abono = {self.abono},dias_entrega = {self.plazo} WHERE id = {self.id_encargo};'''
+        make_query(conn,cursor,query)
+
+    def openCamiseta(self):
+        self.id_prenda = get_id_prenda(self.talla,'camisetas',self.ip)
+        self.make_detail_encargo()
+        self.get_metodo_pago()
+        self.update_abono()
+        self.get_obs()
 
     def openZapatoBlanco(self):
-        id_prenda = get_id_prenda(self.talla,'zapatoblanco',self.ip)
-        make_detail_encargo(1,self.id_encargo,id_prenda[0],self.ip)
+        self.id_prenda = get_id_prenda(self.talla,'zapatoblanco',self.ip)
+        self.make_detail_encargo()
         self.get_metodo_pago()
-        update_abono(self.abono,self.id_encargo,self.ip)
+        self.update_abono()
         self.get_obs()
 
     def openZapatoNegro(self):
-        id_prenda = get_id_prenda(self.talla,'zapatonegro',self.ip)
-        make_detail_encargo(1,self.id_encargo,id_prenda[0],self.ip)
+        self.id_prenda = get_id_prenda(self.talla,'zapatonegro',self.ip)
+        self.make_detail_encargo()
         self.get_metodo_pago()
-        update_abono(self.abono,self.id_encargo,self.ip)
+        self.update_abono()
         self.get_obs()
     
     def openZapatoGoma(self):
-        id_prenda = get_id_prenda(self.talla,'zapatogoma',self.ip)
-        make_detail_encargo(1,self.id_encargo,id_prenda[0],self.ip)
+        self.id_prenda = get_id_prenda(self.talla,'zapatogoma',self.ip)
+        self.make_detail_encargo()
         self.get_metodo_pago()
-        update_abono(self.abono,self.id_encargo,self.ip)
+        self.update_abono()
         self.get_obs()
     
     def openChompaAzul(self):
-        id_prenda = get_id_prenda(self.talla,'chazul',self.ip)
-        make_detail_encargo(1,self.id_encargo,id_prenda[0],self.ip)
+        self.id_prenda = get_id_prenda(self.talla,'chazul',self.ip)
+        self.make_detail_encargo()
         self.get_metodo_pago()
-        update_abono(self.abono,self.id_encargo,self.ip)
+        self.update_abono()
         self.get_obs()
         
     def openChompaGris(self):
-        id_prenda = get_id_prenda(self.talla,'chgris',self.ip)
-        make_detail_encargo(1,self.id_encargo,id_prenda[0],self.ip)
+        self.id_prenda = get_id_prenda(self.talla,'chgris',self.ip)
+        self.make_detail_encargo()
         self.get_metodo_pago()
-        update_abono(self.abono,self.id_encargo,self.ip)
+        self.update_abono()
         self.get_obs()
         
     def openSudaderas(self):
-        id_prenda = get_id_prenda(self.talla,'sudaderas',self.ip)
-        make_detail_encargo(1,self.id_encargo,id_prenda[0],self.ip)
+        self.id_prenda = get_id_prenda(self.talla,'sudaderas',self.ip)
+        self.make_detail_encargo()
         self.get_metodo_pago()
-        update_abono(self.abono,self.id_encargo,self.ip)
+        self.update_abono()
         self.get_obs()
         
         
     def openJeans(self):
-        id_prenda = get_id_prenda(self.talla,'jeans',self.ip)
-        make_detail_encargo(1,self.id_encargo,id_prenda[0],self.ip)
+        self.id_prenda = get_id_prenda(self.talla,'jeans',self.ip)
+        self.make_detail_encargo()
         self.get_metodo_pago()
-        update_abono(self.abono,self.id_encargo,self.ip)
+        self.update_abono()
         self.get_obs()
     
     def openBlusas(self):
-        id_prenda = get_id_prenda(self.talla,'blusas',self.ip) 
-        make_detail_encargo(1,self.id_encargo,id_prenda[0],self.ip)
+        self.id_prenda = get_id_prenda(self.talla,'blusas',self.ip) 
+        self.make_detail_encargo()
         self.get_metodo_pago()
-        update_abono(self.abono,self.id_encargo,self.ip)
+        self.update_abono()
         self.get_obs()
 
     def openMedias(self):
-        id_prenda = get_id_prenda(self.talla,'medias',self.ip)
-        make_detail_encargo(1,self.id_encargo,id_prenda[0],self.ip)
+        self.id_prenda = get_id_prenda(self.talla,'medias',self.ip)
+        self.make_detail_encargo()
         self.get_metodo_pago()
-        update_abono(self.abono,self.id_encargo,self.ip)
+        self.update_abono()
         self.get_obs()
 
     def openOtros(self):
-        id_prenda = get_id_prenda(self.talla,'otros',self.ip)
-        make_detail_encargo(1,self.id_encargo,id_prenda[0],self.ip)
+        self.id_prenda = get_id_prenda(self.talla,'otros',self.ip)
+        self.make_detail_encargo()
         self.get_metodo_pago()
-        update_abono(self.abono,self.id_encargo,self.ip)
+        self.update_abono()
         self.get_obs()
-
-    def update_obs(self,obs):
-        conn, cursor = connectsql(host=self.ip)
-        query = f'''UPDATE encargos SET observaciones = '{obs}' WHERE id = {self.id_encargo};'''
-        make_query(conn,cursor,query)
     
     def openYomber(self):
 
@@ -297,7 +293,7 @@ class DetallesEncargo(QMainWindow):
         layout.addRow("Cintura:", self.cintura)
         layout.addRow("Largo:", self.largo)
         layout.addRow("Observaciones:", self.obs)
-        update_obs(self.obs,self.id_encargo,self.ip)
+        self.update_obs()
         
         insert_button = PushButton("Insertar")
         insert_button.clicked.connect(self.insert_yomber)
@@ -307,7 +303,6 @@ class DetallesEncargo(QMainWindow):
         self.yomber_window.setLayout(layout)
         self.yomber_window.show()
 
-    
     def insert_yomber(self):
     # Aqui iria el codigo para insertar los datos en la tabla correspondiente
         conn, cursor = connectsql(host=self.ip)
@@ -320,8 +315,8 @@ class DetallesEncargo(QMainWindow):
         self.metodo_pago,ok=QInputDialog.getItem(self.yomber_window,'Método de Pago',
                                                 'Selecciona el método de pago',
                                                 ['Efectivo','Transferencia'])
-        if self.metodo_pago and ok:
-            update_metodo_pago(self.metodo_pago,self.id_encargo,self.ip)
+        if self.metodo and ok:
+            self.update_metodo_pago()
             self.yomber_window.close()
         else:
             QMessageBox.about(self.up,"Error", "Debes seleccionar un método de pago")
@@ -361,10 +356,8 @@ class DetallesEncargo(QMainWindow):
         self.close()
       
     def get_size_and_abono(self,metodo):
-        print(self.prenda)
         self.talla, ok = QInputDialog.getText(self.up,'¿Qué talla se Necesita?',
                                                 'Ingrese la talla')
-        print(self.talla)
         if ok:
             if self.talla.upper() in self.sizes():
                     self.abono,ok1=QInputDialog.getText(self.up,'Abono',
@@ -377,19 +370,29 @@ class DetallesEncargo(QMainWindow):
             return self.talla, self.abono
             
     def get_metodo_pago(self):
-        self.metodo_pago,ok=QInputDialog.getItem(self,'Método de Pago',
+        self.metodo,ok=QInputDialog.getItem(self,'Método de Pago',
                                                 'Selecciona el método de pago',
                                                 ['Efectivo','Transferencia'])
-        if self.metodo_pago and ok:
-            update_metodo_pago(self.metodo_pago,self.id_encargo,self.ip)
+        if self.metodo and ok:
+            self.update_metodo_pago()
         else:
             QMessageBox.about(self.up,"Error", "Debes seleccionar un método de pago")
+
+    def update_metodo_pago(self):
+        conn, cursor = connectsql(host=self.ip)
+        query = f'''UPDATE encargos SET metodo_pago = '{self.metodo}' WHERE id = {self.id_encargo};'''
+        make_query(conn,cursor,query) 
 
     def get_obs(self):
         self.obs,ok=QInputDialog.getText(self,'Observaciones',
                                                 '¿Deseas agregar observaciones?')
-        if self.metodo_pago and ok:
-            self.update_obs(self.obs)
+        if self.obs and ok:
+            self.update_obs()
+
+    def update_obs(self):
+        conn, cursor = connectsql(host=self.ip)
+        query = f'''UPDATE encargos SET observaciones = '{self.obs}' WHERE id = {self.id_encargo};'''
+        make_query(conn,cursor,query)
             
 class DetallesCambio(QMainWindow):
     def __init__(self, main_window, id_cambio) -> None:
@@ -401,6 +404,7 @@ class DetallesCambio(QMainWindow):
         'Camisetas','Blusas','Jeans','Medias','Otros']
         self.title = f'Cambio #{self.id_cambio}'
         self.initUI()
+        self.show()
         
 
     def initUI(self):
@@ -506,11 +510,11 @@ class DetallesCambio(QMainWindow):
 
     def make_cambio(self):
         conn, cursor = connectsql(host=self.ip)
-        query = f'''INSERT INTO public.detalle_cambio(
-	    id_cambio, id_prenda_entrante, id_prenda_saliente, cantidad_entrante, cantidad_saliente)
-	    VALUES ({self.id_cambio}, {self.id_prenda_entrante[0]}, {self.id_prenda_saliente[0]},
-        {self.cantidad_entrante_spinbox.value()}, {self.cantidad_saliente_spinbox.value()});'''
         try:
+            query = f'''INSERT INTO public.detalle_cambio(
+            id_cambio, id_prenda_entrante, id_prenda_saliente, cantidad_entrante, cantidad_saliente)
+            VALUES ({self.id_cambio}, {self.id_prenda_entrante[0]}, {self.id_prenda_saliente[0]},
+            {self.cantidad_entrante_spinbox.value()}, {self.cantidad_saliente_spinbox.value()});'''
             make_query(conn,cursor,query)
         except TypeError:
             QMessageBox.about(self.up, "Error", "Debes ingresar los datos para poder realizar el cambio")
@@ -525,8 +529,12 @@ class DetallesCambio(QMainWindow):
         self.obs,ok=QInputDialog.getText(self,'Observaciones',
                                                 '¿Deseas agregar observaciones?')
         if self.obs and ok:
-            update_obs(self.obs)        
-           
+            self.update_obs() 
+
+    def update_obs(self):
+        conn, cursor = connectsql(host=self.ip)
+        query = f'''UPDATE cambios SET observaciones = '{self.obs}', finalizado = True WHERE id = {self.id_cambio};'''
+        make_query(conn,cursor,query)       
 
     def sizes(self,prenda):
         if prenda == 'Jeans':

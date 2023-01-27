@@ -6,15 +6,19 @@ def connectsql(host):
     return conn, cursor
 
 #Realiza una consulta en la cual se necesitan datos como un resultado
-def execute_query(conn,cursor, query):
+def execute_query(query,ip,get_conncur=False):
+    conn,cursor = connectsql(ip)
     cursor.execute(query)
     results = cursor.fetchall()
      # Realizar el commit para guardar los cambios
-    conn.commit()
-    # Cerrar la conexión a la base de datos
-    cursor.close()
-    conn.close()
-    return results
+    if get_conncur:
+        return results,conn,cursor
+    else:
+        conn.commit()
+        # Cerrar la conexión a la base de datos
+        cursor.close()
+        conn.close()
+        return results
 
 #No se reciben resultados de la consulta
 def make_query(conn,cursor, query):

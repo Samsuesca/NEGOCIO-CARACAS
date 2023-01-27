@@ -38,7 +38,7 @@ class WelcomeWindow(QMainWindow):
     def __init__(self):
         super().__init__()
         self.initUI()
-        self.ip = '192.168.0.35'
+        self.ip = '127.0.0.1'#'192.168.0.35'
         # Establecer título y tamaño de la ventana
         self.setWindowTitle("INICIO")
 
@@ -115,10 +115,6 @@ class WelcomeWindow(QMainWindow):
     def make_cambios_show(self):
         self.cambio = Cambio(self)
         self.cambio.insertData()
-        details = self.cambio.detalles()
-        delete_widgets(self.side_layout)
-        self.splitter.setSizes([40, 60])
-        self.side_layout.addWidget(details)
 
     def show_cambios_show(self):
         delete_widgets(self.layoutapp)
@@ -166,10 +162,7 @@ class WelcomeWindow(QMainWindow):
     def make_ventas_show(self):
         self.venta = Venta(self)
         self.venta.insertData()
-        details = self.venta.detalles()
-        delete_widgets(self.side_layout)
-        self.splitter.setSizes([40, 60])
-        self.side_layout.addWidget(details)
+   
 
     def show_ventas_show(self):
         delete_widgets(self.layoutapp)
@@ -184,10 +177,7 @@ class WelcomeWindow(QMainWindow):
     def make_encargo_show(self):
         self.encargo = Encargo(self)
         self.encargo.insertData()
-        details = self.encargo.detalles()
-        delete_widgets(self.side_layout)
-        self.splitter.setSizes([35, 70])
-        self.side_layout.addWidget(details)
+
 
     def show_encargo_show(self):
         delete_widgets(self.layoutapp)
