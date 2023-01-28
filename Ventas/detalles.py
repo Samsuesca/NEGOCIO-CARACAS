@@ -133,6 +133,8 @@ class DetallesEncargo(QMainWindow):
                 self.logic()
             else:
                 self.cancelar
+        else: 
+            QMessageBox.about(self.up, "Error", "Intentalo de nuevo")
             
     def logic(self):
         ##YOMBER
@@ -148,8 +150,8 @@ class DetallesEncargo(QMainWindow):
                         self.update_abono(self.abono,self.id_encargo,self.ip)
                         self.openYomber()
                 else:
-                    QMessageBox.about(self.up, "Error", "La talla que has seleccionado no existe")
-        
+                    QMessageBox.about(self.up, "Error", "La talla que has seleccionado no existe, intentalo de nuevo")
+
         ##ZAPATOS        
         elif self.prenda == 'Zapatos B':
             self.talla,self.abono=self.get_size_and_abono(self.openZapatoBlanco)

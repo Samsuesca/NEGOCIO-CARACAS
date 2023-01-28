@@ -90,9 +90,12 @@ class Client(QMainWindow):
         vbox = QVBoxLayout()
         # Crear una lista para mostrar los clientes similares
         self.client_list = QListWidget()
+        current_client = QListWidgetItem(f"Cliente Insertado: {self.name} - Tel: {self.phone}")
+        self.client_list.addItem(current_client)
         for client in self.similar_clients:
             item = QListWidgetItem(f"{client[1]} - Tel: {client[2]}")
             self.client_list.addItem(item)
+        
         # Crear un botón para seleccionar un cliente
         self.select_button = QPushButton("Seleccionar")
         self.select_button.clicked.connect(self.select_client)

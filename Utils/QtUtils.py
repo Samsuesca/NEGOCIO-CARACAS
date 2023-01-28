@@ -142,21 +142,23 @@ class ShowData(QMainWindow):
         elif self.table_name == 'encargos':
             encargo = DetallesEncargo(self,id_encargo=id_value,info=True)
             encargo.informe_encargo(mode='encargo')
+
     def update_row(self):
         # Obtener la fila seleccionada
         current_row = self.table.currentRow()
         # Obtener el id de la fila seleccionada
         id_value = self.table.item(current_row, 0).text()
         # Obtener los nombres de las columnas de la tabla
-        column_names = [self.table.horizontalHeaderItem(i).text() for i in range(self.table.columnCount()-2)]
+        column_names = [self.table.horizontalHeaderItem(i).text() for i in range(self.table.columnCount()-3)]
         # Eliminar la columna 'id' de la lista de nombres de columnas
         column_names.remove('id')
-        indices = {self.table.horizontalHeaderItem(i).text(): i for i in range(self.table.columnCount()-2)}
+        indices = {self.table.horizontalHeaderItem(i).text(): i for i in range(self.table.columnCount()-3)}
 
         if self.filtro is not None:
             for _ in self.filtro:
                 column_names.remove(_)
         print(column_names)
+        print(indices)
         # Crear un diccionario vacío para almacenar los nuevos valores de las columnas
         new_values = {}
         # Iterar sobre los nombres de las columnas
