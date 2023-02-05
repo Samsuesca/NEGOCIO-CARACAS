@@ -20,7 +20,7 @@ from Ventas.cambios import Cambio
 from Analitica.movimientos import Movimientos
 from Analitica.gastos import Gastos
 from Inventarios.Inventario.inventario import Inventario
-from Utils.util_sql import connectsql
+from Utils.util_sql import ExecuteSQLWindow,connectsql
 from Utils.style import Palette, PushButton,show_beg
 
 
@@ -122,17 +122,26 @@ class WelcomeWindow(QMainWindow):
         inventario_menu.addActions([self.show_inv])
 
         #######iNVENTARIOS:
-        check_menu = menubar.addMenu("CHECK")
+        util_menu = menubar.addMenu("UTIL")
         ##Movimientos de Efectivo
-        self.check = QAction('CONEXION', self)
+        self.check = QAction('Conexion', self)
         self.check.setShortcut("Ctrl+N")
         self.check.triggered.connect(self.check_connection)
-        check_menu.addActions([self.check])
+        util_menu.addActions([self.check])
+
+        self.consulta = QAction('Consulta', self)
+        self.consulta.setShortcut("Ctrl+Y")
+        self.consulta.triggered.connect(self.consulta_window)
+        util_menu.addActions([self.consulta])
 
     def show_clients(self):
         delete_widgets(self.layoutapp)
         self.clients_window = ClientListView(self)
         self.layoutapp.addWidget(self.clients_window)
+
+    def consulta_window(self):
+        self.query_window = ExecuteSQLWindow(self)
+        self.query_window.show()
 
     def make_cambios_show(self):
         self.cambio = Cambio(self)

@@ -3,7 +3,7 @@ from PyQt5.QtWidgets import (QTableWidget,QLineEdit,QHBoxLayout,
                             QPushButton,QListWidgetItem,QLabel,
                             QWidget,QGridLayout,QTabWidget)
 from PyQt5.QtCore import QSize
-from fuzzywuzzy import fuzz
+from fuzzywuzzy import fuzz 
 ##Internas
 from Ventas.encargo import Encargo
 from Ventas.venta import Venta
