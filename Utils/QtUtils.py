@@ -1,7 +1,7 @@
 #Modulos Internos
 from Ventas.detalles import DetallesCambio,DetallesVenta,DetallesEncargo
-from Utils.util_sql import execute_query, connectsql, make_query,get_id_prenda
-from Utils.style import PushButton, adj_left, adj_right,adj_sup_center,adj_middle
+from Utils.util_sql import execute_query
+from Utils.style import PushButton, adj_left, adj_right
 #Modelos de Terceros
 from fuzzywuzzy import fuzz
 from PyQt5.QtWidgets import (QLayout,QComboBox,QPushButton,QTableWidget,QTableWidgetItem,
@@ -12,8 +12,7 @@ from sqlalchemy import Table, MetaData, create_engine, insert,delete,update
 from sqlalchemy.exc import ProgrammingError, IntegrityError
 #Modulos de Python
 from datetime import datetime
-import os
-import json
+
 
 #####COMENTARIO DE PRUEBA
 

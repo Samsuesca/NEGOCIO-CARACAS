@@ -152,14 +152,17 @@ class Client(QMainWindow):
     def select_client(self):
         selected_client = self.client_list.currentItem()
         index = self.client_list.row(selected_client)
-        print(index)
-        self.cliente = self.similar_clients[index-1][0]
+        if index == 0:
+            self.new_client()
+        else:
+            self.cliente = self.similar_clients[index-1][0]
         self.bool = True
         self.choose_window.close()
         self.detail_window = self.detalles()        
     
     def get_similar_clients(self,st=80):
         similar_clients = []
+        # similar_clients.append((nombre, telefono))
         for client in self.all_clients:
             id, nombre, telefono = client
             if telefono != '3000000000' and nombre != '':
