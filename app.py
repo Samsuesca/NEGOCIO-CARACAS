@@ -13,6 +13,7 @@ from PyQt5.QtGui import QFont,  QIcon
 
 #Importaciones Internas
 from Utils.QtUtils import delete_widgets
+from Ventas.clientes import ClientListView
 from Ventas.venta import Venta
 from Ventas.encargo import Encargo
 from Ventas.cambios import Cambio
@@ -47,12 +48,12 @@ class WelcomeWindow(QMainWindow):
         menubar = self.menuBar()
 
         ########Conexión:       
-        conect_menu = menubar.addMenu("Conexión")
+        conect_menu = menubar.addMenu("CLIENTES")
         #realizar:
-        self.probe_conexion = QAction('Verificar', self)
-        self.probe_conexion.setShortcut("Ctrl+Ñ")
-        self.probe_conexion.triggered.connect(self.check_connection)
-        conect_menu.addAction(self.probe_conexion)
+        self.clients = QAction('Ver', self)
+        self.clients.setShortcut("Ctrl+P")
+        self.clients.triggered.connect(self.show_clients)
+        conect_menu.addAction(self.clients)
 
         ########VENTAS:       
         venta_menu = menubar.addMenu("VENTAS")
@@ -75,7 +76,7 @@ class WelcomeWindow(QMainWindow):
         self.make_encargo.triggered.connect(self.make_encargo_show)
         #ver:
         self.show_encargo = QAction('Ver', self)
-        self.show_encargo.setShortcut("Ctrl+H")
+        self.show_encargo.setShortcut("Ctrl+D")
         self.show_encargo.triggered.connect(self.show_encargo_show)
         #ver:
         self.show_yomber = QAction('Yombers', self)
@@ -120,6 +121,18 @@ class WelcomeWindow(QMainWindow):
         self.show_inv.triggered.connect(self.inventario_show)
         inventario_menu.addActions([self.show_inv])
 
+        #######iNVENTARIOS:
+        inventario_menu = menubar.addMenu("CHECK")
+        ##Movimientos de Efectivo
+        self.check = QAction('CONEXION', self)
+        self.check.setShortcut("Ctrl+N")
+        self.check.triggered.connect(self.check_connection)
+        inventario_menu.addActions([self.show_inv])
+
+    def show_clients(self):
+        delete_widgets(self.layoutapp)
+        self.clients_window = ClientListView(self)
+        self.layoutapp.addWidget(self.clients_window)
 
     def make_cambios_show(self):
         self.cambio = Cambio(self)

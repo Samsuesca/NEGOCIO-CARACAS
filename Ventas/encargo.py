@@ -1,5 +1,5 @@
 from Utils.QtUtils import ShowData
-from Ventas.clientes import Client
+from Ventas._clientes import Client
 
 class Encargo(Client):
     def __init__(self, main_window):

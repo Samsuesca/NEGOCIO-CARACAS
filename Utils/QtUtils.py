@@ -1,10 +1,12 @@
 #Modulos Internos
-from Ventas.detalles import DetallesCambio,INFO,DetallesEncargo
+from Ventas.detalles import DetallesCambio,DetallesVenta,DetallesEncargo
 from Utils.util_sql import execute_query, connectsql, make_query,get_id_prenda
 from Utils.style import PushButton, adj_left, adj_right,adj_sup_center,adj_middle
 #Modelos de Terceros
-from PyQt5.QtWidgets import QLayout,QDialog,QComboBox,QPushButton,QSpinBox,QTableWidget,QTableWidgetItem,QLineEdit,QGridLayout, QMainWindow, QMessageBox, QHeaderView,QLabel, QVBoxLayout, QWidget, QInputDialog,QHBoxLayout
-from PyQt5.QtCore import Qt
+from PyQt5.QtWidgets import (QLayout,QComboBox,QPushButton,QTableWidget,QTableWidgetItem,
+                             QLineEdit, QMainWindow,QMessageBox, QHeaderView,QLabel, QDialog,
+                             QVBoxLayout, QWidget, QInputDialog,QHBoxLayout,QCalendarWidget)
+from PyQt5.QtCore import Qt, QDate
 from sqlalchemy import Table, MetaData, create_engine, insert,delete,update 
 from sqlalchemy.exc import ProgrammingError, IntegrityError
 #Modulos de Python
@@ -13,6 +15,27 @@ import os
 import json
 
 #####COMENTARIO DE PRUEBA
+
+class CalendarDialog(QDialog):
+    def __init__(self, parent=None):
+        super().__init__(parent)
+        self.calendar = QCalendarWidget(self)
+        self.calendar.setGridVisible(True)
+        self.calendar.clicked[QDate].connect(self.showDate)
+        layout = QVBoxLayout(self)
+        layout.addWidget(self.calendar)
+
+    def showDate(self, date):
+        self.selected_date = date
+        self.selected_date = self.calendar.selectedDate()
+        self.selected_datetime = datetime.combine(self.selected_date.toPyDate(), datetime.now().time())
+        self.accept()
+
+    def showCalendar(self,dict,columname):
+        if self.exec_() == QDialog.Accepted:
+            # Insertar la fecha y hora seleccionadas en la tabla
+            self.date_string = self.selected_datetime.strftime('%Y-%m-%d %H:%M:%S')
+            dict[columname] = self.date_string
 
 def delete_widgets(layout:QLayout):
     while layout.count():
@@ -23,15 +46,17 @@ def delete_widgets(layout:QLayout):
 
 class ShowData(QMainWindow):
 
-    def __init__(self,main_window, table_name,ip,query='',filtro=None,add_row=True,operation='general') -> None:
+    def __init__(self,main_window, table_name,ip,query='',
+                 filtro=None,add_row=True,operation='general',
+                 from_client = False) -> None:
         super().__init__()
         self.table_name = table_name
         self.filtro = filtro
-        print(self.table_name)
         self.ip = ip
         self.operation = operation
         self.main_window = main_window
         self.query = query
+        self.from_clients = from_client
         self.add_row_bool = add_row
         self.aditional_cols()
         self.initUI()
@@ -40,33 +65,17 @@ class ShowData(QMainWindow):
         # Crear un objeto de tipo MetaData
         metadata = MetaData(bind=self.engine)
         # Obtener el objeto de tipo Table para la tabla específica
-        self.tablesql = Table(self.table_name, metadata, autoload=True)
+        if operation == 'inventario':
+            self.tablesql = Table('inventario', metadata, autoload=True)
+        else:
+            self.tablesql = Table(self.table_name, metadata, autoload=True)
 
     def aditional_cols(self):
         self.add_col = 2
         if self.operation == 'informe':
             self.add_col = 3
 
-    def initUI(self):
-        try:    
-            self.title = QLabel(f"Visualización de {self.table_name.title()}")
-            self.search_bar = QLineEdit()
-            self.search_bar.textChanged.connect(self.filter_table)
-            # Añadir el seleccionador de columna para 
-            self.filter_col = QComboBox()
-            # Crear el botón de actualizar
-            self.refresh_button = QPushButton("Actualizar", self)
-            self.refresh_button.clicked.connect(self.refresh_table)
-
-            if self.query == '':
-            # Obtener los datos de la tabla "telas"
-                results, column_names = self.get_table_data()
-            else:
-                results, column_names = self.get_table_data(self.query)
-
-            # Agregar las columnas al seleccionador
-            self.filter_col.addItems(column_names)
-            self.filter_col.currentIndexChanged.connect(self.filter_table)
+    def make_table(self,results,column_names):
             # Crear la tabla y establecer los encabezados de las columnas
             self.table = QTableWidget()
             self.table.setRowCount(len(results))
@@ -97,10 +106,32 @@ class ShowData(QMainWindow):
                     info_button.clicked.connect(self.info_row)
                     self.table.setCellWidget(i, len(results[0])+2, info_button)
 
-            if self.table.horizontalHeaderItem(0).text() == 'id':
+            if self.table.horizontalHeaderItem(0).text() == 'id' and not self.from_clients:
                 self.table.hideColumn(0)
 
 
+
+    def initUI(self):
+        try:    
+            self.title = QLabel(f"Visualización de {self.table_name.title()}")
+            self.search_bar = QLineEdit()
+            self.search_bar.textChanged.connect(self.filter_table)
+            # Añadir el seleccionador de columna para 
+            self.filter_col = QComboBox()
+            # Crear el botón de actualizar
+            self.refresh_button = QPushButton("Actualizar", self)
+            self.refresh_button.clicked.connect(self.refresh_window)
+
+            if self.query == '':
+                results, column_names = self.get_table_data()
+            else:
+                print(self.query)
+                results, column_names = self.get_table_data(self.query)
+                
+            self.make_table(results,column_names)
+            # Agregar las columnas al seleccionador
+            self.filter_col.addItems(column_names)
+            self.filter_col.currentIndexChanged.connect(self.filter_table)
 
             add_button = QPushButton("+")
             add_button.clicked.connect(self.add_row)
@@ -137,11 +168,14 @@ class ShowData(QMainWindow):
         # Obtener el id de la fila seleccionada
         id_value = self.table.item(current_row, 0).text()
         if self.table_name == 'ventas':
-            venta = INFO(self,id_venta=id_value)
-            venta.informe_venta(mode='venta')
+            venta = DetallesVenta(self,id_venta=id_value,ip=self.ip,info=True)
+            venta.informe_venta(mode=self.table_name)
         elif self.table_name == 'encargos':
             encargo = DetallesEncargo(self,id_encargo=id_value,info=True)
-            encargo.informe_encargo(mode='encargo')
+            encargo.informe_encargo(mode=self.table_name)
+        elif self.table_name == 'cambios':
+            cambio = DetallesCambio(self,id_cambio=id_value,info=True)
+            cambio.informe_cambio(mode=self.table_name)
 
     def update_row(self):
         # Obtener la fila seleccionada
@@ -149,50 +183,70 @@ class ShowData(QMainWindow):
         # Obtener el id de la fila seleccionada
         id_value = self.table.item(current_row, 0).text()
         # Obtener los nombres de las columnas de la tabla
-        column_names = [self.table.horizontalHeaderItem(i).text() for i in range(self.table.columnCount()-3)]
+        if self.operation == 'informe':
+            column_names = [self.table.horizontalHeaderItem(i).text() for i in range(self.table.columnCount()-3)]
+            indices = {self.table.horizontalHeaderItem(i).text(): i for i in range(self.table.columnCount()-3)}
+        else:
+            column_names = [self.table.horizontalHeaderItem(i).text() for i in range(self.table.columnCount()-2)]
+            indices = {self.table.horizontalHeaderItem(i).text(): i for i in range(self.table.columnCount()-2)}
         # Eliminar la columna 'id' de la lista de nombres de columnas
+        print(column_names)
         column_names.remove('id')
-        indices = {self.table.horizontalHeaderItem(i).text(): i for i in range(self.table.columnCount()-3)}
-
-        if self.filtro is not None:
+        
+        print(indices)
+        if self.filtro is not None and len(self.filtro)>0:
             for _ in self.filtro:
                 column_names.remove(_)
-        print(column_names)
-        print(indices)
         # Crear un diccionario vacío para almacenar los nuevos valores de las columnas
         new_values = {}
+        print(column_names)
         # Iterar sobre los nombres de las columnas
         for column_name in column_names:
-
+            print(column_name)
             current_value = self.table.item(current_row,indices[column_name]).text()
             # Pedir al usuario que ingrese un nuevo valor para la columna actual
-            value,ok = QInputDialog.getText(self,'Actualizar Fila',f"Ingresa un nuevo valor para la columna {column_name}: ",
-                                         QLineEdit.Normal,current_value)
-            if value == 'True':
-                value = True
-            elif value == 'False':
-                value = False
+             # Pedir al usuario que ingrese un nuevo valor para la columna actual
+            if column_name == 'fecha':
+                # Mostrar el QCalendarWidget
+                calendar = CalendarDialog(self.main_window)
+                calendar.showCalendar(new_values,column_name)
             else:
-                pass
-            # Agregar el nuevo valor al diccionario
-            if value and ok:
-                new_values[column_name] = value
-            else:
-                break
+                value,ok = QInputDialog.getText(self,'Actualizar Fila',f"Ingresa un nuevo valor para la columna {column_name}: ",
+                                            QLineEdit.Normal,current_value)
+                if value == 'Si' or value == 'True':
+                    value = True
+                elif value == 'No' or value == 'False':
+                    value = False
+                else:
+                    pass
+                # Agregar el nuevo valor al diccionario
+                if value and ok:
+                    new_values[column_name] = value
+                else:
+                    break
         try: 
-            # Crear un objeto de tipo update
-            update_stmt = update(self.tablesql).where(self.tablesql.columns.id == id_value).values(**new_values)
+                # Crear un objeto de tipo update
+            if self.operation == 'inventario':
+                update_stmt = update(self.tablesql).where(self.tablesql.columns.id_prenda == id_value).values(**new_values)
+            else:
+                update_stmt = update(self.tablesql).where(self.tablesql.columns.id == id_value).values(**new_values)
             # Ejecutar la sentencia
             self.engine.execute(update_stmt)
             # Actualizar la tabla para mostrar los nuevos datos
-            self.refresh_table()
+            if self.from_clients:
+                self.refresh_table()
+            else:
+                self.refresh_window()
+
         except ProgrammingError:
             QMessageBox.warning(self.main_window, 'Error', '''No se pudo realizar la actualización. 
               Tal vez la cancelaste o Hiciste algo mal. Intentalo de nuevo''')
-
+            if self.from_clients:
+                self.refresh_table()
 
     
     def delete_row(self):
+        print('2')
         try:
             # Obtener el id de la fila seleccionada
             selected_row = self.table.currentRow()
@@ -206,10 +260,16 @@ class ShowData(QMainWindow):
             self.engine.execute(delete_stmt)
 
             # Actualizar la tabla
-            self.refresh_table()
+            if self.from_clients:
+                self.regresh_table()
+            else:
+                self.refresh_window()
+
         except AttributeError:
             QMessageBox.warning(self.main_window, 'Error', '''No se pudo eliminar la fila. 
               Algo salió mal. Intentalo de nuevo''')
+            if self.from_clients:
+                self.refresh_table()
             
     def filter_table(self):
         search_text = self.search_bar.text()
@@ -249,8 +309,10 @@ class ShowData(QMainWindow):
             insert_stmt = insert(self.tablesql).values(**data)
             # Ejecutar la sentencia
             self.engine.execute(insert_stmt)
-                # Actualizar la tabla para mostrar los nuevos datos
-            self.refresh_table()
+            if self.from_clients:
+                self.regresh_table()
+            else:
+                self.refresh_window()
         except IntegrityError:
             QMessageBox.warning(self.main_window, 'Error', '''No se pudo realizar la Inserción. 
               Tal vez la cancelaste o Hiciste algo mal. Intentalo de nuevo''')
@@ -267,13 +329,22 @@ class ShowData(QMainWindow):
         cursor.close()
         return results, column_names
 
-    def refresh_table(self):
+    def refresh_window(self):
         current_state = self.table.horizontalHeader().saveState()
-        current_geomtry = self.geometry()
+        current_geometry = self.geometry()
+        current_h_scroll_value = self.table.horizontalScrollBar().value()
+        current_v_scroll_value = self.table.verticalScrollBar().value()
+
         self.initUI()
-        # Restaurar el estado anterior de la tabla
+
+        
+        self.table.horizontalScrollBar().setValue(current_h_scroll_value)
+        self.table.verticalScrollBar().setValue(current_v_scroll_value)
         self.table.horizontalHeader().restoreState(current_state)
-        self.setGeometry(current_geomtry)
+        self.setGeometry(current_geometry)
+    
+    def refresh_table(self):
+        self.main_window.window_info()
 
 
 class Pestana(QMainWindow):

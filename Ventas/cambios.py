@@ -1,4 +1,4 @@
-from Ventas.clientes import Client
+from Ventas._clientes import Client
 
 class Cambio(Client):
     def __init__(self, main_window):
