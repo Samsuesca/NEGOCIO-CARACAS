@@ -3,6 +3,7 @@ from Ventas.detalles import DetallesCambio,DetallesVenta,DetallesEncargo
 from Utils.util_sql import execute_query, connectsql, make_query,get_id_prenda
 from Utils.style import PushButton, adj_left, adj_right,adj_sup_center,adj_middle
 #Modelos de Terceros
+from fuzzywuzzy import fuzz
 from PyQt5.QtWidgets import (QLayout,QComboBox,QPushButton,QTableWidget,QTableWidgetItem,
                              QLineEdit, QMainWindow,QMessageBox, QHeaderView,QLabel, QDialog,
                              QVBoxLayout, QWidget, QInputDialog,QHBoxLayout,QCalendarWidget)
@@ -25,17 +26,20 @@ class CalendarDialog(QDialog):
         layout = QVBoxLayout(self)
         layout.addWidget(self.calendar)
 
-    def showDate(self, date):
+    def showDate(self, date=None):
         self.selected_date = date
         self.selected_date = self.calendar.selectedDate()
         self.selected_datetime = datetime.combine(self.selected_date.toPyDate(), datetime.now().time())
         self.accept()
+        
 
-    def showCalendar(self,dict,columname):
+    def showCalendar(self,dict={},columname=''):
         if self.exec_() == QDialog.Accepted:
             # Insertar la fecha y hora seleccionadas en la tabla
             self.date_string = self.selected_datetime.strftime('%Y-%m-%d %H:%M:%S')
             dict[columname] = self.date_string
+            return self.date_string
+    
 
 def delete_widgets(layout:QLayout):
     while layout.count():
@@ -114,8 +118,7 @@ class ShowData(QMainWindow):
     def initUI(self):
         try:    
             self.title = QLabel(f"Visualización de {self.table_name.title()}")
-            self.search_bar = QLineEdit()
-            self.search_bar.textChanged.connect(self.filter_table)
+            
             # Añadir el seleccionador de columna para 
             self.filter_col = QComboBox()
             # Crear el botón de actualizar
@@ -132,6 +135,8 @@ class ShowData(QMainWindow):
             # Agregar las columnas al seleccionador
             self.filter_col.addItems(column_names)
             self.filter_col.currentIndexChanged.connect(self.filter_table)
+            self.search_bar = QLineEdit()
+            self.search_bar.textChanged.connect(self.filter_table)
 
             add_button = QPushButton("+")
             add_button.clicked.connect(self.add_row)
@@ -190,16 +195,15 @@ class ShowData(QMainWindow):
             column_names = [self.table.horizontalHeaderItem(i).text() for i in range(self.table.columnCount()-2)]
             indices = {self.table.horizontalHeaderItem(i).text(): i for i in range(self.table.columnCount()-2)}
         # Eliminar la columna 'id' de la lista de nombres de columnas
-        print(column_names)
-        column_names.remove('id')
         
-        print(indices)
+        column_names.remove('id')
+
         if self.filtro is not None and len(self.filtro)>0:
             for _ in self.filtro:
                 column_names.remove(_)
         # Crear un diccionario vacío para almacenar los nuevos valores de las columnas
         new_values = {}
-        print(column_names)
+        
         # Iterar sobre los nombres de las columnas
         for column_name in column_names:
             print(column_name)
@@ -270,16 +274,23 @@ class ShowData(QMainWindow):
               Algo salió mal. Intentalo de nuevo''')
             if self.from_clients:
                 self.refresh_table()
-            
+        
+
     def filter_table(self):
         search_text = self.search_bar.text()
         selected_column = self.filter_col.currentIndex()
         rows = self.table.rowCount()
+        matches = []
         for row in range(rows):
             self.table.setRowHidden(row, True)
             item = self.table.item(row, selected_column)
-            if item and search_text in item.text():
-                self.table.setRowHidden(row, False)
+            if item:
+                ratio = fuzz.token_set_ratio(item.text(), search_text)
+                if ratio >= 80:  # adjust this threshold as needed
+                    matches.append((row, ratio))
+        matches.sort(key=lambda x: x[1], reverse=True)
+        for row, ratio in matches:
+            self.table.setRowHidden(row, False)
 
     def add_row(self): ##METODO INESTABLE
         # Obtener los nombres de las columnas de la tabla

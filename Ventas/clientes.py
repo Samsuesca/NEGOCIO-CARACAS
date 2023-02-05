@@ -9,7 +9,7 @@ from Ventas.encargo import Encargo
 from Ventas.venta import Venta
 from Ventas.cambios import Cambio
 from Utils.QtUtils import ShowData
-from Utils.util_sql import execute_query
+from Utils.util_sql import execute_query,make_query,connectsql
 
 class ClientListView(QMainWindow):
     def __init__(self,parent):
@@ -28,6 +28,8 @@ class ClientListView(QMainWindow):
         self.list_view.itemClicked.connect(self.itemClick)
         self.button_new_client = QPushButton('Nuevo Cliente')
         self.button_new_client.clicked.connect(self.new_client)
+        self.button_new_client = QPushButton('Depurar Clientes')
+        self.button_new_client.clicked.connect(self.depurar_clients)
         query1 = "SELECT id, nombre, telefono FROM clientes WHERE nombre != '' AND telefono != '3000000000' ORDER BY nombre "
         self.all_clients = execute_query(query1,self.ip)
         # Populate the list with client names
@@ -49,6 +51,14 @@ class ClientListView(QMainWindow):
         widget.setLayout(layout)
         self.setCentralWidget(widget)
 
+    def depurar_clientes(self):
+        query = f'''DELETE FROM clientes
+        WHERE NOT EXISTS (SELECT * FROM encargos WHERE encargos.id_cliente = clientes.id)
+        AND NOT EXISTS (SELECT * FROM ventas WHERE ventas.id_cliente = clientes.id)
+        AND NOT EXISTS (SELECT * FROM cambios WHERE cambios.id_cliente = clientes.id) ;'''  
+        conn,cursor = connectsql(self.ip)
+        make_query(conn,cursor,query)
+        
     def new_client(self):
         from Ventas._clientes import Client
         self.new_cliente = Client(self.ip,False)

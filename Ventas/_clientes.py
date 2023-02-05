@@ -79,21 +79,27 @@ class Client(QMainWindow):
             pass
 
     def _openLogic(self):
+        from Utils.QtUtils import CalendarDialog
+        calendar = CalendarDialog()
+        self.date_operation = calendar.showCalendar() 
+
         if self.mode_operation:
             self.openLogic()
         # else:
         #     QInputDialog.getItem(self,'Realizar Operación','Deseas realizar alguna operacion?',['encargo','cambio','venta'])
     
     def openLogic(self,id=None):
+        print('entro')
         if id is None:
             self.phone = self.phone_line.text()
             self.name = self.name_line.text().title()
             if self.phone.isdigit() and len(self.phone) == 10:
+                
                 # Obtener los clientes existentes
                 query1 = "SELECT id, nombre, telefono FROM clientes"
                 self.all_clients = execute_query(query1,self.ip)
-                print(self.all_clients)
                 self.similar_clients = self.get_similar_clients()
+                print(self.similar_clients)
 
                 if len(self.similar_clients) == 0 or self.phone == "3000000000":
                   
@@ -105,6 +111,7 @@ class Client(QMainWindow):
                         self.detail_window=self.detalles()
                 else:
                     self.client_window.close()
+                    print('similar client')
                     self.choose_client()
             else:
                 # El número de teléfono no es válido, muestra un mensaje de error y vuelve a mostrar el cuadro de diálogo
@@ -144,7 +151,9 @@ class Client(QMainWindow):
         
     def select_client(self):
         selected_client = self.client_list.currentItem()
-        self.cliente = self.similar_clients[self.client_list.row(selected_client)][0]
+        index = self.client_list.row(selected_client)
+        print(index)
+        self.cliente = self.similar_clients[index-1][0]
         self.bool = True
         self.choose_window.close()
         self.detail_window = self.detalles()        
@@ -161,12 +170,17 @@ class Client(QMainWindow):
         return similar_clients
                 
     def create_operation(self):
-        self.insert_query = f'''INSERT INTO public.{self.table_name} (id_cliente)
-        VALUES ({self.cliente});'''
+
+        if self.table_name == 'encargos':
+            self.insert_query = f'''INSERT INTO public.{self.table_name} (id_cliente)
+            VALUES ({self.cliente});'''
+        else:
+            self.insert_query = f'''INSERT INTO public.{self.table_name} (id_cliente,fecha)
+            VALUES ({self.cliente},'{self.date_operation}');'''
         conn2, cursor2 = connectsql(host=self.ip)
         make_query(conn2,cursor2,self.insert_query)
 
-        #OBTENER id_encargo:
+        #OBTENER id:
         conn3, cursor3 = connectsql(host=self.ip)
         query3 = f'''SELECT Max(id) FROM {self.table_name} WHERE id_cliente = {self.cliente}'''
         cursor3.execute(query3)

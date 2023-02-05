@@ -227,10 +227,7 @@ class DetallesVenta(QMainWindow):
                 hbox = QHBoxLayout()
                 save = PushButton("GUARDAR VENTA")
                 save.clicked.connect(self.save_venta)
-                edit = PushButton("AGREGAR PRODUCTOS")
-                edit.clicked.connect(self.informe.close)
                 hbox.addWidget(save)
-                hbox.addWidget(edit)
 
             # Crear un layout para organizar los labels
             layout = QVBoxLayout()
