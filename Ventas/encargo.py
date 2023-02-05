@@ -2,8 +2,8 @@ from Utils.QtUtils import ShowData
 from Ventas._clientes import Client
 
 class Encargo(Client):
-    def __init__(self, main_window):
-        super().__init__()
+    def __init__(self, main_window,second=False):
+        super().__init__(second_time=second)
         self.up = main_window
         self.filter = ['fecha_entrega','fecha_encargo']
         self.ip = self.up.ip

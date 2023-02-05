@@ -197,15 +197,15 @@ class ClientListView(QMainWindow):
         self.window_.show()
 
     def make_encargo(self):
-        encargo = Encargo(self.up)
+        encargo = Encargo(self.up,second=True)
         encargo.openLogic(self.client_id)
 
     def make_venta(self):
-        venta = Venta(self.up)
+        venta = Venta(self.up,second=True)
         venta.openLogic(self.client_id)
 
     def make_cambio(self):
-        cambio = Cambio(self.up)
+        cambio = Cambio(self.up,second=True)
         cambio.openLogic(self.client_id)
         
     def tab_logic(self):

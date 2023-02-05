@@ -110,7 +110,10 @@ class DetallesVenta(QMainWindow):
 
     def detalles_venta(self,table_name):
         self.table_name=table_name
-        talla, ok = QInputDialog.getItem(self,'¿Qué talla se Necesita?','Ingrese la talla',self.sizes())
+        try:
+            talla, ok = QInputDialog.getItem(self,'¿Qué talla se Necesita?','Ingrese la talla',self.sizes())
+        except TypeError:
+            QMessageBox.about(self, "Error", "Intentalo de nuevo. Algo salió mal")
         if talla.upper() in self.sizes():
         
             if talla and ok:
@@ -342,8 +345,8 @@ class DetallesEncargo(QMainWindow):
     def logic(self):
         ##YOMBER
         if self.prenda == 'Yomber':
-            self.talla, ok = QInputDialog.getItem(self.up,'¿Qué talla se Necesita?',
-                                             'Ingrese la talla',self.sizes())
+            self.talla, ok = QInputDialog.getItem(self,'¿Qué talla se Necesita?','Ingrese la talla',self.sizes())
+    
             if ok:
                 if self.talla.upper() in self.sizes():
                     self.id_prenda = get_id_prenda(self.talla,'yomber',self.ip)
@@ -534,7 +537,7 @@ class DetallesEncargo(QMainWindow):
         self.metodo_pago,ok=QInputDialog.getItem(self.yomber_window,'Método de Pago',
                                                 'Selecciona el método de pago',
                                                 ['Efectivo','Transferencia'])
-        if self.metodo and ok:
+        if self.metodo_pago and ok:
             self.update_metodo_pago()
             self.informe_encargo()
             self.yomber_window.close()
@@ -573,8 +576,8 @@ class DetallesEncargo(QMainWindow):
         self.close()
       
     def get_size_and_abono(self,metodo):
-        self.talla, ok = QInputDialog.getItem(self.up,'¿Qué talla se Necesita?',
-                                                'Ingrese la talla',self.sizes())
+        self.talla, ok = QInputDialog.getItem(self,'¿Qué talla se Necesita?','Ingrese la talla',self.sizes())
+
         if ok:
             if self.talla.upper() in self.sizes():
                     self.abono,ok1=QInputDialog.getText(self.up,'Abono',
@@ -585,19 +588,19 @@ class DetallesEncargo(QMainWindow):
                 QMessageBox.about(self.up, "Error", "La talla que has seleccionado no existe")
                 self.abono = None
             return self.talla, self.abono
-            
+        
     def get_metodo_pago(self):
-        self.metodo,ok=QInputDialog.getItem(self,'Método de Pago',
+        self.metodo_pago,ok=QInputDialog.getItem(self,'Método de Pago',
                                                 'Selecciona el método de pago',
                                                 ['Efectivo','Transferencia'])
-        if self.metodo and ok:
+        if self.metodo_pago and ok:
             self.update_metodo_pago()
         else:
             QMessageBox.about(self.up,"Error", "Debes seleccionar un método de pago")
 
     def update_metodo_pago(self):
         conn, cursor = connectsql(host=self.ip)
-        query = f'''UPDATE encargos SET metodo_pago = '{self.metodo}' WHERE id = {self.id_encargo};'''
+        query = f'''UPDATE encargos SET metodo_pago = '{self.metodo_pago}' WHERE id = {self.id_encargo};'''
         make_query(conn,cursor,query) 
 
     def get_obs(self):

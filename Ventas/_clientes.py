@@ -14,9 +14,10 @@ from Utils.util_sql import connectsql, make_query, execute_query
 
 
 class Client(QMainWindow):
-    def __init__(self,ip='', operation=True) -> int:
+    def __init__(self,ip='', operation=True,second_time=False) -> int:
         super().__init__()
         self.ip=ip
+        self.second_time = second_time
         self.cliente = None
         self.mode_operation = operation
    
@@ -74,6 +75,7 @@ class Client(QMainWindow):
             elif self.table_name == 'encargos':
                 self.show_detalle = DetallesEncargo(self,self.id_operation)
             else:
+                pass
                 return None
         else:
             pass
@@ -81,13 +83,11 @@ class Client(QMainWindow):
     def _openLogic(self):
         from Utils.QtUtils import CalendarDialog
         calendar = CalendarDialog()
-        self.date_operation = calendar.showCalendar() 
-
-        if self.mode_operation:
+        self.date_operation = calendar.showCalendar()
+        if not self.second_time:
             self.openLogic()
-        # else:
-        #     QInputDialog.getItem(self,'Realizar Operación','Deseas realizar alguna operacion?',['encargo','cambio','venta'])
-    
+
+
     def openLogic(self,id=None):
         print('entro')
         if id is None:
@@ -109,6 +109,9 @@ class Client(QMainWindow):
                     self.client_window.close()
                     if self.mode_operation:
                         self.detail_window=self.detalles()
+                    else:
+                        self.table_name = QInputDialog.getItem(self,'Realizar Operación','Deseas realizar alguna operacion?',['Encargos','Cambios','Ventas','Ninguna'])[0].lower()
+                        self.detail_window=self.detalles()
                 else:
                     self.client_window.close()
                     print('similar client')
@@ -123,6 +126,10 @@ class Client(QMainWindow):
             self.bool=True
             if self.mode_operation:
                 self.detail_window=self.detalles()
+            else:
+                self.table_name = QInputDialog.getItem(self,'Realizar Operación','Deseas realizar alguna operacion?',['Encargos','Cambios','Ventas','Ninguna'])[0].lower()
+                self.detail_window=self.detalles()
+            
 
     def choose_client(self):
         self.choose_window = QWidget()
@@ -158,7 +165,11 @@ class Client(QMainWindow):
             self.cliente = self.similar_clients[index-1][0]
         self.bool = True
         self.choose_window.close()
-        self.detail_window = self.detalles()        
+        if self.mode_operation:
+            self.detail_window=self.detalles()
+        else:
+            self.table_name = QInputDialog.getItem(self,'Realizar Operación','Deseas realizar alguna operacion?',['Encargos','Cambios','Ventas','Ninguna'])[0].lower()
+            self.detail_window=self.detalles()        
     
     def get_similar_clients(self,st=80):
         similar_clients = []
@@ -173,25 +184,31 @@ class Client(QMainWindow):
         return similar_clients
                 
     def create_operation(self):
-
+        conn2, cursor2 = connectsql(host=self.ip)
         if self.table_name == 'encargos':
             self.insert_query = f'''INSERT INTO public.{self.table_name} (id_cliente)
             VALUES ({self.cliente});'''
+            make_query(conn2,cursor2,self.insert_query)
+        elif self.table_name == 'ninguna':
+            pass
         else:
+            if  self.second_time:
+                self._openLogic()
+
             self.insert_query = f'''INSERT INTO public.{self.table_name} (id_cliente,fecha)
-            VALUES ({self.cliente},'{self.date_operation}');'''
-        conn2, cursor2 = connectsql(host=self.ip)
-        make_query(conn2,cursor2,self.insert_query)
+                    VALUES ({self.cliente},'{self.date_operation}');'''
+            make_query(conn2,cursor2,self.insert_query)
 
-        #OBTENER id:
-        conn3, cursor3 = connectsql(host=self.ip)
-        query3 = f'''SELECT Max(id) FROM {self.table_name} WHERE id_cliente = {self.cliente}'''
-        cursor3.execute(query3)
-        self.id_operation= cursor3.fetchone()[0]
+        if self.table_name != 'ninguna':
+            #OBTENER id:
+            conn3, cursor3 = connectsql(host=self.ip)
+            query3 = f'''SELECT Max(id) FROM {self.table_name} WHERE id_cliente = {self.cliente}'''
+            cursor3.execute(query3)
+            self.id_operation= cursor3.fetchone()[0]
 
-        conn3.commit()
-        cursor3.close()
-        conn3.close()
+            conn3.commit()
+            cursor3.close()
+            conn3.close()
     
     def return_window(self):
         return self.detail_window

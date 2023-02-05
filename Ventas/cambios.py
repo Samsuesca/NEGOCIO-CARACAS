@@ -1,8 +1,8 @@
 from Ventas._clientes import Client
 
 class Cambio(Client):
-    def __init__(self, main_window):
-        super().__init__()
+    def __init__(self, main_window,second=False):
+        super().__init__(second)
         self.show_query = f'''SELECT cambios.id, clientes.nombre,clientes.telefono,cambios.fecha AS fecha,
         cambios.total_entrada,cambios.total_salida,cambios.finalizado,cambios.observaciones FROM cambios JOIN clientes ON cambios.id_cliente = clientes.id ORDER BY cambios.id DESC;'''
         self.up = main_window
