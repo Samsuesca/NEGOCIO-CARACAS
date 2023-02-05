@@ -122,12 +122,12 @@ class WelcomeWindow(QMainWindow):
         inventario_menu.addActions([self.show_inv])
 
         #######iNVENTARIOS:
-        inventario_menu = menubar.addMenu("CHECK")
+        check_menu = menubar.addMenu("CHECK")
         ##Movimientos de Efectivo
         self.check = QAction('CONEXION', self)
         self.check.setShortcut("Ctrl+N")
         self.check.triggered.connect(self.check_connection)
-        inventario_menu.addActions([self.show_inv])
+        check_menu.addActions([self.check])
 
     def show_clients(self):
         delete_widgets(self.layoutapp)
