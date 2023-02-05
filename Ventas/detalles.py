@@ -151,7 +151,7 @@ class DetallesVenta(QMainWindow):
         elif self.table_name == 'Medias':
             X = ['4-6','6-8','8-10','9-11','CANILLERA P','CANILLERA G']
         elif self.table_name == 'otros':
-            X = ['TOP','CAMISILLA','BICICLETERO','CORREA']
+            X = ['TOP','CAMISILLAS','BICICLETERO','CORREA']
         elif self.table_name == 'sudaderas' or self.table_name == 'chazul' or self.table_name == 'chgris':
             X = ['4', '6', '8', '10', '12', '14', '16', 'S', 'M', 'L', 'XL']
         else:

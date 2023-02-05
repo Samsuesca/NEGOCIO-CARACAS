@@ -8,7 +8,7 @@ class Cambio(Client):
         self.up = main_window
         self.table_name = 'cambios'
         self.operation = 'informe'
-        self.filtro = ['nombre','telefono','fecha','total_entrada','total_salida']
+        self.filtro = ['nombre','telefono','total_entrada','total_salida']
         self.ip = self.up.ip
         self.add_row_bool = False
 

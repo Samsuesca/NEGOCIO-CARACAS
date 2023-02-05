@@ -206,7 +206,7 @@ class ShowData(QMainWindow):
             current_value = self.table.item(current_row,indices[column_name]).text()
             # Pedir al usuario que ingrese un nuevo valor para la columna actual
              # Pedir al usuario que ingrese un nuevo valor para la columna actual
-            if column_name == 'fecha':
+            if column_name == 'fecha' or column_name == 'entregarel' or column_name == 'encargado':
                 # Mostrar el QCalendarWidget
                 calendar = CalendarDialog(self.main_window)
                 calendar.showCalendar(new_values,column_name)
