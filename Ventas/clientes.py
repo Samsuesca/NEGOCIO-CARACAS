@@ -28,8 +28,8 @@ class ClientListView(QMainWindow):
         self.list_view.itemClicked.connect(self.itemClick)
         self.button_new_client = QPushButton('Nuevo Cliente')
         self.button_new_client.clicked.connect(self.new_client)
-        self.button_new_client = QPushButton('Depurar Clientes')
-        self.button_new_client.clicked.connect(self.depurar_clients)
+        self.button_depurar_client = QPushButton('Depurar Clientes')
+        self.button_depurar_client.clicked.connect(self.depurar_clientes)
         query1 = "SELECT id, nombre, telefono FROM clientes WHERE nombre != '' AND telefono != '3000000000' ORDER BY nombre "
         self.all_clients = execute_query(query1,self.ip)
         # Populate the list with client names
@@ -46,6 +46,7 @@ class ClientListView(QMainWindow):
         layout.addLayout(grid_box)
         layout.addWidget(self.list_view)
         layout.addWidget(self.button_new_client)
+        layout.addWidget(self.button_depurar_client)
 
         widget = QWidget()
         widget.setLayout(layout)
@@ -58,7 +59,7 @@ class ClientListView(QMainWindow):
         AND NOT EXISTS (SELECT * FROM cambios WHERE cambios.id_cliente = clientes.id) ;'''  
         conn,cursor = connectsql(self.ip)
         make_query(conn,cursor,query)
-        
+
     def new_client(self):
         from Ventas._clientes import Client
         self.new_cliente = Client(self.ip,False)
