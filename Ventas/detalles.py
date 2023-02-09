@@ -20,6 +20,7 @@ class DetallesVenta(QMainWindow):
         self.id_venta = id_venta
         self.ti = title
         self.ip = ip
+        self.tallas = []
         self.table_name= self.ti.split()[0].lower() + 's'
         if info==False:
             self.initUI()
@@ -48,11 +49,13 @@ class DetallesVenta(QMainWindow):
         button7.clicked.connect(self.openMedias)
         button8 = PushButton("OTROS")
         button8.clicked.connect(self.openOtros)
-        print(type(self.ti))
-        button9 = PushButton(f"VER {self.ti.split()[0].upper()}",self)
-        button9.clicked.connect(self.openFinalizar)
+        button9 = PushButton(f"ZAPATOS")
+        button9.clicked.connect(self.openZapatos)
         button10 = PushButton("CANCELAR")
         button10.clicked.connect(self.cancelar)
+        button11 = PushButton(f"VER {self.ti.split()[0].upper()}",self)
+        button11.clicked.connect(self.openFinalizar)
+
     
         # # Crear el layout de la cuadrícula y agregar los botones
         hbox = QHBoxLayout()
@@ -71,11 +74,26 @@ class DetallesVenta(QMainWindow):
         vbox = QVBoxLayout()
         vbox.addLayout(hbox)
         vbox.addLayout(grid_layout)
+        vbox.addWidget(button11)
 
         # Agregar el widget al layout principal de la ventana
         widget = QWidget(self)
         widget.setLayout(vbox)
         self.setCentralWidget(widget)
+
+    def openZapatos(self):
+        tipo, ok = QInputDialog.getItem(self,'¿Qué tipo ?','Ingrese el tipo',['Goma','Blanco','Negro'])
+        if tipo and ok:
+            if tipo == 'Goma':
+                self.detalles_venta('zapatogoma')
+            elif tipo == 'Blanco':
+                self.detalles_venta('zapatoblanco')
+            elif tipo == 'Negro':  
+                self.detalles_venta('zapatonegro')
+            else:
+                QMessageBox.about(self, "Error", "Selecciona un tipo de zapato correcto")
+        else:
+            self.openZapatos()
 
     def openCamisetas(self):
         self.detalles_venta('camisetas')
@@ -109,15 +127,12 @@ class DetallesVenta(QMainWindow):
         self.close()
 
     def detalles_venta(self,table_name):
-        self.table_name=table_name
-        try:
-            talla, ok = QInputDialog.getItem(self,'¿Qué talla se Necesita?','Ingrese la talla',self.sizes())
-        except TypeError:
-            QMessageBox.about(self, "Error", "Intentalo de nuevo. Algo salió mal")
+        self.view_name=table_name
+        talla, ok = QInputDialog.getItem(self,'¿Qué talla se Necesita?','Ingrese la talla',self.sizes())
         if talla.upper() in self.sizes():
         
             if talla and ok:
-                id_prenda = get_id_prenda(talla,self.table_name,self.ip)
+                id_prenda = get_id_prenda(talla,self.view_name,self.ip)
                 #Obtener la cantidad
                 quantity, ok1 = QInputDialog.getInt(self,'¿Qué cantidad va a llevar?','Ingrese la cantidad')
                 if quantity and ok1:
@@ -145,21 +160,30 @@ class DetallesVenta(QMainWindow):
             QMessageBox.about(self, "Error", "La talla que has seleccionado no existe")
 
     def sizes(self):
-        if self.table_name == 'jeans':
-            X = ['6','8','10','12','14','16','28','30','32','34']
-        elif self.table_name == 'camisetas':
-            X = ['6','8','10','12','14','16','S','M','L','XL','XXL']
-        elif self.table_name == 'yomber' or self.table_name == 'blusas':
-            X = ['6','8','10','12','14','16','S','M','L','XL']
-        elif self.table_name == 'Medias':
-            X = ['4-6','6-8','8-10','9-11','CANILLERA P','CANILLERA G']
-        elif self.table_name == 'otros':
-            X = ['TOP','CAMISILLAS','BICICLETERO','CORREA']
-        elif self.table_name == 'sudaderas' or self.table_name == 'chazul' or self.table_name == 'chgris':
-            X = ['4', '6', '8', '10', '12', '14', '16', 'S', 'M', 'L', 'XL']
+        if self.view_name == 'jeans':
+            self.tallas = ['6','8','10','12','14','16','28','30','32','34']
+        elif self.view_name == 'camisetas':
+            self.tallas = ['6','8','10','12','14','16','S','M','L','XL','XXL']
+        elif self.view_name == 'yomber' or self.view_name == 'blusas':
+            self.tallas = ['6','8','10','12','14','16','S','M','L','XL']
+        elif self.view_name == 'Medias':
+            self.tallas = ['4-6','6-8','8-10','9-11','CANILLERA P','CANILLERA G']
+        elif self.view_name == 'otros':
+            self.tallas = ['TOP','CAMISILLAS','BICICLETERO','CORREA']
+        elif self.view_name == 'sudaderas' or self.view_name == 'chazul' or self.view_name == 'chgris':
+            self.tallas = ['4', '6', '8', '10', '12', '14', '16', 'S', 'M', 'L', 'XL']
+        elif self.view_name == 'zapatoblanco':
+            self.tallas = ['B26','B27','B28','B29','B30','B31','B32','B33','B34','B35',
+                    'B36','B37','B38','B39','B40','B41','B42','B43','B44']
+        elif self.view_name == 'zapatonegro':
+            self.tallas = ['N26','N27','N28','N29','N30','N31','N32','N33','N34','N35',
+                    'N36','N37','N38','N39','N40','N41','N42','N43','N44']
+        elif self.view_name == 'zapatogoma':
+            self.tallas = ['G26','G27','G28','G29','G30','G31','G32','G33','G34','G35',
+                    'G36','G37','G38','G39','G40','G41','G42','G43','G44']
         else:
-            X = ''
-        return X
+            self.tallas = ''
+        return self.tallas
 
     def informe_venta(self,mode='normal'):
         result = self.query_venta_detalle()
@@ -168,7 +192,7 @@ class DetallesVenta(QMainWindow):
         self.informe.setWindowTitle(f'Informe de venta {self.id_venta} I.E CARACAS')
         self.informe.setGeometry(0,0,550,400)
         self.names = [row[3] for row in result]
-        self.sizes = [row[4] for row in result]
+        self.tallas_ = [row[4] for row in result]
         self.prices = [row[5] for row in result]
         self.quant = [row[6] for row in result]
         self.parcial = [row[7] for row in result]
@@ -196,7 +220,7 @@ class DetallesVenta(QMainWindow):
             grid.addWidget(ti_parcial,0,8,alignment=Qt.AlignCenter)
             for i in range(len(self.names)):
                 label_name= QLabel(f'{self.names[i]}')
-                label_size= QLabel(f'{self.sizes[i]}')
+                label_size= QLabel(f'{self.tallas_[i]}')
                 label_prices= QLabel(f'{self.prices[i]}')
                 label_quant= QSpinBox()
                 label_quant.setMinimum(0)
@@ -250,6 +274,7 @@ class DetallesVenta(QMainWindow):
 
         except IndexError:
             QMessageBox.about(self,"Error", "No se han añadido prendas a la venta")
+            self.show()
 
     def actualizar_cantidad(self,value):
         conn,cur = connectsql(host=self.ip)
@@ -268,21 +293,22 @@ class DetallesVenta(QMainWindow):
             conn,cur = connectsql(host=self.ip)
             query = f'''UPDATE public.ventas SET observaciones='{obs}' WHERE id = {self.id_venta}'''
             make_query(conn,cur,query)
-        else:
-            self.informe.accept()
-            self.up.close()    
 
-        metodo,ok = QInputDialog.getItem(self,'Método de Pago','Selecciona el método de pago',['Efectivo','Transferencia'])
-        if metodo and ok:
-            conn,cur = connectsql(host=self.ip)
-            query = f'''UPDATE public.ventas SET finalizada=true,metodo_pago='{metodo}' WHERE id = {self.id_venta}'''
-            make_query(conn,cur,query)
-            self.informe.accept()
-            self.close()   
+            metodo,ok = QInputDialog.getItem(self,'Método de Pago','Selecciona el método de pago',['Efectivo','Transferencia'])
+            if metodo and ok:
+                conn,cur = connectsql(host=self.ip)
+                query = f'''UPDATE public.ventas SET finalizada=true,metodo_pago='{metodo}' WHERE id = {self.id_venta}'''
+                make_query(conn,cur,query)
+                self.informe.accept()
+                self.close()   
+            else:
+                QMessageBox.about(self,"Error", "Debes seleccionar un método de pago")
+                self.informe.accept()
+                self.main_window.close()  
         else:
-            QMessageBox.about(self,"Error", "Debes seleccionar un método de pago")
             self.informe.accept()
-            self.up.close()    
+            self.main_window.close()    
+  
 
     def query_venta_detalle(self):  
         conn, cursor = connectsql(host=self.ip)

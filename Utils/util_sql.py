@@ -1,4 +1,6 @@
 import psycopg2
+from PyQt5.QtWidgets import (QLabel,QTextEdit,QVBoxLayout,
+                             QPushButton,QHBoxLayout,QDialog)
           #conectarse a una base de datos
 def connectsql(host):
     conn = psycopg2.connect(dbname='negocio', user='postgres', password='miakhalifA07', host=host) # U = '10.161.49.171', # MICEL = '192.168.214.173', # HOUSE = '192.168.0.18'
@@ -78,3 +80,42 @@ def get_id_prenda(talla,table,ip):
 
     return id_prenda
 
+
+class ExecuteSQLWindow(QDialog):
+    def __init__(self, parent=None):
+        super().__init__(parent)
+        self.ip = parent.ip
+
+        # Crea una etiqueta para mostrar un texto para introducir la consulta
+        self.label = QLabel("Introduzca la sentencia SQL:")
+
+        # Crea un widget de texto para introducir la consulta
+        self.text_edit = QTextEdit()
+
+        # Crea un botón de envío
+        self.submit_button = QPushButton("Enviar")
+        self.submit_button.clicked.connect(self.submit_query)
+
+        # Crea una layout horizontal para los widgets
+        h_layout = QHBoxLayout()
+        h_layout.addWidget(self.label)
+        h_layout.addWidget(self.text_edit)
+
+        # Crea una layout vertical para los widgets
+        v_layout = QVBoxLayout()
+        v_layout.addLayout(h_layout)
+        v_layout.addWidget(self.submit_button)
+
+        # Establece la layout principal
+        self.setLayout(v_layout)
+
+    def submit_query(self):
+        # Obtiene la sentencia SQL del widget de texto
+        query = self.text_edit.toPlainText()
+
+        # Ejecuta la sentencia SQL en la base de datos
+        conn, cursor = connectsql(self.ip)
+        make_query(conn, cursor, query)
+
+        # Cierra la ventana
+        self.close()
