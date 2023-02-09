@@ -1,10 +1,12 @@
 #Modulos de Python
+
+####fskjfaoisdjaisojdioasjdasidjasiodjaisodjas
 import sys
-import psycopg2
 from pathlib import Path
 from datetime import date
 
 #Modulos de Terceros
+import psycopg2
 from PyQt5.QtWidgets import (QApplication,QMessageBox, QMainWindow,
                               QLabel, QVBoxLayout, QWidget,
                               QSplitter,QSizePolicy,QAction)
